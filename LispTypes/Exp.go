@@ -1,6 +1,9 @@
 package LispTypes
 
-import "errors"
+import (
+	"errors"
+	"fmt"
+)
 
 type Exp struct {
 	Contents LispToken
@@ -15,7 +18,21 @@ func (exp Exp) GetContent() LispToken {
 }
 
 func (exp Exp) ToString() string {
-	return exp.Contents.ToString()
+	return fmt.Sprintf("%s (%s)", exp.GetType().ToString(), exp.Contents.ToString())
+}
+
+func (exp *Exp) ContainsList() bool {
+	if _, ok := exp.Contents.(List); ok {
+		return true
+	}
+	return false
+}
+
+func (exp *Exp) GetList() (List, error) {
+	if list, ok := exp.Contents.(List); ok {
+		return list, nil
+	}
+	return List{}, errors.New("NotAList")
 }
 
 func (exp *Exp) AppendIfList(token LispToken) error {
@@ -45,4 +62,8 @@ func (exp *Exp) ChangeIfAtom(token LispToken) error {
 	}
 
 	return nil
+}
+
+func (exp Exp) ValueToString() string {
+	return fmt.Sprintf("%s", exp.Contents.ValueToString())
 }

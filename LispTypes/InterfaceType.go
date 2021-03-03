@@ -9,10 +9,13 @@ const (
 	LIST
 	EXP
 	ENV
-	LPAREN
-	RPAREN
+	PROCEDURE
+	QUOTATION
+	ASSIGNMENT
+	BOOLEAN
 )
 
 func (interfaceType InterfaceType) ToString() string {
-	return [...]string{"SYMBOL", "NUMBER", "ATOM", "LIST", "EXP", "ENV", "LPAREN", "RPAREN"}[interfaceType]
+
+	return [...]string{"SYMBOL", "NUMBER", "ATOM", "LIST", "EXP", "ENV", "PROCEDURE", "QUOTATION", "ASSIGNMENT", "BOOLEAN"}[interfaceType]
 }

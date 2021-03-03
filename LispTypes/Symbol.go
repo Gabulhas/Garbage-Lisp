@@ -17,3 +17,7 @@ func (symbol Symbol) GetContent() string {
 func (symbol Symbol) ToString() string {
 	return fmt.Sprintf("%s %s", symbol.GetType().ToString(), symbol.GetContent())
 }
+
+func (symbol Symbol) ValueToString() string {
+	return fmt.Sprintf("%s", symbol.Contents)
+}

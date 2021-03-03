@@ -2,7 +2,6 @@ package Parser
 
 import (
 	"GarbageLisp/LispTypes"
-	"fmt"
 	"log"
 	"regexp"
 	"strconv"
@@ -23,12 +22,12 @@ func NewParser(program string) *Parser {
 }
 
 func Parse(program string) LispTypes.LispToken {
-
 	return NewParser(program).readFromTokens()
 }
 
 func tokenize(program string) []string {
-	a := lparenRegex.ReplaceAllString(program, " ( ")
+	trimmed := strings.TrimRight(program, "\n")
+	a := lparenRegex.ReplaceAllString(trimmed, " ( ")
 	b := rparenRegex.ReplaceAllString(a, " ) ")
 	return strings.Fields(b)
 
@@ -41,8 +40,6 @@ func (parser *Parser) readFromTokens() LispTypes.LispToken {
 	}
 	token := parser.preTokens[0]
 	parser.preTokens = parser.preTokens[1:]
-
-	fmt.Println(token)
 
 	if token == "(" {
 		L := LispTypes.Exp{
@@ -58,7 +55,16 @@ func (parser *Parser) readFromTokens() LispTypes.LispToken {
 	} else if token == ")" {
 		log.Fatal("Unexpected )")
 	} else {
-		return atom(token)
+		if value, err := strconv.ParseFloat(token, 32); err == nil {
+			return LispTypes.Number{Contents: value}
+		} else if token == "true" {
+			return LispTypes.LispBoolean{Contents: true}
+		} else if token == "false" || token == "nil" {
+			return LispTypes.LispBoolean{Contents: false}
+		} else {
+			return LispTypes.Symbol{Contents: token}
+		}
+		return LispTypes.Symbol{Contents: token}
 	}
 	return atom(token)
 }
@@ -66,11 +72,10 @@ func (parser *Parser) readFromTokens() LispTypes.LispToken {
 func atom(token string) LispTypes.Atom {
 	if value, err := strconv.ParseFloat(token, 32); err == nil {
 		return LispTypes.Atom{Contents:
-		LispTypes.Number{Contents: float32(value)},
+		LispTypes.Number{Contents: value},
 		}
 	}
 	return LispTypes.Atom{Contents:
 	LispTypes.Symbol{Contents: token},
 	}
-
 }

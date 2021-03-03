@@ -1,10 +1,6 @@
 package LispTypes
 
-import (
-	"fmt"
-	"strings"
-)
-
+/*
 type Env struct {
 	Contents map[string]LispToken
 }
@@ -26,3 +22,5 @@ func (env Env) ToString() string {
 }
 
 // func GetStandardEnv
+
+ */

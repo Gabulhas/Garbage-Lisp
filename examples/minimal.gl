@@ -1,0 +1,5 @@
+(begin
+    (define a 4)
+    (define a_squared (* a a))
+    (print a_squared)
+)
