@@ -1,20 +1,10 @@
 package Evaluator
 
 import (
-	"GarbageLisp/Env"
 	"GarbageLisp/LispTypes"
 	"log"
 )
 
-type Evaluator struct {
-	currentEnv Env.Env
-}
-
-func NewEval() *Evaluator {
-	neweval := new(Evaluator)
-	neweval.currentEnv = Env.InitStandardEnv()
-	return neweval
-}
 
 //TODO: mudar de return LispToken To Exp
 func (evaluator *Evaluator) Run(parsedTokens LispTypes.LispToken) LispTypes.LispToken {
@@ -38,13 +28,14 @@ func (evaluator *Evaluator) Run(parsedTokens LispTypes.LispToken) LispTypes.Lisp
 }
 
 func (evaluator *Evaluator) evalS_Expression(list LispTypes.List) LispTypes.LispToken {
-	log.Println(list.ToString())
+	//log.Println(list.ToString())
 	content := list.Contents
 	symbol, err := LispTypes.GetSymbolContent(content[0])
 	if err != nil {
 		log.Fatal("Expression Not Starting With Symbol")
 	}
 	// "Builtins"
+	//TODO: Change to swtich case
 	if symbol == "define" {
 		newVariableName, err := LispTypes.GetSymbolContent(content[1])
 		if err != nil {
@@ -74,6 +65,10 @@ func (evaluator *Evaluator) evalS_Expression(list LispTypes.List) LispTypes.Lisp
 			log.Fatal("If Condition Is Not A Boolean")
 		}
 
+	} else if symbol == "lambda" {
+
+	} else if symbol == "quote" {
+		return content[1]
 	} else {
 		//Todo: alterar
 		var arguments []LispTypes.LispToken

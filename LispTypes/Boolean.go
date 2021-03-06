@@ -21,5 +21,5 @@ func (lispboolean LispBoolean) ToString() string {
 }
 
 func (lispboolean LispBoolean) ValueToString() string {
-	return fmt.Sprintf("%s", lispboolean.ValueToString())
+	return fmt.Sprintf("%t",lispboolean.Contents )
 }

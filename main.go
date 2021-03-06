@@ -99,8 +99,8 @@ func PrettyPrint(token LispTypes.LispToken) string {
 		return b.String()
 
 		break
-	case LispTypes.Number:
-		return fmt.Sprintf("%f", value.Contents)
+	default:
+		return fmt.Sprintf("%s", token.ValueToString())
 		break
 
 	}
