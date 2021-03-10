@@ -36,6 +36,7 @@ func (exp *Exp) GetList() (List, error) {
 }
 
 func (exp *Exp) AppendIfList(token LispToken) error {
+
 	switch v := exp.Contents.(type) {
 	case List:
 		exp.Contents = v.Append(token)

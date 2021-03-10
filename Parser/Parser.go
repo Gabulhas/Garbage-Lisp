@@ -22,7 +22,19 @@ func NewParser(program string) *Parser {
 }
 
 func Parse(program string) LispTypes.LispToken {
-	return NewParser(program).readFromTokens()
+	var expressions []LispTypes.LispToken
+	parser := NewParser(program)
+	for len(parser.preTokens) != 0 {
+		expressions = append(expressions, parser.readFromTokens())
+	}
+	if len(expressions) > 0 {
+		expressions := append([]LispTypes.LispToken{LispTypes.Symbol{Contents: "begin"}}, expressions...)
+		finalList := LispTypes.List{Contents: expressions}
+		return finalList
+	} else {
+		return LispTypes.LispBoolean{Contents: false}
+	}
+
 }
 
 func tokenize(program string) []string {

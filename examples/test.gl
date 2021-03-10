@@ -1,0 +1,3 @@
+(define batata 4)
+
+(print batata)

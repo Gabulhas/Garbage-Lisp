@@ -32,23 +32,22 @@ func main() {
 
 	if *repl {
 		fmt.Println("Welcome to GarbageLisp REPL")
-		Repl()
+		REPL()
 	} else if *input {
-		Pipeline(TextFromFile(os.Stdin.Name()))
+		pipeline(textFromFile(os.Stdin.Name()))
 		return
 	} else if *fileName != "" {
-		Pipeline(TextFromFile(*fileName))
+		pipeline(textFromFile(*fileName))
 		return
 	}
 	flag.PrintDefaults()
 
 	program := "(begin (define r 10) (* pi (* r r)))"
-	Pipeline(program)
+	pipeline(program)
 	os.Exit(1)
 }
 
-func TextFromFile(filename string) string {
-
+func textFromFile(filename string) string {
 	content, err := ioutil.ReadFile(filename)
 	if err != nil {
 		log.Fatal(err)
@@ -59,7 +58,8 @@ func TextFromFile(filename string) string {
 	return text
 }
 
-func Repl() {
+//Main loop
+func REPL() {
 	reader := bufio.NewReader(os.Stdin)
 	myEval := Evaluator.NewEval()
 	for true {
@@ -68,41 +68,47 @@ func Repl() {
 		parsed := Parser.Parse(text)
 		result := myEval.Run(parsed)
 		if result != nil {
-			fmt.Println(PrettyPrint(result))
+			fmt.Println(prettyPrint(result))
 		}
 	}
 
 }
 
-func Pipeline(program string) {
+func pipeline(program string) {
 	parsed := Parser.Parse(program)
+	fmt.Printf("Parsed: ")
+	fmt.Println(parsed)
 	myEval := Evaluator.NewEval()
 	result := myEval.Run(parsed)
-	fmt.Println(PrettyPrint(result))
+	fmt.Println(prettyPrint(result))
 }
 
-func PrettyPrint(token LispTypes.LispToken) string {
-	switch value := token.(type) {
-	case LispTypes.List:
-		var b strings.Builder
-		fmt.Fprintf(&b, "\n")
+func prettyPrint(token LispTypes.LispToken) string {
 
-		for i, p := range value.Contents {
-			fmt.Fprintf(&b, "[%s]", PrettyPrint(p))
+	if token != nil {
 
-			if i != len(value.Contents)-1 {
-				fmt.Fprintf(&b, ",")
-			}
-
+		switch value := token.(type) {
+		case LispTypes.List:
+			var b strings.Builder
 			fmt.Fprintf(&b, "\n")
+
+			for i, p := range value.Contents {
+				fmt.Fprintf(&b, "[%s]", prettyPrint(p))
+
+				if i != len(value.Contents)-1 {
+					fmt.Fprintf(&b, ",")
+				}
+
+				fmt.Fprintf(&b, "\n")
+			}
+			return b.String()
+
+			break
+		default:
+			return fmt.Sprintf("%s", token.ValueToString())
+			break
+
 		}
-		return b.String()
-
-		break
-	default:
-		return fmt.Sprintf("%s", token.ValueToString())
-		break
-
 	}
 	return ""
 }
