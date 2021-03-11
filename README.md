@@ -28,6 +28,15 @@ I'm not saying that **Go** needs them, I like it's minimalism :) .
 
 
 # How to Run
-1 - Clone the Project Repo
-2 - Run `go run main.go`
+1. Clone the Project Repo `git clone [url of this repo]`
+2. Run `go run main.go`
+
+# Examples
+Check the [Examples](/tree/master/examples) folder.
+
+`test.gl` - simple define and print value.
+`listCount.l` - user defined function (lambda) that counts the number of elements equal to an atom.
+`42.gl` - big program with multiple user defined functions and input
+
+
 
