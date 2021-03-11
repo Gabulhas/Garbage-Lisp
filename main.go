@@ -12,7 +12,6 @@ import (
 	"io/ioutil"
 	"log"
 	"os"
-	"strings"
 )
 
 func init() {
@@ -42,8 +41,6 @@ func main() {
 	}
 	flag.PrintDefaults()
 
-	program := "(begin (define r 10) (* pi (* r r)))"
-	pipeline(program)
 	os.Exit(1)
 }
 
@@ -89,29 +86,7 @@ func pipeline(program string) {
 func prettyPrint(token LispTypes.LispToken) string {
 
 	if token != nil {
-
-		switch value := token.(type) {
-		case LispTypes.List:
-			var b strings.Builder
-			fmt.Fprintf(&b, "\n")
-
-			for i, p := range value.Contents {
-				fmt.Fprintf(&b, "[%s]", prettyPrint(p))
-
-				if i != len(value.Contents)-1 {
-					fmt.Fprintf(&b, ",")
-				}
-
-				fmt.Fprintf(&b, "\n")
-			}
-			return b.String()
-
-			break
-		default:
-			return fmt.Sprintf("%s", token.ValueToString())
-			break
-
-		}
+		return token.ToString()
 	}
 	return ""
 }

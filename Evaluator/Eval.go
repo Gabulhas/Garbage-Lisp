@@ -87,13 +87,30 @@ func (evaluator *Evaluator) evalS_Expression(list LispTypes.List) LispTypes.Lisp
 		}
 		return LispTypes.Procedure.InitLambda(LispTypes.Procedure{}, content[1], content[2])
 
+	} else if strings.EqualFold(symbol, "map") {
+		var result []LispTypes.LispToken
+
+		arguments := evaluator.Run(content[2])
+		procedure := content[1]
+
+		for _, token := range LispTypes.Unpack(arguments) {
+
+			newExp := LispTypes.List{Contents: []LispTypes.LispToken{procedure, token}}
+			tokenResult := evaluator.Run(newExp)
+
+			result = append(result, tokenResult)
+		}
+		return LispTypes.List{Contents: result}
+
 	} else if strings.EqualFold(symbol, "all") {
 		for _, exp := range content {
 			evaluator.Run(exp)
 		}
 		return nil
 	} else if strings.EqualFold(symbol, "quote") {
-		return content[1]
+		unpacked := LispTypes.Unpack(content[1])
+		newList := LispTypes.List{Contents: unpacked}
+		return newList
 
 	} else if strings.EqualFold(symbol, "set!") {
 		newVariableName, err := LispTypes.GetSymbolContent(content[1])

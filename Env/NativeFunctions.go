@@ -134,7 +134,7 @@ func maxnumber(tokens ...LispTypes.LispToken) LispTypes.LispToken {
 		}
 	}
 	if len(tokens) == 1 && tokens[0].GetType() == LispTypes.LIST {
-		return aritm(run, unpackList(tokens[0])...)
+		return aritm(run, LispTypes.Unpack(tokens[0])...)
 	}
 	return aritm(run, tokens...)
 }
@@ -148,7 +148,7 @@ func minnumber(tokens ...LispTypes.LispToken) LispTypes.LispToken {
 		}
 	}
 	if len(tokens) == 1 && tokens[0].GetType() == LispTypes.LIST {
-		return aritm(run, unpackList(tokens[0])...)
+		return aritm(run, LispTypes.Unpack(tokens[0])...)
 	}
 	return aritm(run, tokens...)
 }
