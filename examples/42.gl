@@ -1,0 +1,64 @@
+(define max_int 999999999999999999999)
+(define get_ultimo_algarismo (lambda (valor)
+    (begin
+	(define ultimos_dois (% valor 100))
+	(define primeiro_valor (intpart(/ ultimos_dois 10)))
+	(define segundo_valor (% ultimos_dois 10))
+	(* primeiro_valor segundo_valor)
+    )
+    )
+)
+
+
+(define or (lambda (a b)( if a true (if b true false))))
+
+
+(define divisivel (lambda (valor por) (= 0 (% valor por))))
+
+(define calculate (lambda (m passos passos_minimos ramo) 
+
+  (if (> passos passos_minimos) max_int
+   (
+
+    if (= m 42) passos
+
+	(
+	    if (< m 42 ) max_int
+	    
+		(begin
+
+		   (define regra_um ( if (divisivel m 2) ( calculate (intpart (/ m 2)) (+ 1 passos) max_int 1) max_int )) 
+
+
+		   (define regra_tres ( if (divisivel m 5) (calculate (- m 42) (+ 1 passos) regra_um 2) max_int ))
+
+		    (define regra_dois (if (or (divisivel m 3) (divisivel m 4)) 
+		    (begin
+			(define algs (get_ultimo_algarismo m))
+
+			(
+			    if (= algs 0) max_int ( calculate (- m algs) (+ 1 passos) regra_tres 3)
+			)
+
+		    )
+		    max_int))
+
+		(min regra_um regra_dois regra_tres)
+
+
+		)
+	   
+	)
+
+
+    )
+
+ )
+))
+
+(print (quote (VALOR_DE_ENTRADA)))
+(define entrada (input_number))
+
+(define result (calculate entrada 0 max_int 0))
+
+(if (< result max_int) (print result) (print (quote BAD_LUCK)))

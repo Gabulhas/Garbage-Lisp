@@ -27,8 +27,11 @@ func Parse(program string) LispTypes.LispToken {
 	for len(parser.preTokens) != 0 {
 		expressions = append(expressions, parser.readFromTokens())
 	}
-	if len(expressions) > 0 {
-		expressions := append([]LispTypes.LispToken{LispTypes.Symbol{Contents: "begin"}}, expressions...)
+	if len(expressions) == 1 {
+		return expressions[0]
+	}
+	if len(expressions) > 1 {
+		expressions := append([]LispTypes.LispToken{LispTypes.Symbol{Contents: "all"}}, expressions...)
 		finalList := LispTypes.List{Contents: expressions}
 		return finalList
 	} else {
@@ -83,11 +86,7 @@ func (parser *Parser) readFromTokens() LispTypes.LispToken {
 
 func atom(token string) LispTypes.Atom {
 	if value, err := strconv.ParseFloat(token, 32); err == nil {
-		return LispTypes.Atom{Contents:
-		LispTypes.Number{Contents: value},
-		}
+		return LispTypes.Atom{Contents: LispTypes.Number{Contents: value}}
 	}
-	return LispTypes.Atom{Contents:
-	LispTypes.Symbol{Contents: token},
-	}
+	return LispTypes.Atom{Contents: LispTypes.Symbol{Contents: token}}
 }

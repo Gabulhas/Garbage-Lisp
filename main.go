@@ -65,6 +65,9 @@ func REPL() {
 	for true {
 		fmt.Print("GarbageLisp>")
 		text, _ := reader.ReadString('\n')
+		if text == "\n" {
+			continue
+		}
 		parsed := Parser.Parse(text)
 		result := myEval.Run(parsed)
 		if result != nil {
@@ -76,11 +79,11 @@ func REPL() {
 
 func pipeline(program string) {
 	parsed := Parser.Parse(program)
-	fmt.Printf("Parsed: ")
-	fmt.Println(parsed)
 	myEval := Evaluator.NewEval()
 	result := myEval.Run(parsed)
-	fmt.Println(prettyPrint(result))
+	if finalString := prettyPrint(result); finalString != "" {
+		fmt.Println(prettyPrint(result))
+	}
 }
 
 func prettyPrint(token LispTypes.LispToken) string {

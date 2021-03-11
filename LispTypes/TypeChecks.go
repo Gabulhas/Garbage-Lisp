@@ -28,14 +28,17 @@ func GetNumberContent(token LispToken) (float64, error) {
 	switch result := token.(type) {
 	case Number:
 		return result.GetContent(), nil
-		break
 	case Atom:
 		return GetNumberContent(result)
-		break
+	case LispBoolean:
+		if result.GetContent() == true {
+			return 1.0, nil
+		} else {
+			return 0.0, nil
+		}
 	default:
 		return -1, errors.New("WrongType")
 	}
-	return -1, errors.New("WrongType")
 }
 
 func GetSymbolContent(token LispToken) (string, error) {

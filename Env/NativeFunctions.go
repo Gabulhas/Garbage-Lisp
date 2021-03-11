@@ -12,12 +12,18 @@ func InitEnvNativeFunctions(env map[string]LispTypes.LispToken) {
 	env["+"] = ProcedureFromFunction(add)
 	env["-"] = ProcedureFromFunction(sub)
 	env["/"] = ProcedureFromFunction(divide)
+	env["%"] = ProcedureFromFunction(modulo)
 
 	env["max"] = ProcedureFromFunction(maxnumber)
 	env["min"] = ProcedureFromFunction(minnumber)
+
+	env["intpart"] = ProcedureFromFunction(intpart)
+
 	//Other
 	env["begin"] = ProcedureFromFunction(begin)
 	env["print"] = ProcedureFromFunction(printLisp)
+	env["input_number"] = ProcedureFromFunction(inputNumber)
+
 	//Lists
 	env["list"] = ProcedureFromFunction(toList)
 	env["car"] = ProcedureFromFunction(car)
@@ -85,6 +91,11 @@ func cmp(run func(a, b float64) bool, tokens ...LispTypes.LispToken) LispTypes.L
 	return LispTypes.LispBoolean{Contents: true}
 }
 
+func modulo(tokens ...LispTypes.LispToken) LispTypes.LispToken {
+	run := func(accumulator, newvalue float64) float64 { return float64(int(accumulator) % int(newvalue)) }
+	return aritm(run, tokens...)
+}
+
 func multiply(tokens ...LispTypes.LispToken) LispTypes.LispToken {
 	run := func(accumulator, newvalue float64) float64 { return accumulator * newvalue }
 	return aritm(run, tokens...)
@@ -100,6 +111,18 @@ func add(tokens ...LispTypes.LispToken) LispTypes.LispToken {
 func sub(tokens ...LispTypes.LispToken) LispTypes.LispToken {
 	run := func(accumulator, newvalue float64) float64 { return accumulator - newvalue }
 	return aritm(run, tokens...)
+}
+
+func intpart(tokens ...LispTypes.LispToken) LispTypes.LispToken {
+
+	if value, ok := tokens[0].(LispTypes.Number); ok {
+		return LispTypes.ValueToNumber(float64(int(value.Contents)))
+	} else {
+		log.Fatalf("%s Not a Number.", tokens[0].ToString())
+	}
+
+	return LispTypes.ValueToNumber(float64(int(0)))
+
 }
 
 func maxnumber(tokens ...LispTypes.LispToken) LispTypes.LispToken {
@@ -156,7 +179,6 @@ func car(tokens ...LispTypes.LispToken) LispTypes.LispToken {
 		switch value := tokens[0].(type) {
 		case LispTypes.List:
 			return value.Contents[0]
-			break
 		}
 	}
 	return tokens[0]
@@ -167,7 +189,6 @@ func cdr(tokens ...LispTypes.LispToken) LispTypes.LispToken {
 		switch value := tokens[0].(type) {
 		case LispTypes.List:
 			return LispTypes.List{Contents: value.Contents[1:]}
-			break
 		}
 	}
 	return LispTypes.List{Contents: tokens[1:]}
@@ -178,6 +199,19 @@ func printLisp(tokens ...LispTypes.LispToken) LispTypes.LispToken {
 		fmt.Println(value.ValueToString())
 	}
 	return nil
+}
+
+func inputNumber(tokens ...LispTypes.LispToken) LispTypes.LispToken {
+
+	var f float64
+
+	_, err := fmt.Scanf("%f", &f)
+
+	if err != nil {
+		log.Fatal("Not a number input")
+	}
+
+	return LispTypes.Number{Contents: f}
 }
 
 func toList(tokens ...LispTypes.LispToken) LispTypes.LispToken {

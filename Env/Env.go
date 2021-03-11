@@ -7,17 +7,18 @@ import (
 
 type Env struct {
 	Contents map[string]LispTypes.LispToken
+	Using    bool
 }
 
 func InitStandardEnv() Env {
 	envmap := map[string]LispTypes.LispToken{
-		"pi": NumberFromConstant(math.Pi),
-		"e":  NumberFromConstant(math.E),
+		"pi":         NumberFromConstant(math.Pi),
+		"e":          NumberFromConstant(math.E),
+		"max_number": NumberFromConstant(math.MaxFloat64),
 	}
 	InitEnvNativeFunctions(envmap)
-	return Env{Contents: envmap}
+	return Env{Contents: envmap, Using: true}
 }
-
 
 func NumberFromConstant(number float64) LispTypes.Number {
 	return LispTypes.Number{Contents: number}
