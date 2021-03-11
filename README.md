@@ -11,17 +11,17 @@ I'm not saying that **Go** needs them, I like it's minimalism :) .
 
 # TODO
 - Strings
-- User defined functions
-- Quotation
+- User defined functions - DONE
+- Quotation - DONE
 - Better error messages
-- More native/out of the box functions and constants
+- More native/out of the box functions and constants - DONE
 - Remove unused "Methods"
-- Files
+- Files 
 - Comments 
-- Overall improve the interaction with the interpreter (REPL, File, ETC)
-- Improve Prints
+- Overall improve the interaction with the interpreter (REPL, File, ETC) - DONE
+- Improve Prints 
 - "Debug Mode"
-- Add some examples
+- Add some examples - DONE
 - Add concurrency (jk)
 
 (To be honest this looks more like a Shopping list)
