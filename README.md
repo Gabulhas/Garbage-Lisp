@@ -1,3 +1,7 @@
+![logo](https://i.imgur.com/KGKYp3F.png)
+
+
+
 # Garbage Lisp  
 Well it works but isn't good.
 
@@ -21,8 +25,10 @@ I'm not saying that **Go** needs them, I like it's minimalism :) .
 - Overall improve the interaction with the interpreter (REPL, File, ETC) - DONE
 - Improve Prints 
 - "Debug Mode"
-- Add some examples - DONE
-- Add concurrency (jk)
+- some examples - DONE
+- concurrency (jk)
+- Strings
+- IO
 
 (To be honest this looks more like a Shopping list)
 
@@ -31,12 +37,19 @@ I'm not saying that **Go** needs them, I like it's minimalism :) .
 1. Clone the Project Repo `git clone [url of this repo]`
 2. Run `go run main.go`
 
+
+# Options
+
+- `-f [FILENAME]` read program from file.
+- `-r` REPL.
+- `-i` read program from stdin.
+
 # Examples
 Check the [Examples](/tree/master/examples) folder.
-
-`test.gl` - simple define and print value.
-`listCount.l` - user defined function (lambda) that counts the number of elements equal to an atom.
-`42.gl` - big program with multiple user defined functions and input
+ 
+- `test.gl` - simple define and print value.
+- `listCount.l` - user defined function (lambda) that counts the number of elements equal to an atom.
+- `42.gl` - big program with multiple user defined functions and input
 
 
 

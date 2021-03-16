@@ -50,7 +50,6 @@ func textFromFile(filename string) string {
 		log.Fatal(err)
 	}
 
-	// Convert []byte to string and print to screen
 	text := string(content)
 	return text
 }
@@ -66,6 +65,7 @@ func REPL() {
 			continue
 		}
 		parsed := Parser.Parse(text)
+		fmt.Println(parsed)
 		result := myEval.Run(parsed)
 		if result != nil {
 			fmt.Println(prettyPrint(result))
