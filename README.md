@@ -15,17 +15,17 @@ I'm not saying that **Go** needs them, I like it's minimalism :) .
 
 # TODO
 - Strings
-- User defined functions - DONE
-- Quotation - DONE
-- Better error messages
-- More native/out of the box functions and constants - DONE
-- Remove unused "Methods"
+- ~~User defined functions (lambdas)~~
+- ~~Quotation ~~ 
+- ~~Better error messages~~
+- ~~More native/out of the box functions and constants~~
+- ~~Remove unused "Methods"~~
 - Files 
 - Comments 
-- Overall improve the interaction with the interpreter (REPL, File, ETC) - DONE
+- ~~Overall improve the interaction with the interpreter (REPL, File, ETC)~~
 - Improve Prints 
 - "Debug Mode"
-- some examples - DONE
+- ~~some examples~~
 - concurrency (jk)
 - Strings
 - IO
@@ -50,6 +50,7 @@ Check the [Examples](/tree/master/examples) folder.
 - `test.gl` - simple define and print value.
 - `listCount.l` - user defined function (lambda) that counts the number of elements equal to an atom.
 - `42.gl` - big program with multiple user defined functions and input
+
 
 
 

@@ -1,9 +1,7 @@
-(begin 
-    (define count (lambda (item L) 
+(define count (lambda (item L) 
 	(if (> (len L) 0)  
 	(+ (= item (car L)) 
 	(count item (cdr L))) 0
 
 	)))
-    (count 0 (list 0 1 2 34 0 0 0 2 0 ))
-)
+(print (count 0 (list 0 1 2 34 0 0 0 2 0 )))
