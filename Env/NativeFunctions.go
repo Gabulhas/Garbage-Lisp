@@ -6,42 +6,42 @@ import (
 	"log"
 )
 
-func InitEnvNativeFunctions(env map[string]LispTypes.LispToken) {
+func InitEnvNativeFunctions(env Env) {
 	//Arithmetic
-	env["*"] = ProcedureFromFunction(multiply)
-	env["+"] = ProcedureFromFunction(add)
-	env["-"] = ProcedureFromFunction(sub)
-	env["/"] = ProcedureFromFunction(divide)
-	env["%"] = ProcedureFromFunction(modulo)
+	env.AddProcedureFromFunction(multiply, "*")
+	env.AddProcedureFromFunction(add, "+")
+	env.AddProcedureFromFunction(sub, "-")
+	env.AddProcedureFromFunction(divide, "/")
+	env.AddProcedureFromFunction(modulo, "%")
 
-	env["max"] = ProcedureFromFunction(maxnumber)
-	env["min"] = ProcedureFromFunction(minnumber)
+	env.AddProcedureFromFunction(maxnumber, "max")
+	env.AddProcedureFromFunction(minnumber, "min")
 
-	env["intpart"] = ProcedureFromFunction(intpart)
+	env.AddProcedureFromFunction(intpart, "intpart")
 
 	//Other
-	env["begin"] = ProcedureFromFunction(begin)
-	env["print"] = ProcedureFromFunction(printLisp)
-	env["input_number"] = ProcedureFromFunction(inputNumber)
+	env.AddProcedureFromFunction(begin, "begin")
+	env.AddProcedureFromFunction(printLisp, "print")
+	env.AddProcedureFromFunction(inputNumber, "inputNumber")
 
 	//Lists
-	env["list"] = ProcedureFromFunction(toList)
-	env["car"] = ProcedureFromFunction(car)
-	env["cdr"] = ProcedureFromFunction(cdr)
-	env["cons"] = ProcedureFromFunction(cons)
-	env["len"] = ProcedureFromFunction(lisplen)
+	env.AddProcedureFromFunction(toList, "list")
+	env.AddProcedureFromFunction(car, "car")
+	env.AddProcedureFromFunction(cdr, "cons")
+	env.AddProcedureFromFunction(cons, "cons")
+	env.AddProcedureFromFunction(lisplen, "len")
 	//Logic
-	env[">"] = ProcedureFromFunction(gt)
-	env["<"] = ProcedureFromFunction(lt)
-	env[">="] = ProcedureFromFunction(ge)
-	env["<="] = ProcedureFromFunction(le)
-	env["="] = ProcedureFromFunction(eq)
+	env.AddProcedureFromFunction(gt, ">")
+	env.AddProcedureFromFunction(lt, "<")
+	env.AddProcedureFromFunction(ge, ">=")
+	env.AddProcedureFromFunction(le, "<=")
+	env.AddProcedureFromFunction(eq, "=")
 	//TypeChecks
-	env["list?"] = ProcedureFromFunction(is_list)
-	env["procedure?"] = ProcedureFromFunction(is_procedure)
-	env["symbol?"] = ProcedureFromFunction(is_symbol)
-	env["bool?"] = ProcedureFromFunction(is_bool)
-	env["number?"] = ProcedureFromFunction(is_number)
+	env.AddProcedureFromFunction(is_list, "list?")
+	env.AddProcedureFromFunction(is_procedure, "procedure?")
+	env.AddProcedureFromFunction(is_symbol, "symbol?")
+	env.AddProcedureFromFunction(is_bool, "bool?")
+	env.AddProcedureFromFunction(is_number, "number?")
 
 }
 
@@ -85,7 +85,7 @@ func cmp(run func(a, b float64) bool, tokens ...LispTypes.LispToken) LispTypes.L
 				lastNumber = value
 			}
 		} else {
-			log.Fatal("NonBoolean")
+			log.Fatalf("\n::ERROR:: %s not Boolean.", thisToken.ValueToString())
 		}
 	}
 	return LispTypes.LispBoolean{Contents: true}
@@ -118,7 +118,7 @@ func intpart(tokens ...LispTypes.LispToken) LispTypes.LispToken {
 	if value, ok := tokens[0].(LispTypes.Number); ok {
 		return LispTypes.ValueToNumber(float64(int(value.Contents)))
 	} else {
-		log.Fatalf("%s Not a Number.", tokens[0].ToString())
+		log.Fatalf("\n::ERROR::  %s Not a Number.", tokens[0].ToString())
 	}
 
 	return LispTypes.ValueToNumber(float64(int(0)))
@@ -164,7 +164,7 @@ func aritm(run func(accumulator, newvalue float64) float64, tokens ...LispTypes.
 				accumulator = run(accumulator, value)
 			}
 		} else {
-			log.Fatal("NonNumberProduct")
+			log.Fatalf("\n::ERROR:: Arithmetic error: %s not a number.", thisToken.ToString())
 		}
 	}
 	return LispTypes.ValueToNumber(accumulator)
@@ -208,7 +208,7 @@ func inputNumber(tokens ...LispTypes.LispToken) LispTypes.LispToken {
 	_, err := fmt.Scanf("%f", &f)
 
 	if err != nil {
-		log.Fatal("Not a number input")
+		log.Fatalf("\n::ERROR:: %s Not a number input", tokens[0].ValueToString())
 	}
 
 	return LispTypes.Number{Contents: f}
@@ -220,13 +220,13 @@ func toList(tokens ...LispTypes.LispToken) LispTypes.LispToken {
 
 func cons(tokens ...LispTypes.LispToken) LispTypes.LispToken {
 	if len(tokens) != 2 {
-		log.Fatal("Bad use of 'cons' function.")
+		log.Fatal("::ERROR:: Bad use of 'cons' function.")
 	}
 	if value, ok := tokens[1].(LispTypes.List); ok {
 		newListContent := append([]LispTypes.LispToken{tokens[0]}, value.Contents...)
 		return LispTypes.List{Contents: newListContent}
 	} else {
-		log.Fatal("Bad use of 'cons' function.")
+		log.Fatal("::ERROR:: Bad use of 'cons' function.")
 	}
 
 	return nil
@@ -259,7 +259,7 @@ func is_bool(tokens ...LispTypes.LispToken) LispTypes.LispToken {
 
 func typeCheck(typeToCheck LispTypes.InterfaceType, tokens ...LispTypes.LispToken) LispTypes.LispToken {
 	if len(tokens) != 1 {
-		log.Fatal("Bad number of arguments for type check")
+		log.Fatal("::ERROR:: Bad number of arguments for type check")
 	}
 
 	for _, token := range tokens {

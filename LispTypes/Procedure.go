@@ -8,6 +8,7 @@ import (
 type ProcedureFunction func(tokens ...LispToken) LispToken
 
 type Procedure struct {
+	Name          string
 	Native        bool
 	NativeContent ProcedureFunction
 	LambdaContent LispToken
@@ -19,7 +20,7 @@ func (procedure Procedure) GetType() InterfaceType {
 }
 
 func (procedure Procedure) ToString() string {
-	return fmt.Sprintf("%s %s", procedure.GetType().ToString(), procedure.LambdaContent.ToString())
+	return fmt.Sprintf("%s %s %s", procedure.GetType().ToString(), procedure.LambdaContent.ToString(), procedure.Name)
 }
 
 func (Procedure) InitLambda(arguments, lambdaContent LispToken) Procedure {
@@ -28,7 +29,7 @@ func (Procedure) InitLambda(arguments, lambdaContent LispToken) Procedure {
 
 	expContent, isExp := arguments.(Exp)
 	if !isExp {
-		log.Fatal("Lambda argument should be expression (arg1, arg2, ...)")
+		log.Fatal("::ERROR:: Lambda argument should be expression. (arg1, arg2, ...).")
 	}
 
 	if argumentList, isList := expContent.GetContent().(List); isList {
@@ -37,14 +38,15 @@ func (Procedure) InitLambda(arguments, lambdaContent LispToken) Procedure {
 			if value, ok := argument.(Symbol); ok {
 				argumentsAsString = append(argumentsAsString, value.GetContent())
 			} else {
-				log.Fatal("Lambda arguments can only be symbols")
+				log.Fatal("::ERROR:: Lambda arguments can only be symbols.")
 			}
 		}
 
 	} else {
-		log.Fatal("Lambda arguments should be in list (arg1, arg2, ...)")
+		log.Fatal("::ERROR:: Lambda arguments should be in list (arg1, arg2, ...).")
 	}
 	return Procedure{
+		Name:          "Anonymous",
 		Native:        false,
 		NativeContent: nil,
 		LambdaContent: lambdaContent,
@@ -60,7 +62,7 @@ func (procedure Procedure) Call(env map[string]LispToken, params ...LispToken) L
 		return procedure.NativeContent(params...)
 	} else {
 		if len(params) != len(procedure.Arguments) {
-			log.Fatalf("Procedure arguments unmatched: %d =/= %d", len(params), len(procedure.Arguments))
+			log.Fatalf("\n::ERROR:: Procedure [%s] arguments unmatched: %d =/= %d.", procedure.Name, len(params), len(procedure.Arguments))
 		}
 
 		for i, argName := range procedure.Arguments {
@@ -72,5 +74,5 @@ func (procedure Procedure) Call(env map[string]LispToken, params ...LispToken) L
 
 //TODO: something to print function names (?)
 func (procedure Procedure) ValueToString() string {
-	return fmt.Sprintf("FUNCTION")
+	return fmt.Sprintf("PROCEDURE %s", procedure.Name)
 }

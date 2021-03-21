@@ -14,9 +14,11 @@ import (
 	"os"
 )
 
+/*
 func init() {
 	log.SetFlags(log.LstdFlags | log.Lshortfile)
 }
+*/
 
 func main() {
 	repl := flag.Bool("r", false, "repl")
@@ -47,7 +49,7 @@ func main() {
 func textFromFile(filename string) string {
 	content, err := ioutil.ReadFile(filename)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("\n::ERROR::%s", err)
 	}
 
 	text := string(content)
@@ -65,7 +67,6 @@ func REPL() {
 			continue
 		}
 		parsed := Parser.Parse(text)
-		fmt.Println(parsed)
 		result := myEval.Run(parsed)
 		if result != nil {
 			fmt.Println(prettyPrint(result))

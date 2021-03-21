@@ -23,7 +23,7 @@ func (evaluator *Evaluator) Run(parsedTokens LispTypes.LispToken) LispTypes.Lisp
 	case LispTypes.Exp:
 		return evaluator.Run(value.GetContent())
 	}
-	log.Fatal("Error, unexpected type A")
+	log.Fatalf("\n::ERROR:: Unexpected Type: %s.", parsedTokens.ToString())
 	return nil
 }
 
@@ -32,17 +32,24 @@ func (evaluator *Evaluator) evalS_Expression(list LispTypes.List) LispTypes.Lisp
 	content := list.Contents
 	symbol, err := LispTypes.GetSymbolContent(content[0])
 	if err != nil {
-		log.Fatalf("%s :Expression Not Starting With Symbol", list.ToString())
+		log.Fatalf("\n::ERROR:: %s Expression Not Starting With Symbol", list.ToString())
 	}
 	// "Builtins"
 	//TODO: Change to swtich case
 	if strings.EqualFold(symbol, "define") {
 		newVariableName, err := LispTypes.GetSymbolContent(content[1])
 		if err != nil {
-			log.Fatal("Variable Name Not A Symbol")
+			log.Fatalf("\n::ERROR:: %s Not A Symbol.", content[1])
+		}
+		evaluatedDefine := evaluator.Run(content[len(content)-1])
+		if value, ok := evaluatedDefine.(LispTypes.Procedure); ok {
+			temp := value
+			temp.Name = newVariableName
+			evaluator.Define(newVariableName, temp)
+			return nil
 		}
 
-		evaluator.Define(newVariableName, evaluator.Run(content[len(content)-1]))
+		evaluator.Define(newVariableName, evaluatedDefine)
 		return nil
 	} else if strings.EqualFold(symbol, "if") {
 		if len(content) != 4 {
@@ -83,7 +90,7 @@ func (evaluator *Evaluator) evalS_Expression(list LispTypes.List) LispTypes.Lisp
 
 	} else if strings.EqualFold(symbol, "lambda") {
 		if len(content) != 3 {
-			log.Fatal("Lambda requires 2 elements, lambda (arguments) (body)")
+			log.Fatal("::ERROR:: Lambda requires 2 expressions: lambda (arguments) (body)")
 		}
 		return LispTypes.Procedure.InitLambda(LispTypes.Procedure{}, content[1], content[2])
 
@@ -115,11 +122,11 @@ func (evaluator *Evaluator) evalS_Expression(list LispTypes.List) LispTypes.Lisp
 	} else if strings.EqualFold(symbol, "set!") {
 		newVariableName, err := LispTypes.GetSymbolContent(content[1])
 		if err != nil {
-			log.Fatal("Variable Name Not A Symbol")
+			log.Fatalf("\n::ERROR:: %s Not a Symbol.", content[1])
 		}
 		env, exists := evaluator.FindEnv(newVariableName)
 		if !exists {
-			log.Fatal("Cannot !set an non-existing symbol")
+			log.Fatal("::ERROR:: Cannot !set a non-existing symbol")
 		}
 		env.Contents[newVariableName] = evaluator.Run(content[len(content)-1])
 		return nil
@@ -149,16 +156,10 @@ func (evaluator *Evaluator) evalS_Expression(list LispTypes.List) LispTypes.Lisp
 				return newEvaluator.Run(lambdaBody)
 			}
 		default:
-			log.Fatalf("%s: Not a procedure", symbol)
+			log.Fatalf("\n::ERROR:: %s: Not a procedure.", symbol)
 
 		}
 		return nil
 
 	}
-
-	log.Println(evaluator.currentEnv.Contents)
-	log.Printf("\n\n\nFailed SExpression")
-	log.Printf("%s", list.ToString())
-	log.Fatal("Error, unexpected type")
-	return nil
 }

@@ -51,7 +51,7 @@ func tokenize(program string) []string {
 func (parser *Parser) readFromTokens() LispTypes.LispToken {
 
 	if len(parser.preTokens) == 0 {
-		log.Fatal("Unexpected EOF")
+		log.Fatal("::ERROR:: Unexpected EOF.")
 	}
 	token := parser.preTokens[0]
 	parser.preTokens = parser.preTokens[1:]
@@ -68,7 +68,7 @@ func (parser *Parser) readFromTokens() LispTypes.LispToken {
 		return L
 
 	} else if token == ")" {
-		log.Fatal("Unexpected )")
+		log.Fatal("::ERROR:: Unexpected )")
 	} else {
 		if value, err := strconv.ParseFloat(token, 32); err == nil {
 			return LispTypes.Number{Contents: value}
@@ -79,7 +79,6 @@ func (parser *Parser) readFromTokens() LispTypes.LispToken {
 		} else {
 			return LispTypes.Symbol{Contents: token}
 		}
-		return LispTypes.Symbol{Contents: token}
 	}
 	return atom(token)
 }

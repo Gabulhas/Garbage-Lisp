@@ -16,16 +16,18 @@ func InitStandardEnv() Env {
 		"e":          NumberFromConstant(math.E),
 		"max_number": NumberFromConstant(math.MaxFloat64),
 	}
-	InitEnvNativeFunctions(envmap)
-	return Env{Contents: envmap, Using: true}
+	newEnv := Env{Contents: envmap, Using: true}
+	InitEnvNativeFunctions(newEnv)
+	return newEnv
 }
 
 func NumberFromConstant(number float64) LispTypes.Number {
 	return LispTypes.Number{Contents: number}
 }
 
-func ProcedureFromFunction(procedureFunction LispTypes.ProcedureFunction) LispTypes.Procedure {
-	return LispTypes.Procedure{
+func (env Env) AddProcedureFromFunction(procedureFunction LispTypes.ProcedureFunction, name string) {
+	env.Contents[name] = LispTypes.Procedure{
+		Name:          name,
 		Native:        true,
 		NativeContent: procedureFunction,
 		LambdaContent: nil,
