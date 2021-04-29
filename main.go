@@ -26,12 +26,7 @@ func main() {
 	fileName := flag.String("f", "", "filename")
 	flag.Parse()
 
-	if !*repl && !*input && *fileName == "" {
-		flag.PrintDefaults()
-		os.Exit(1)
-	}
-
-	if *repl {
+	if *repl || (!*input && *fileName == "") {
 		fmt.Println("Welcome to GarbageLisp REPL")
 		REPL()
 	} else if *input {
@@ -61,7 +56,7 @@ func REPL() {
 	reader := bufio.NewReader(os.Stdin)
 	myEval := Evaluator.NewEval()
 	for true {
-		fmt.Print("GarbageLisp>")
+		fmt.Print("GL>")
 		text, _ := reader.ReadString('\n')
 		if text == "\n" {
 			continue
