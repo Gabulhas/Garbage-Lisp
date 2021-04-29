@@ -45,14 +45,11 @@ func GetSymbolContent(token LispToken) (string, error) {
 	switch result := token.(type) {
 	case Symbol:
 		return result.GetContent(), nil
-		break
 	case Atom:
 		return GetSymbolContent(result)
-		break
 	default:
 		return "", errors.New("WrongType")
 	}
-	return "", errors.New("WrongType")
 }
 
 func GetProcedureCall(token LispToken) (func(env map[string]LispToken, params ...LispToken) LispToken, error) {

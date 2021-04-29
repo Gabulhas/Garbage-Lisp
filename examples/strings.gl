@@ -1,0 +1,20 @@
+( define concat (lambda (a b)
+		 (
+		 toString 
+		 (
+		 ++
+		 (toCharList a)
+		 (toCharList b)
+		 )
+		 )
+
+		)
+)
+
+(define concatList (lambda (list)
+ 
+
+)
+)
+
+(print (concat "hey" "hyo"))

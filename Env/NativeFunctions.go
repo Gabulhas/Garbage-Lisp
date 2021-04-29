@@ -23,25 +23,35 @@ func InitEnvNativeFunctions(env Env) {
 	env.AddProcedureFromFunction(begin, "begin")
 	env.AddProcedureFromFunction(printLisp, "print")
 	env.AddProcedureFromFunction(inputNumber, "inputNumber")
+	env.AddProcedureFromFunction(inputString, "inputString")
+	env.AddProcedureFromFunction(inputString, "readline")
 
 	//Lists
 	env.AddProcedureFromFunction(toList, "list")
 	env.AddProcedureFromFunction(car, "car")
-	env.AddProcedureFromFunction(cdr, "cons")
+	env.AddProcedureFromFunction(cdr, "cdr")
 	env.AddProcedureFromFunction(cons, "cons")
 	env.AddProcedureFromFunction(lisplen, "len")
+	env.AddProcedureFromFunction(concatLists, "++")
+
 	//Logic
 	env.AddProcedureFromFunction(gt, ">")
 	env.AddProcedureFromFunction(lt, "<")
 	env.AddProcedureFromFunction(ge, ">=")
 	env.AddProcedureFromFunction(le, "<=")
 	env.AddProcedureFromFunction(eq, "=")
+
 	//TypeChecks
 	env.AddProcedureFromFunction(is_list, "list?")
 	env.AddProcedureFromFunction(is_procedure, "procedure?")
 	env.AddProcedureFromFunction(is_symbol, "symbol?")
 	env.AddProcedureFromFunction(is_bool, "bool?")
 	env.AddProcedureFromFunction(is_number, "number?")
+	env.AddProcedureFromFunction(is_string, "number?")
+
+	//Strings
+	env.AddProcedureFromFunction(charList, "toCharList")
+	env.AddProcedureFromFunction(toString, "toString")
 
 }
 
@@ -214,8 +224,37 @@ func inputNumber(tokens ...LispTypes.LispToken) LispTypes.LispToken {
 	return LispTypes.Number{Contents: f}
 }
 
+func inputString(tokens ...LispTypes.LispToken) LispTypes.LispToken {
+
+	var s string
+
+	_, err := fmt.Scanf("%s", &s)
+
+	if err != nil {
+		log.Fatalf("\n::ERROR:: %s Not a string input", tokens[0].ValueToString())
+	}
+
+	return LispTypes.LispString{Contents: s}
+}
+
 func toList(tokens ...LispTypes.LispToken) LispTypes.LispToken {
 	return LispTypes.List{Contents: tokens}
+}
+
+func concatLists(tokens ...LispTypes.LispToken) LispTypes.LispToken {
+	var result []LispTypes.LispToken
+	for _, element := range tokens {
+		switch value := element.(type) {
+		case LispTypes.List:
+			result = append(result, value.Contents...)
+			break
+		default:
+			log.Fatalf("\n::ERROR:: %s Not a list.", element.ValueToString())
+			break
+
+		}
+	}
+	return LispTypes.List{Contents: result}
 }
 
 func cons(tokens ...LispTypes.LispToken) LispTypes.LispToken {
@@ -257,6 +296,10 @@ func is_bool(tokens ...LispTypes.LispToken) LispTypes.LispToken {
 	return typeCheck(LispTypes.BOOLEAN, tokens...)
 }
 
+func is_string(tokens ...LispTypes.LispToken) LispTypes.LispToken {
+	return typeCheck(LispTypes.STRING, tokens...)
+}
+
 func typeCheck(typeToCheck LispTypes.InterfaceType, tokens ...LispTypes.LispToken) LispTypes.LispToken {
 	if len(tokens) != 1 {
 		log.Fatal("::ERROR:: Bad number of arguments for type check")
@@ -268,4 +311,40 @@ func typeCheck(typeToCheck LispTypes.InterfaceType, tokens ...LispTypes.LispToke
 		}
 	}
 	return LispTypes.LispBoolean{Contents: true}
+}
+
+func charList(tokens ...LispTypes.LispToken) LispTypes.LispToken {
+	if len(tokens) != 1 {
+		log.Fatal("::ERROR:: Bad use of 'char_list' function.")
+	}
+
+	if tokens[0].GetType() != LispTypes.STRING {
+		log.Fatal("::ERROR:: Bad use of 'char_list' function.")
+	}
+	if value, ok := tokens[0].(LispTypes.LispString); ok {
+		var char_list_temp []LispTypes.LispToken
+		for _, char_element := range value.GetContent() {
+			char_list_temp = append(char_list_temp, LispTypes.LispString{Contents: string(char_element)})
+		}
+		return toList(char_list_temp...)
+
+	} else {
+		log.Fatal("::ERROR:: Bad use of 'char_list' function.")
+	}
+	return nil
+}
+
+func toString(tokens ...LispTypes.LispToken) LispTypes.LispToken {
+	if len(tokens) != 1 {
+		log.Fatal("::ERROR:: Bad use of 'toString' function.")
+	}
+	switch value := tokens[0].(type) {
+	case LispTypes.List:
+		result := ""
+		for _, element := range value.GetContent() {
+			result = result + element.ValueToString()
+		}
+		return LispTypes.LispString{Contents: result}
+	}
+	return LispTypes.LispString{Contents: tokens[0].ValueToString()}
 }

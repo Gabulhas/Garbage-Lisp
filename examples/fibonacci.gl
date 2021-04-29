@@ -1,27 +1,27 @@
 (define fib (lambda (a b endvalue) (
-	if (> b endvalue) a
-	(fib b (+ a b) endvalue)
+				    if (> b endvalue) a
+				    (fib b (+ a b) endvalue)
 
-)
-)
-)
-
-(define range (lambda (a b)
-	       (
-		    if (= a b)
-		    (quote ())
-		    (cons a (range ( + a 1 ) b))
-	       )
+				   )
 	    )
 )
 
+    (define range (lambda (a b)
+		   (
+		    if (= a b)
+		    (quote ())
+		    (cons a (range ( + a 1 ) b))
+		   )
+		  )
+    )
 
 
 
-(define get_fib (lambda (valor)
-    (print (fib 0 1 valor))
 
-))
+    (define get_fib (lambda (valor)
+		     (print (fib 0 1 valor))
+
+		    ))
 
 
 

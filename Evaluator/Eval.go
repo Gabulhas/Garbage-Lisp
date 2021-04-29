@@ -116,7 +116,7 @@ func (evaluator *Evaluator) evalS_Expression(list LispTypes.List) LispTypes.Lisp
 			evaluator.Run(exp)
 		}
 		return nil
-	} else if strings.EqualFold(symbol, "quote") {
+	} else if strings.EqualFold(symbol, "'") {
 		unpacked := LispTypes.Unpack(content[1])
 		newList := LispTypes.List{Contents: unpacked}
 		return newList
