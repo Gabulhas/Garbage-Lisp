@@ -11,10 +11,15 @@
 		)
 )
 
-(define concatList (lambda (list)
- 
+(define concatList (lambda (my_list)
+    (toString (++ (map toString my_list)))
+    )
+)
 
-)
-)
 
 (print (concat "hey" "hyo"))
+(print "----------------------")
+(print (concatList (list "Hey" " " "This Is" "\n" "A" "\n" "TEST")))
+(print "----------------------")
+(print )
+
