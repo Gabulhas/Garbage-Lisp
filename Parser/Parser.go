@@ -2,14 +2,15 @@ package Parser
 
 import (
 	"GarbageLisp/LispTypes"
+	"fmt"
 	"log"
 	"regexp"
 	"strconv"
 	"strings"
 )
 
-var lparenRegex = regexp.MustCompile(`\(`)
-var rparenRegex = regexp.MustCompile(`\)`)
+//Not my REGEX, check MAL lisp Implementation
+var parserRegex = regexp.MustCompile(`[\s,]*(~@|[\[\]{}()'\x60~^@]|"(?:\\.|[^\\"])*"?|;.*|[^\s\[\]{}('"\x60,;)]*)`)
 
 type Parser struct {
 	preTokens []string
@@ -18,6 +19,13 @@ type Parser struct {
 func NewParser(program string) *Parser {
 	newParser := new(Parser)
 	newParser.preTokens = tokenize(program)
+	//TODO: Remove
+	/*
+		fmt.Printf("Tokens:")
+		for _, token := range newParser.preTokens {
+			fmt.Printf("|%s", token)
+		}
+	*/
 	return newParser
 }
 
@@ -41,10 +49,13 @@ func Parse(program string) LispTypes.LispToken {
 }
 
 func tokenize(program string) []string {
-	trimmed := strings.TrimRight(program, "\n")
-	a := lparenRegex.ReplaceAllString(trimmed, " ( ")
-	b := rparenRegex.ReplaceAllString(a, " ) ")
-	return strings.Fields(b)
+	splittedTokens := parserRegex.FindAllStringSubmatch(strings.TrimRight(program, "\n"), -1)
+	var uniqueSplittedTokens []string
+	for i := range splittedTokens {
+		uniqueSplittedTokens = append(uniqueSplittedTokens, strings.TrimSpace(splittedTokens[i][0]))
+	}
+
+	return uniqueSplittedTokens
 
 }
 
@@ -70,7 +81,15 @@ func (parser *Parser) readFromTokens() LispTypes.LispToken {
 	} else if token == ")" {
 		log.Fatal("::ERROR:: Unexpected )")
 	} else {
-		if value, err := strconv.ParseFloat(token, 32); err == nil {
+
+		if strings.HasSuffix(token, "\"") && strings.HasPrefix(token, "\"") {
+			result, err := strconv.Unquote(token)
+			if err != nil {
+				fmt.Println(err)
+				return LispTypes.LispString{Contents: token}
+			}
+			return LispTypes.LispString{Contents: result}
+		} else if value, err := strconv.ParseFloat(token, 32); err == nil {
 			return LispTypes.Number{Contents: value}
 		} else if token == "true" {
 			return LispTypes.LispBoolean{Contents: true}

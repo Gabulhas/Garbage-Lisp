@@ -14,11 +14,9 @@ import (
 	"os"
 )
 
-/*
 func init() {
 	log.SetFlags(log.LstdFlags | log.Lshortfile)
 }
-*/
 
 func main() {
 	repl := flag.Bool("r", false, "repl")
@@ -27,7 +25,7 @@ func main() {
 	flag.Parse()
 
 	if *repl || (!*input && *fileName == "") {
-		fmt.Println("Welcome to GarbageLisp REPL")
+		fmt.Println("Welcome to GarbageLisp REPL.")
 		REPL()
 	} else if *input {
 		pipeline(textFromFile(os.Stdin.Name()))

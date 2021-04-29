@@ -14,6 +14,8 @@ func (evaluator *Evaluator) Run(parsedTokens LispTypes.LispToken) LispTypes.Lisp
 
 	case LispTypes.Symbol:
 		return evaluator.FindValue(value.Contents)
+	case LispTypes.LispString:
+		return parsedTokens
 	case LispTypes.Number:
 		return parsedTokens
 	case LispTypes.List:
