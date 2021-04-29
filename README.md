@@ -48,8 +48,8 @@ Check the [Examples](/tree/master/examples) folder.
  
 - `test.gl` - simple define and print value.
 - `listCount.l` - user defined function (lambda) that counts the number of elements equal to an atom.
-- `42.gl` - big program with multiple user defined functions and input
-
+- `42.gl` - big program with multiple user defined functions and input.
+- `strings.gl` - some basic string functions.
 
 
 
