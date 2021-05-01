@@ -19,13 +19,6 @@ type Parser struct {
 func NewParser(program string) *Parser {
 	newParser := new(Parser)
 	newParser.preTokens = tokenize(program)
-	//TODO: Remove
-	/*
-		fmt.Printf("Tokens:")
-		for _, token := range newParser.preTokens {
-			fmt.Printf("|%s", token)
-		}
-	*/
 	return newParser
 }
 

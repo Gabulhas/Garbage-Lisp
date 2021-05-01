@@ -21,7 +21,7 @@ I'm not saying that **Go** needs them, I like it's minimalism :) .
 - ~~Remove unused "Methods"~~
 - ~~Overall improve the interaction with the interpreter (REPL, File, ETC)~~
 - ~~some examples~~
-- Strings
+- ~~Strings~~ (Only 2 basic functions to make it possible manipulate strings from chars)
 - Files 
 - Comments 
 - Improve Prints 

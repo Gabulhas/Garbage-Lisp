@@ -11,15 +11,100 @@
 		)
 )
 
+(print "-----Concat two strings------")
+(print (concat "hey" "hyo"))
+
+
 (define concatList (lambda (my_list)
     (toString (++ (map toString my_list)))
     )
 )
 
 
-(print (concat "hey" "hyo"))
-(print "----------------------")
+(print "-----Concat list of strings-----")
 (print (concatList (list "Hey" " " "This Is" "\n" "A" "\n" "TEST")))
-(print "----------------------")
-(print )
+
+
+(define get_index (lambda (my_string search)
+      (aux_get_index (toCharList my_string) search 0)
+)
+)
+
+(define aux_get_index (lambda (char_list char index)
+			(if (= 0 (len char_list))
+
+			    -1
+			(if (equals? (car char_list) char)
+			    index
+			    (aux_get_index (cdr char_list) char ( + index 1))
+			)
+
+			)
+			
+  )
+)
+
+(print "--Get index of first occurence-------")
+(print (get_index "whatsup" "a"))
+
+(define  replace_char (lambda (my_string old new)
+    (toString (replace_char_aux (toCharList my_string) old new))
+    )
+)
+
+(define replace_char_aux (lambda (char_list old new)
+	(if ( = 0 (len char_list))
+	    (list )
+	    (cons ( if (equals? (car char_list) old)
+		  new 
+		    (car char_list)
+		   ) (replace_char_aux (cdr char_list) old new))
+	)
+    )
+)
+
+
+(print "-- Replace all Old Characters with New Character-------")
+(print (replace_char "bananana" "a" "e"))
+
+
+(define get_at (lambda (my_string index)
+    (get_at_aux (toCharList my_string) index current)
+))
+
+(define get_at_aux (lambda (char_list index current)
+    (if (= 0 (len char_list))
+	-1
+	(if (= index current)
+	    (car char_list)
+	    (get_at_aux (cdr char_list) index (+ 1 current))
+	)
+    )
+
+))
+
+(print "---- Get the char at an index-----")
+(print (get_at "potato" 3))
+
+
+(define user_input_replace (lambda () 
+   (begin
+	(print "----- User Input------")
+	(print "Input a String:")
+	(define user_string_input (inputString))
+
+	(print "Input the char to replace:")
+	(define old_char (inputString))
+
+	(print "Input the char to replace with:")
+	(define new_char (inputString))
+
+	(print (replace_char user_string_input old_char new_char))
+     ) 
+))
+
+(user_input_replace)
+
+
+
 

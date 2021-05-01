@@ -80,7 +80,7 @@ func pipeline(program string) {
 func prettyPrint(token LispTypes.LispToken) string {
 
 	if token != nil {
-		return token.ToString()
+		return token.ValueToString()
 	}
 	return ""
 }

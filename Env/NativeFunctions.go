@@ -48,6 +48,7 @@ func InitEnvNativeFunctions(env Env) {
 	env.AddProcedureFromFunction(is_bool, "bool?")
 	env.AddProcedureFromFunction(is_number, "number?")
 	env.AddProcedureFromFunction(is_string, "number?")
+	env.AddProcedureFromFunction(is_equals, "equals?")
 
 	//Strings
 	env.AddProcedureFromFunction(charList, "toCharList")
@@ -300,6 +301,19 @@ func is_string(tokens ...LispTypes.LispToken) LispTypes.LispToken {
 	return typeCheck(LispTypes.STRING, tokens...)
 }
 
+func is_equals(tokens ...LispTypes.LispToken) LispTypes.LispToken {
+	if len(tokens) < 2 {
+		return LispTypes.LispBoolean{Contents: false}
+	}
+
+	for _, element := range tokens[1:] {
+		if element != tokens[0] {
+			return LispTypes.LispBoolean{Contents: false}
+		}
+	}
+	return LispTypes.LispBoolean{Contents: true}
+}
+
 func typeCheck(typeToCheck LispTypes.InterfaceType, tokens ...LispTypes.LispToken) LispTypes.LispToken {
 	if len(tokens) != 1 {
 		log.Fatal("::ERROR:: Bad number of arguments for type check")
@@ -315,11 +329,11 @@ func typeCheck(typeToCheck LispTypes.InterfaceType, tokens ...LispTypes.LispToke
 
 func charList(tokens ...LispTypes.LispToken) LispTypes.LispToken {
 	if len(tokens) != 1 {
-		log.Fatal("::ERROR:: Bad use of 'char_list' function.")
+		log.Fatal("::ERROR:: Bad use of 'toCharList' function. Not enough arguments.")
 	}
 
 	if tokens[0].GetType() != LispTypes.STRING {
-		log.Fatal("::ERROR:: Bad use of 'char_list' function.")
+		log.Fatalf("\n::ERROR:: Bad use of 'toCharList' function. %s not String.\n", tokens[0].ToString())
 	}
 	if value, ok := tokens[0].(LispTypes.LispString); ok {
 		var char_list_temp []LispTypes.LispToken
@@ -329,7 +343,7 @@ func charList(tokens ...LispTypes.LispToken) LispTypes.LispToken {
 		return toList(char_list_temp...)
 
 	} else {
-		log.Fatal("::ERROR:: Bad use of 'char_list' function.")
+		log.Fatal("::ERROR:: Bad use of 'toCharList' function.")
 	}
 	return nil
 }
