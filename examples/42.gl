@@ -57,7 +57,7 @@
     ))
 
     (print (quote (VALOR_DE_ENTRADA)))
-(define entrada (input_number))
+(define entrada (inputNumber))
 
 (define result (calculate entrada 0 max_int 0))
 

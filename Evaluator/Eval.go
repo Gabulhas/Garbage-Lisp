@@ -30,7 +30,7 @@ func (evaluator *Evaluator) Run(parsedTokens LispTypes.LispToken) LispTypes.Lisp
 }
 
 func (evaluator *Evaluator) evalS_Expression(list LispTypes.List) LispTypes.LispToken {
-	//log.Println(list.ToString())
+	//log.Println(list.GetContent()[0].ToString())
 	content := list.Contents
 	symbol, err := LispTypes.GetSymbolContent(content[0])
 	if err != nil {
@@ -116,10 +116,22 @@ func (evaluator *Evaluator) evalS_Expression(list LispTypes.List) LispTypes.Lisp
 			evaluator.Run(exp)
 		}
 		return nil
-	} else if strings.EqualFold(symbol, "'") {
-		unpacked := LispTypes.Unpack(content[1])
-		newList := LispTypes.List{Contents: unpacked}
-		return newList
+	} else if strings.EqualFold(symbol, "quote") {
+		//unpacked := LispTypes.Unpack(content[1])
+		//newList := LispTypes.List{Contents: unpacked}
+		if value, ok := content[1].(LispTypes.Exp); ok {
+			return value.Contents
+
+		} else {
+			return content[1]
+		}
+
+	} else if strings.EqualFold(symbol, "eval") {
+
+		log.Printf("\nEvaluating %s", content[1].ToString())
+		temp := evaluator.Run(content[1])
+		log.Printf("TEMP %s", temp.ToString())
+		return temp
 
 	} else if strings.EqualFold(symbol, "set!") {
 		newVariableName, err := LispTypes.GetSymbolContent(content[1])
@@ -128,7 +140,7 @@ func (evaluator *Evaluator) evalS_Expression(list LispTypes.List) LispTypes.Lisp
 		}
 		env, exists := evaluator.FindEnv(newVariableName)
 		if !exists {
-			log.Fatal("::ERROR:: Cannot !set a non-existing symbol")
+			log.Fatal("::ERROR:: Cannot set! a non-existing symbol")
 		}
 		env.Contents[newVariableName] = evaluator.Run(content[len(content)-1])
 		return nil

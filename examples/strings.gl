@@ -1,13 +1,5 @@
 ( define concat (lambda (a b)
-		 (
-		 toString 
-		 (
-		 ++
-		 (toCharList a)
-		 (toCharList b)
-		 )
-		 )
-
+		 (toString  (++(toCharList a) (toCharList b)))
 		)
 )
 
@@ -104,7 +96,4 @@
 ))
 
 (user_input_replace)
-
-
-
 

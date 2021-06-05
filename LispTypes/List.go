@@ -34,7 +34,7 @@ func (list List) Append(token LispToken) List {
 	return newList
 }
 
-func (list List) ValueToString()  string {
+func (list List) ValueToString() string {
 	var b strings.Builder
 	for i, p := range list.Contents {
 		fmt.Fprintf(&b, "[%s]", p.ValueToString())

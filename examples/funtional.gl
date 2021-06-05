@@ -1,0 +1,10 @@
+(define batata (lambda (a)
+
+    (a 4)
+))
+
+
+(define cebola (lambda (a) (print a)))
+
+
+(batata cebola)
