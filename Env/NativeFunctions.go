@@ -17,14 +17,16 @@ func InitEnvNativeFunctions(env Env) {
 	env.AddProcedureFromFunction(maxnumber, "max")
 	env.AddProcedureFromFunction(minnumber, "min")
 
-	env.AddProcedureFromFunction(intpart, "intpart")
+	env.AddProcedureFromFunction(intpart, "intPart")
 
 	//Other
 	env.AddProcedureFromFunction(begin, "begin")
 	env.AddProcedureFromFunction(printLisp, "print")
+	env.AddProcedureFromFunction(printf, "printf")
 	env.AddProcedureFromFunction(inputNumber, "inputNumber")
 	env.AddProcedureFromFunction(inputString, "inputString")
-	env.AddProcedureFromFunction(inputString, "readline")
+	env.AddProcedureFromFunction(inputString, "readLine")
+	env.AddProcedureFromFunction(toSymbol, "toSymbol")
 
 	//Lists
 	env.AddProcedureFromFunction(toList, "list")
@@ -215,6 +217,18 @@ func printLisp(tokens ...LispTypes.LispToken) LispTypes.LispToken {
 	}
 	return nil
 }
+func printfLisp(tokens ...LispTypes.LispToken) LispTypes.LispToken {
+	//template := tokens[1].ToString()
+	for _, value := range tokens {
+		if value == nil {
+			fmt.Println("nil")
+		} else {
+			fmt.Println(value.ValueToString())
+		}
+	}
+	return nil
+
+}
 
 func inputNumber(tokens ...LispTypes.LispToken) LispTypes.LispToken {
 
@@ -365,4 +379,19 @@ func toString(tokens ...LispTypes.LispToken) LispTypes.LispToken {
 		return LispTypes.LispString{Contents: result}
 	}
 	return LispTypes.LispString{Contents: tokens[0].ValueToString()}
+}
+
+func toSymbol(tokens ...LispTypes.LispToken) LispTypes.LispToken {
+	if len(tokens) != 1 {
+		log.Fatal("::ERROR:: Bad use of 'toString' function. Can only Transform Strings to Symbol.")
+	}
+	if value, ok := tokens[0].(LispTypes.LispString); ok {
+
+		return LispTypes.Symbol{Contents: value.GetContent()}
+
+	} else {
+		log.Fatal("::ERROR:: Bad use of 'toString' function. Can only Transform Strings to Symbol.")
+	}
+	return nil
+
 }

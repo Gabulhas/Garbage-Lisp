@@ -1,0 +1,14 @@
+(define my_thing (
+    quote (func 4)
+))
+
+(begin 
+    (print "Which function do you wish to use?")
+    (define funcName (toSymbol (inputString)))
+    ( eval
+	(cons funcName (cdr my_thing))
+		
+    )
+)
+
+

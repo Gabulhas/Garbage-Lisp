@@ -23,6 +23,7 @@ I'm not saying that **Go** needs them, I like it's minimalism :) .
 - [x] Strings
 - [x] IO
 - [x] Fix Eval
+- [x] Metaprogramming (quote and eval)
 - [ ] Comments 
 - [ ] Import other files
 - [ ] Files 
@@ -30,7 +31,6 @@ I'm not saying that **Go** needs them, I like it's minimalism :) .
 - [ ] "Debug Mode"
 - [ ] concurrency (jk)
 - [ ] Use Linked Lists instead of Go Slices
-
 (To be honest this looks more like a Shopping list)
 
 
@@ -45,12 +45,14 @@ I'm not saying that **Go** needs them, I like it's minimalism :) .
 - `-r` REPL.
 - `-i` read program from stdin.
 
-# Examples
+# Example
 Check the [Examples](/tree/master/examples) folder.
-- `test.gl`     - simple define and print value.
-- `listCount.gl`- user defined function (lambda) that counts the number of elements equal to an atom.
-- `42.gl`       - big program with multiple user defined functions and input.
-- `strings.gl`  - some basic string functions.
+- `42.gl`       - Big program with multiple user defined functions and input.
+- `functional.gl` - Passing a function as parameter/functions as first-class citizens.
+- `listCount.gl`- User defined function (lambda) that counts the number of elements equal to an atom.
+- `metaprogramming_sortof.gl` - Sort of Metaprogramming. Using Quote and Evaluating Lists as S-expressions.
+- `strings.gl`  - Some basic string functions.
+- `test.gl`     - Simple define and print value.
 
 # Project Structure
 - Env       - Environment Logic, like variables in the scope and native functions.

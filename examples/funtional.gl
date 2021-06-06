@@ -1,10 +1,10 @@
-(define batata (lambda (a)
+(define functionA (lambda (a)
 
     (a 4)
 ))
 
 
-(define cebola (lambda (a) (print a)))
+(define functionB (lambda (a) (print a)))
 
 
-(batata cebola)
+(functionA functionB)

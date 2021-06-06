@@ -11,6 +11,7 @@ type Env struct {
 }
 
 func InitStandardEnv() Env {
+	//TODO: Move different file
 	envmap := map[string]LispTypes.LispToken{
 		"pi":         NumberFromConstant(math.Pi),
 		"e":          NumberFromConstant(math.E),

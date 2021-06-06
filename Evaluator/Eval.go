@@ -39,10 +39,24 @@ func (evaluator *Evaluator) evalS_Expression(list LispTypes.List) LispTypes.Lisp
 	// "Builtins"
 	//TODO: Change to swtich case
 	if strings.EqualFold(symbol, "define") {
-		newVariableName, err := LispTypes.GetSymbolContent(content[1])
-		if err != nil {
-			log.Fatalf("\n::ERROR:: %s Not A Symbol.", content[1])
+
+		var newVariableName string
+
+		//TODO: Change this garbage
+		if content[1].GetType() == LispTypes.STRING || content[1].GetType() == LispTypes.SYMBOL {
+			newVariableName = content[1].ValueToString()
+		} else if content[1].GetType() == LispTypes.LIST || content[1].GetType() == LispTypes.EXP {
+			resultingSymbol := evaluator.Run(LispTypes.UnpackFromExp(content[1]))
+			if resultingSymbol.GetType() == LispTypes.STRING || resultingSymbol.GetType() == LispTypes.SYMBOL {
+				newVariableName = resultingSymbol.ValueToString()
+			} else {
+				log.Fatalf("\n::ERROR:: %s Not A Symbol.", content[1])
+			}
+
+		} else {
+			log.Fatalf("\n::ERROR:: %s Not A Symbol.", content[1].ToString())
 		}
+
 		evaluatedDefine := evaluator.Run(content[len(content)-1])
 		if value, ok := evaluatedDefine.(LispTypes.Procedure); ok {
 			temp := value
@@ -128,7 +142,6 @@ func (evaluator *Evaluator) evalS_Expression(list LispTypes.List) LispTypes.Lisp
 
 	} else if strings.EqualFold(symbol, "eval") {
 
-		log.Printf("\nEvaluating %s", content[1].ToString())
 		if value, ok := LispTypes.UnpackFromExp(content[1]).(LispTypes.List); ok {
 
 			eager_evaluation := evaluator.Run(value)
