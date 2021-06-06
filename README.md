@@ -1,7 +1,6 @@
 ![logo](https://i.imgur.com/KGKYp3F.png)
 
 
-
 # Garbage Lisp  
 Well it works but isn't good.
 
@@ -23,12 +22,14 @@ I'm not saying that **Go** needs them, I like it's minimalism :) .
 - [x] some examples
 - [x] Strings
 - [x] IO
-- [ ] Fix Eval
-- [ ] Files 
+- [x] Fix Eval
 - [ ] Comments 
+- [ ] Import other files
+- [ ] Files 
 - [ ] Improve Prints 
 - [ ] "Debug Mode"
 - [ ] concurrency (jk)
+- [ ] Use Linked Lists instead of Go Slices
 
 (To be honest this looks more like a Shopping list)
 

@@ -17,3 +17,13 @@ func Unpack(token LispToken) []LispToken {
 		return []LispToken{token}
 	}
 }
+
+func UnpackFromExp(token LispToken) LispToken {
+
+	if value, ok := token.(Exp); ok {
+		return UnpackFromExp(value.Contents)
+	} else {
+		return token
+	}
+
+}

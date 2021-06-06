@@ -207,7 +207,11 @@ func cdr(tokens ...LispTypes.LispToken) LispTypes.LispToken {
 
 func printLisp(tokens ...LispTypes.LispToken) LispTypes.LispToken {
 	for _, value := range tokens {
-		fmt.Println(value.ValueToString())
+		if value == nil {
+			fmt.Println("nil")
+		} else {
+			fmt.Println(value.ValueToString())
+		}
 	}
 	return nil
 }

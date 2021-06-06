@@ -25,7 +25,7 @@ func (evaluator *Evaluator) Run(parsedTokens LispTypes.LispToken) LispTypes.Lisp
 	case LispTypes.Exp:
 		return evaluator.Run(value.GetContent())
 	}
-	log.Fatalf("\n::ERROR:: Unexpected Type: %s.", parsedTokens.ToString())
+	log.Printf("\n::ERROR:: Unexpected Type")
 	return nil
 }
 
@@ -129,9 +129,14 @@ func (evaluator *Evaluator) evalS_Expression(list LispTypes.List) LispTypes.Lisp
 	} else if strings.EqualFold(symbol, "eval") {
 
 		log.Printf("\nEvaluating %s", content[1].ToString())
-		temp := evaluator.Run(content[1])
-		log.Printf("TEMP %s", temp.ToString())
-		return temp
+		if value, ok := LispTypes.UnpackFromExp(content[1]).(LispTypes.List); ok {
+
+			eager_evaluation := evaluator.Run(value)
+			return evaluator.Run(eager_evaluation)
+
+		} else {
+			return evaluator.Run(content[1])
+		}
 
 	} else if strings.EqualFold(symbol, "set!") {
 		newVariableName, err := LispTypes.GetSymbolContent(content[1])
