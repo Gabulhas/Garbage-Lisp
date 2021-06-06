@@ -4,6 +4,7 @@ import (
 	"GarbageLisp/LispTypes"
 	"fmt"
 	"log"
+	"strings"
 )
 
 func InitEnvNativeFunctions(env Env) {
@@ -22,7 +23,7 @@ func InitEnvNativeFunctions(env Env) {
 	//Other
 	env.AddProcedureFromFunction(begin, "begin")
 	env.AddProcedureFromFunction(printLisp, "print")
-	env.AddProcedureFromFunction(printf, "printf")
+	env.AddProcedureFromFunction(printfLisp, "printf")
 	env.AddProcedureFromFunction(inputNumber, "inputNumber")
 	env.AddProcedureFromFunction(inputString, "inputString")
 	env.AddProcedureFromFunction(inputString, "readLine")
@@ -218,14 +219,21 @@ func printLisp(tokens ...LispTypes.LispToken) LispTypes.LispToken {
 	return nil
 }
 func printfLisp(tokens ...LispTypes.LispToken) LispTypes.LispToken {
-	//template := tokens[1].ToString()
-	for _, value := range tokens {
-		if value == nil {
-			fmt.Println("nil")
-		} else {
-			fmt.Println(value.ValueToString())
-		}
+	parts := strings.Split(tokens[0].ValueToString(), "%a")
+	tokens = tokens[1:]
+	lastPart := parts[len(parts)-1]
+	parts = parts[:len(parts)-1]
+	if len(parts) != len(tokens) {
+		log.Fatalf("\n::ERROR:: Template Parts and Provided Elements mismatch. Length Parts %d. Length Elements %d", len(parts), (len(tokens)))
 	}
+	resultingString := ""
+
+	for i := 0; i < len(parts); i++ {
+		resultingString = resultingString + parts[i] + tokens[i].ValueToString()
+	}
+	resultingString = resultingString + lastPart
+
+	fmt.Printf(resultingString)
 	return nil
 
 }
