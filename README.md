@@ -39,11 +39,9 @@ I'm not saying that **Go** needs them, I like it's minimalism :) .
 1. Clone the Project Repo `git clone [url of this repo]`
 2. Compile with Go `go build .`
 3. Run with `./Garbage-Lisp`
+- If you don't supply any argument, it starts a REPL.
+- If you want to read from a file, you must supply the path to the file, or - if you want to read from stdin.
 
-# Options
-- `-f [FILENAME]` read program from file.
-- `-r` REPL.
-- `-i` read program from stdin.
 
 # Example
 Check the [Examples](/tree/master/examples) folder.

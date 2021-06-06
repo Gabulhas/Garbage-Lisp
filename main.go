@@ -7,7 +7,6 @@ import (
 	"GarbageLisp/LispTypes"
 	"GarbageLisp/Parser"
 	"bufio"
-	"flag"
 	"fmt"
 	"io/ioutil"
 	"log"
@@ -19,30 +18,25 @@ func init() {
 }
 
 func main() {
-	repl := flag.Bool("r", false, "repl")
-	input := flag.Bool("i", false, "stdin")
-	fileName := flag.String("f", "", "filename")
-	flag.Parse()
 
-	if *repl || (!*input && *fileName == "") {
-		fmt.Println("Welcome to GarbageLisp REPL.")
+	args := os.Args[1:]
+	if len(args) == 0 {
 		REPL()
-	} else if *input {
-		pipeline(textFromFile(os.Stdin.Name()))
-		return
-	} else if *fileName != "" {
-		pipeline(textFromFile(*fileName))
+	} else {
+		if args[0] == "-" {
+			pipeline(textFromFile(os.Stdin.Name()))
+		} else {
+			pipeline(textFromFile(args[0]))
+		}
 		return
 	}
-	flag.PrintDefaults()
 
-	os.Exit(1)
 }
 
 func textFromFile(filename string) string {
 	content, err := ioutil.ReadFile(filename)
 	if err != nil {
-		log.Fatalf("\n::ERROR::%s", err)
+		log.Fatalf("\n::ERROR:: %s", err)
 	}
 
 	text := string(content)
@@ -51,6 +45,7 @@ func textFromFile(filename string) string {
 
 //Main loop
 func REPL() {
+	fmt.Println("Welcome to GarbageLisp REPL.")
 	reader := bufio.NewReader(os.Stdin)
 	myEval := Evaluator.NewEval()
 	for true {
