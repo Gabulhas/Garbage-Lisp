@@ -63,6 +63,8 @@ Fibonacci function/procedure:
 ```
 
 
+REPL Execution: ![execution](https://i.imgur.com/v0AZAdk.png)
+
 
 Check the [Examples](/tree/master/examples) folder.
 - `42.gl`       - Big program with multiple user defined functions and input.
