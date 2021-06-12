@@ -110,6 +110,9 @@ func (evaluator *Evaluator) evalS_Expression(list LispTypes.List) LispTypes.Lisp
 		return LispTypes.Procedure.InitLambda(LispTypes.Procedure{}, content[1], content[2])
 
 	} else if strings.EqualFold(symbol, "map") {
+		if len(content) != 3 {
+			log.Fatal("::ERROR:: map requires 2 expressions: map (procedure) (list)")
+		}
 		var result []LispTypes.LispToken
 
 		arguments := evaluator.Run(content[2])

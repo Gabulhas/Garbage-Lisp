@@ -31,6 +31,7 @@ I'm not saying that **Go** needs them, I like it's minimalism :) .
 - [ ] Improve Prints 
 - [ ] Use Linked Lists instead of Go Slices
 - [ ] concurrency (jk)
+- [ ] Improve REPL
 (To be honest this looks more like a Shopping list)
 
 
@@ -44,6 +45,25 @@ I'm not saying that **Go** needs them, I like it's minimalism :) .
 
 
 # Example
+
+Fibonacci function/procedure:
+```lisp
+(define fib 
+    ; Defining a Lambda that takes 3 arguments, "a", "b" and "endvalue"
+
+    (lambda (a b endvalue) (
+	if (> b endvalue) 
+	    ; if True
+	    a
+	    ; else
+	    (fib b (+ a b) endvalue)
+	)
+    )
+)
+```
+
+
+
 Check the [Examples](/tree/master/examples) folder.
 - `42.gl`       - Big program with multiple user defined functions and input.
 - `functional.gl` - Passing a function as parameter/functions as first-class citizens.
@@ -58,7 +78,3 @@ Check the [Examples](/tree/master/examples) folder.
 - LispTypes - All possible types. LispToken is the name of the Interface which all types implement.
 - Parser    - Parser (obviously). Transforms code into an AST tree.
 - main.go   - Starting File. Parses command line argument. Either Reads from a file (or Stdin) or starts a REPL.
-
-# Contributions
-**Don't**
-Unless you want to suggest stuff.
