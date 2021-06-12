@@ -24,13 +24,13 @@ I'm not saying that **Go** needs them, I like it's minimalism :) .
 - [x] IO
 - [x] Fix Eval
 - [x] Metaprogramming (quote and eval)
-- [ ] Comments 
-- [ ] Import other files
-- [ ] Files 
-- [ ] Improve Prints 
+- [x] Comments 
 - [ ] "Debug Mode"
-- [ ] concurrency (jk)
+- [ ] Files 
+- [ ] Import other files
+- [ ] Improve Prints 
 - [ ] Use Linked Lists instead of Go Slices
+- [ ] concurrency (jk)
 (To be honest this looks more like a Shopping list)
 
 

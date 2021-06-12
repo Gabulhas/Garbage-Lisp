@@ -60,4 +60,5 @@
 
 (define result (calculate entrada 0 max_number 0))
 
+;teste
 (if (< result max_number) (print (intPart result)) (print (quote BAD_LUCK)))

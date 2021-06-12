@@ -60,7 +60,13 @@ func (parser *Parser) readFromTokens() LispTypes.LispToken {
 	token := parser.preTokens[0]
 	parser.preTokens = parser.preTokens[1:]
 
-	if token == "(" {
+	switch token {
+
+	case ";":
+		for parser.preTokens[0] != "\n" {
+			parser.preTokens = parser.preTokens[1:]
+		}
+	case "(":
 		L := LispTypes.Exp{
 			Contents: LispTypes.List{Contents: []LispTypes.LispToken{}},
 		}
@@ -70,11 +76,10 @@ func (parser *Parser) readFromTokens() LispTypes.LispToken {
 		}
 		parser.preTokens = parser.preTokens[1:]
 		return L
-
-	} else if token == ")" {
+	case ")":
 		log.Fatal("::ERROR:: Unexpected )")
-	} else {
-
+		break
+	default:
 		if strings.HasSuffix(token, "\"") && strings.HasPrefix(token, "\"") {
 			result, err := strconv.Unquote(token)
 			if err != nil {
@@ -92,6 +97,7 @@ func (parser *Parser) readFromTokens() LispTypes.LispToken {
 			return LispTypes.Symbol{Contents: token}
 		}
 	}
+
 	return atom(token)
 }
 

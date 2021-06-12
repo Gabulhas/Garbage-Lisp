@@ -7,7 +7,6 @@ import (
 	"strings"
 )
 
-//TODO: mudar de return LispToken To Exp
 func (evaluator *Evaluator) Run(parsedTokens LispTypes.LispToken) LispTypes.LispToken {
 
 	switch value := parsedTokens.(type) {
@@ -30,14 +29,13 @@ func (evaluator *Evaluator) Run(parsedTokens LispTypes.LispToken) LispTypes.Lisp
 }
 
 func (evaluator *Evaluator) evalS_Expression(list LispTypes.List) LispTypes.LispToken {
-	//log.Println(list.GetContent()[0].ToString())
 	content := list.Contents
 	symbol, err := LispTypes.GetSymbolContent(content[0])
 	if err != nil {
 		log.Fatalf("\n::ERROR:: %s Expression Not Starting With Symbol", list.ToString())
 	}
 	// "Builtins"
-	//TODO: Change to swtich case
+	//TODO: Change this to something similar to NativeFunctions
 	if strings.EqualFold(symbol, "define") {
 
 		var newVariableName string
@@ -67,6 +65,7 @@ func (evaluator *Evaluator) evalS_Expression(list LispTypes.List) LispTypes.Lisp
 
 		evaluator.Define(newVariableName, evaluatedDefine)
 		return nil
+
 	} else if strings.EqualFold(symbol, "if") {
 		if len(content) != 4 {
 			return nil
@@ -91,7 +90,7 @@ func (evaluator *Evaluator) evalS_Expression(list LispTypes.List) LispTypes.Lisp
 			}
 			break
 		case LispTypes.Number:
-			if value.GetContent() != 0 {
+			if value.GetContent() > 0 {
 				testResult = true
 			} else {
 				testResult = false
@@ -163,7 +162,6 @@ func (evaluator *Evaluator) evalS_Expression(list LispTypes.List) LispTypes.Lisp
 		env.Contents[newVariableName] = evaluator.Run(content[len(content)-1])
 		return nil
 	} else {
-		//Todo: alterar
 		var arguments []LispTypes.LispToken
 		for i, args := range content {
 			if i == 0 {

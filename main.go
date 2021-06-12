@@ -1,5 +1,3 @@
-//TODO: Add string support
-
 package main
 
 import (

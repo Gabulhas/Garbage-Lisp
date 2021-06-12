@@ -72,7 +72,6 @@ func (procedure Procedure) Call(env map[string]LispToken, params ...LispToken) L
 	}
 }
 
-//TODO: something to print function names (?)
 func (procedure Procedure) ValueToString() string {
 	return fmt.Sprintf("PROCEDURE %s", procedure.Name)
 }
