@@ -12,19 +12,7 @@ I tried following this guide http://norvig.com/lispy.html, yet I had to change a
 typed like **Python** and would be easier to code this using some language that has generics. 
 I'm not saying that **Go** needs them, I like it's minimalism :) .
 
-# TODO
-- [x] User defined functions (lambdas)
-- [x] Quotation  
-- [x] Better error messages
-- [x] More native/out of the box functions and constants
-- [x] Remove unused "Methods"
-- [x] Overall improve the interaction with the interpreter (REPL, File, ETC)
-- [x] some examples
-- [x] Strings
-- [x] IO
-- [x] Fix Eval
-- [x] Metaprogramming (quote and eval)
-- [x] Comments 
+# TODO functionality wise
 - [ ] "Debug Mode"
 - [ ] Files 
 - [ ] Import other files
@@ -32,7 +20,12 @@ I'm not saying that **Go** needs them, I like it's minimalism :) .
 - [ ] Use Linked Lists instead of Go Slices
 - [ ] concurrency (jk)
 - [ ] Improve REPL
-(To be honest this looks more like a Shopping list)
+- [ ] Print error location
+
+# TODO code wise
+- [ ] Document the code
+- [ ] Document native functions
+
 
 
 # How to Run
@@ -63,7 +56,8 @@ Fibonacci function/procedure:
 ```
 
 
-REPL Execution: ![execution](https://i.imgur.com/v0AZAdk.png)
+REPL Execution: 
+![execution](https://i.imgur.com/v0AZAdk.png)
 
 
 Check the [Examples](/tree/master/examples) folder.

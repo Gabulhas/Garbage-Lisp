@@ -2,9 +2,9 @@ package main
 
 import (
 	"GarbageLisp/Evaluator"
-	"GarbageLisp/LispTypes"
+	"GarbageLisp/OutputHandler"
 	"GarbageLisp/Parser"
-	"bufio"
+	repl "GarbageLisp/Repl"
 	"fmt"
 	"io/ioutil"
 	"log"
@@ -19,7 +19,7 @@ func main() {
 
 	args := os.Args[1:]
 	if len(args) == 0 {
-		REPL()
+		repl.Loop()
 	} else {
 		if args[0] == "-" {
 			pipeline(textFromFile(os.Stdin.Name()))
@@ -41,39 +41,11 @@ func textFromFile(filename string) string {
 	return text
 }
 
-//Main loop
-func REPL() {
-	fmt.Println("Welcome to GarbageLisp REPL.")
-	reader := bufio.NewReader(os.Stdin)
-	myEval := Evaluator.NewEval()
-	for true {
-		fmt.Print("GL>")
-		text, _ := reader.ReadString('\n')
-		if text == "\n" {
-			continue
-		}
-		parsed := Parser.Parse(text)
-		result := myEval.Run(parsed)
-		if result != nil {
-			fmt.Println(prettyPrint(result))
-		}
-	}
-
-}
-
 func pipeline(program string) {
 	parsed := Parser.Parse(program)
 	myEval := Evaluator.NewEval()
 	result := myEval.Run(parsed)
-	if finalString := prettyPrint(result); finalString != "" {
-		fmt.Println(prettyPrint(result))
+	if finalString := OutputHandler.PrettyPrint(result); finalString != "" {
+		fmt.Println(OutputHandler.PrettyPrint(result))
 	}
-}
-
-func prettyPrint(token LispTypes.LispToken) string {
-
-	if token != nil {
-		return token.ValueToString()
-	}
-	return ""
 }
