@@ -58,7 +58,7 @@ Fibonacci function/procedure:
 
 REPL Execution: 
 
-![execution](https://i.imgur.com/v0AZAdk.png)
+![execution](https://i.imgur.com/9a3uPNn.png)
 
 
 Check the [Examples](https://github.com/Gabulhas/Garbage-Lisp/tree/master/examples) folder.
