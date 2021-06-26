@@ -72,6 +72,9 @@ Check the [Examples](https://github.com/Gabulhas/Garbage-Lisp/tree/master/exampl
 - `strings.gl`  - Some basic string functions.
 - `test.gl`     - Simple define and print value.
 
+
+Check the [Examples](https://github.com/Gabulhas/Garbage-Lisp/tree/master/FUNCTIONS.md) file to get more info about the interpreter.
+
 # Project Structure
 - Env       - Environment Logic, like variables in the scope and native functions.
 - Evaluator - AST walker. Includes interpretation/evaluation logic.
