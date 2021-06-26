@@ -13,6 +13,9 @@ typed like **Python** and would be easier to code this using some language that 
 I'm not saying that **Go** needs them, I like it's minimalism :) .
 
 # TODO functionality wise
+- [ ] Better Scoping
+- [ ] New Type Definition
+
 - [ ] "Debug Mode"
 - [ ] Files 
 - [ ] Import other files
