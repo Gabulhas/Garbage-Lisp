@@ -69,7 +69,7 @@ This function takes another function/Procedure and uses the number 4 as that fun
 )
 
 ; Using the Map function, which takes a Procedure and List, and applies the Procedure 
-; in every element of the list and returns a new list
+; to every element of the list and returns a new list
 
 (map square (list 1 2 3 4))
 
