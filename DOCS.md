@@ -89,15 +89,185 @@ Defining the value of Pi.
 (define pi 3.14159265359)
 ```
 
+---
 
 # Native Functions Implemented
 
+---
 
 ## Builtin
 These functions are defined directly in the Evaluator (check Eval.go). They are not lambdas, yet they are reserved keywords.
 Most of these are used to evaluate the code or are special and couldn't be implemented as "Native Functions".
 
 
-### Define
-Defines new value/variable
+### define
+Defines new value/variable in the inner most environment/scope.
+Usage: `(define SYMBOL_NAME VALUE)`
+
+
+Example: 
+Defining a number
+```lisp
+(define pi 3.14159265359)
+```
+
+Defining a Procedure
+```lisp
+(define square 
+    (lambda (a)
+	(* a a)
+    )
+)
+```
+
+
+### if
+Evaluates the second argument if the first argument evaluates to `true`,
+evaluates the third argument otherwise.
+Usage: `(if (THEN BRANCH) (ELSE BRANCH))`
+
+Example: 
+```lisp
+; if 1 is less then 2
+(if  (< 1 2)
+     ; then
+     (print "is smaller")
+     ; else
+     (print "is bigger")
+)
+
+;Output: "is smaller"
+```
+
+
+### lambda
+Creates a new lambda/anonymous function.
+First argument defines the names/symbols of the arguments, and the second argument defines 
+de function body.
+Usage: `(lambda (ARGUMENTS) (BODY))`
+
+Example: 
+Tail-Recursive Fibonacci.
+```lisp
+; Defining
+(define fibonacci
+    ; a, b and endvalue are he arguments
+    (lambda (a b endvalue) 
+	; Procedure body
+	(if (> b endvalue) 
+		; if True
+		a
+		; else
+		(fib b (+ a b) endvalue)
+	    )
+    )
+)
+; Function execution
+; calculating fibonacci(10)
+(fibonacci 0 1 10)
+```
+
+### map
+Calls a function on every element of an array, resulting in a new array.
+Usage: `(lambda (FUNCTION/CALLBACK) (LIST))`
+
+Example:
+Defining a new function `square` and calling the function with every element of the list.
+```lisp
+(define square 
+    (lambda (a)
+	(* a a)
+    )
+)
+
+
+(map square (list 1 2 3 4))
+; (square 1)
+; (square 2)
+; (square 3)
+; (square 4)
+
+; Returns a list with [1.000],[4.000],[9.000],[16.000]
+```
+
+
+### all
+Evaluates every argument (variadic arguments) and returns nil.
+This function encapsulates/surrounds all the inner expressions that resulted from parsing.
+Usage: `(all EXP1 EXP2 EXP3 EXP4 EXP5)`
+
+```lisp
+(all
+    (print "hey")
+    (print "hello")
+    (print (+ 1 2))
+    (define my_number 4)
+    (print my_number)
+)
+;Output: "hey"
+;Output: "hello"
+;Output: "3"
+;Output: "4"
+; Returns nil
+```
+
+### quote
+Returns the contents of a expression.
+For example, this can be used to store an expression, manipulate the expression and evaluating it during execution.
+Usage: `(quote EXP1)`
+
+Example:
+```lisp
+(quote (print 4))
+
+; Returns a list with [print],[4.000]
+```
+
+### Eval
+```lisp
+; ++ concatenates two lists
+(define my_exp
+    (++ 
+	(quote (print 4)) 
+	(list 6)
+    )
+)
+
+; my_exp: a list with [print],[4.000],[6.000]
+
+
+(eval my_exp)
+
+;Output: "4"
+;Output: "6"
+
+```
+
+As you can see in this example, we can change the expression, in this case we added a new atom to the expression `6`
+and we can later evaluate it.
+
+---
+## Native
+These functions are defined as primitive/native functions (NativeFunctions.go). 
+Unlike builtins, these functions are lambdas defined in the outer most environment/scope.
+These are implemented to enable the creation of non-native functions, making it possible to define GarbageLisp functions.
+
+
+## Arithmetic functions
+These functions are used to manipulate data using numbers.
+If you are unfamiliar with Lisp, these arithmetic functions use a Polish notation, which means that the arithmetic
+operation is defined before the numbers.
+Example:
+```lisp
+(+ 1 2)
+; returns 3, equivalent to 1 + 2
+
+(+ 1 2 3)
+; returns 6, equivalent to 1 + 2 + 3
+```
+
+
+
+
+
 

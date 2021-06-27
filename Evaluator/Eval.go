@@ -133,8 +133,6 @@ func (evaluator *Evaluator) evalS_Expression(list LispTypes.List) LispTypes.Lisp
 		}
 		return nil
 	} else if strings.EqualFold(symbol, "quote") {
-		//unpacked := LispTypes.Unpack(content[1])
-		//newList := LispTypes.List{Contents: unpacked}
 		if value, ok := content[1].(LispTypes.Exp); ok {
 			return value.Contents
 
