@@ -36,6 +36,7 @@ func InitEnvNativeFunctions(env Env) {
 	env.AddProcedureFromFunction(cons, "cons")
 	env.AddProcedureFromFunction(lisplen, "len")
 	env.AddProcedureFromFunction(concatLists, "++")
+	env.AddProcedureFromFunction(is_empty, "empty?")
 
 	//Logic
 	env.AddProcedureFromFunction(gt, ">")
@@ -229,7 +230,11 @@ func printfLisp(tokens ...LispTypes.LispToken) LispTypes.LispToken {
 	resultingString := ""
 
 	for i := 0; i < len(parts); i++ {
-		resultingString = resultingString + parts[i] + tokens[i].ValueToString()
+		if tokens[i] == nil {
+			resultingString = resultingString + parts[i] + "nil"
+		} else {
+			resultingString = resultingString + parts[i] + tokens[i].ValueToString()
+		}
 	}
 	resultingString = resultingString + lastPart
 
@@ -305,6 +310,35 @@ func lisplen(tokens ...LispTypes.LispToken) LispTypes.LispToken {
 		length = len(value.Contents)
 	}
 	return LispTypes.Number{Contents: float64(length)}
+}
+
+func is_empty(tokens ...LispTypes.LispToken) LispTypes.LispToken {
+
+	if value, ok := tokens[0].(LispTypes.List); ok {
+		if len(value.Contents) == 0 {
+			return LispTypes.LispBoolean{Contents: true}
+		} else {
+			return LispTypes.LispBoolean{Contents: false}
+		}
+
+	} else {
+
+		log.Fatalf("\n::ERROR:: %s Not a list.", tokens[0].ValueToString())
+	}
+
+	var result []LispTypes.LispToken
+	for _, element := range tokens {
+		switch value := element.(type) {
+		case LispTypes.List:
+			result = append(result, value.Contents...)
+			break
+		default:
+			log.Fatalf("\n::ERROR:: %s Not a list.", element.ValueToString())
+			break
+
+		}
+	}
+	return LispTypes.List{Contents: result}
 }
 
 func is_list(tokens ...LispTypes.LispToken) LispTypes.LispToken {

@@ -104,8 +104,10 @@ func (evaluator *Evaluator) evalS_Expression(list LispTypes.List) LispTypes.Lisp
 		return evaluator.Run(alt)
 
 	} else if strings.EqualFold(symbol, "lambda") {
+
 		if len(content) != 3 {
-			log.Fatal("::ERROR:: Lambda requires 2 expressions: lambda (arguments) (body)")
+			log.Fatalf("\n::ERROR:: Lambda requires 2 expressions: lambda (arguments) (body)\n Got %d instead", len(content))
+
 		}
 		return LispTypes.Procedure.InitLambda(LispTypes.Procedure{}, content[1], content[2])
 

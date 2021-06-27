@@ -16,46 +16,46 @@
 
 (define calculate (lambda (m passos passos_minimos ramo) 
 
-		   (if (> passos passos_minimos) max_number
-		    (
+                          (if (> passos passos_minimos) max_number
+                            (
 
-		     if (= m 42) passos
+                             if (= m 42) passos
 
-		     (
-		      if (< m 42 ) max_number
+                             (
+                              if (< m 42 ) max_number
 
-		      (begin
+                              (begin
 
-		       (define regra_um ( if (divisivel m 2) ( calculate (intPart (/ m 2)) (+ 1 passos) max_number 1) max_number )) 
-
-
-		       (define regra_tres ( if (divisivel m 5) (calculate (- m 42) (+ 1 passos) regra_um 2) max_number ))
-
-		       (define regra_dois (if (or (divisivel m 3) (divisivel m 4)) 
-					   (begin
-					    (define algs (get_ultimo_algarismo m))
-
-					    (
-					     if (= algs 0) max_number ( calculate (- m algs) (+ 1 passos) regra_tres 3)
-					    )
-
-					   )
-					   max_number))
-
-		       (min regra_um regra_dois regra_tres)
+                                (define regra_um ( if (divisivel m 2) ( calculate (intPart (/ m 2)) (+ 1 passos) max_number 1) max_number )) 
 
 
-    )
+                                (define regra_tres ( if (divisivel m 5) (calculate (- m 42) (+ 1 passos) regra_um 2) max_number ))
 
-    )
+                                (define regra_dois (if (or (divisivel m 3) (divisivel m 4)) 
+                                                     (begin
+                                                       (define algs (get_ultimo_algarismo m))
+
+                                                       (
+                                                        if (= algs 0) max_number ( calculate (- m algs) (+ 1 passos) regra_tres 3)
+                                                        )
+
+                                                       )
+                                                     max_number))
+
+                                (min regra_um regra_dois regra_tres)
 
 
-    )
+                                )
 
-    )
-    ))
+                              )
 
-    (print "Input a number:")
+
+                             )
+
+                            )
+                          ))
+
+(print "Input a number:")
 (define entrada (inputNumber))
 
 (define result (calculate entrada 0 max_number 0))

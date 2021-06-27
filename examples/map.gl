@@ -1,0 +1,56 @@
+; This examples show how you could create a "map" function using only the current primitives
+
+
+; if my_list is empty it means we already iterated over the list, so we return the resulting list 
+; Else, we will recursivly call the function 
+; with the same function as the first argument
+; with the tail of my_list (cdr my_list) as the second argument
+; and we create a new list with a new element as the head, this element is the result of 
+; the current element of my_list after calling the function fun
+
+
+; since the resulting list is reversed, we need to reverse it
+; because the function "cons" adds a new head to the list, instead of appending it
+(define my_map_aux
+
+  (lambda (fun my_list result_list) 
+          
+
+          (if (empty? my_list) 
+              
+               result_list 
+
+
+
+               (my_map_aux fun 
+                  (cdr my_list)
+                      (cons (fun (car my_list)) result_list))
+            )
+      )
+
+)
+
+; Reversing looks similar to the function above
+
+(define reverse_list 
+  (lambda (my_list result_list)
+    (if (empty? my_list)
+        result_list 
+        (reverse_list (cdr my_list) (cons (car my_list) result_list))
+      )
+  )
+)
+
+
+; wrapper function for both of these functions
+
+(define my_map 
+  (lambda (fun my_list)
+    (reverse_list (my_map_aux fun my_list (list)) (list ))
+  )
+)
+
+
+(printf "Resulting list %a ." (my_map (lambda (a) (* a a)) (list 1 2 3 4 5 6)))
+
+; should print "Resulting list [1.000],[4.000],[9.000],[16.000],[25.000],[36.000]"
