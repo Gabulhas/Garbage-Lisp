@@ -50,7 +50,7 @@ func InitEnvNativeFunctions(env Env) {
 	env.AddProcedureFromFunction(is_symbol, "symbol?")
 	env.AddProcedureFromFunction(is_bool, "bool?")
 	env.AddProcedureFromFunction(is_number, "number?")
-	env.AddProcedureFromFunction(is_string, "number?")
+	env.AddProcedureFromFunction(is_string, "string?")
 	env.AddProcedureFromFunction(is_equals, "equals?")
 
 	//Strings

@@ -253,7 +253,7 @@ Unlike builtins, these functions are lambdas defined in the outer most environme
 These are implemented to enable the creation of non-native functions, making it possible to define GarbageLisp functions.
 
 
-## Arithmetic functions
+### Arithmetic Functions
 These functions are used to manipulate data using numbers.
 If you are unfamiliar with Lisp, these arithmetic functions use a Polish notation, which means that the arithmetic
 operation is defined before the numbers.
@@ -266,4 +266,155 @@ Example:
 ; returns 6, equivalent to 1 + 2 + 3
 ```
 
-INCOMPLETE
+Arithmetic Operations:
+- `+` - Some
+- `-` - Subtraction
+- `*` - Multiplication
+- `/` - Division
+- `max` - returns the maximum value. Example: `(max 1 5 2 3)`, returns 5.
+- `min` - returns the minimum value. Example: `(max 1 5 2 3)`, returns 5.
+
+Special Operations:
+- `%` - Modulo, calculates the reminder of a division.
+- `intPart` - returns a number with the integer part only. Example `(intPart 4.566)`, returns 4
+
+
+### Logical Functions
+Similar to Arithmetic functions, and are used to compare values.
+
+Example:
+```lisp
+(> 5 4 3)
+; returns true, equivalent to (5 > 4) && (4 > 3)
+
+
+(< 4 5 3)
+; returns false, equivalent to (4 < 5) && (5 < 3)
+
+```
+
+Logical Operations:
+- `>` - Greater than 
+- `<` - Smaller than
+- `>=` - Greater or equal than
+- `<=` - Smaller or equal than
+- `=` - Equal to
+
+
+### List Functions
+These functions are used to manipulate Lists.
+In Lisp, there's a notion of List, where all Lists have an Head and a Tail.
+For example, the list [1,2,3,4] has the head `1` and the tail `2,3,4`, and this tail is also a list, 
+that has `2` as it's head, and `3,4` as it's tail and so on.
+Most operations use this notion of `head` and `tail`.
+
+Lists can be created using the `list` or `quote` keywords.
+
+List Operations:
+- `list` - returns a list. Example: `(list 1 2 3)`, returns [1],[2],[3]
+- `car` - returns the head of the list. Example: `(car (list 1 2 3))`, returns 1.
+- `cdr` - returns the tail of the list. Example: `(cdr (list 1 2 3))`, returns [2],[3].
+- `cons` - adds a head to a list. Example: `(cons 0 (list 1 2 3))`, returns [0],[1],[2],[3].
+- `len` - returns the length of a list. Example: `(len (list 1 2 3))`, returns 3.
+- `++` -  concatenates two lists. Example: `(++ (list 1 2 3) (list 3 4 5))`, returns [1],[2],[3],[3],[4],[5].
+
+### Type Checking Operations
+These functions return a boolean depending of the type of an atom.
+
+Examples:
+```lisp
+(list? 4); returns false
+(list? (list 1 2 3)); returns true
+
+(number? "hey"); returns false
+(number? 4.0); returns true
+
+(equals? 4.0 "hey"); returns false
+(equals? 4.0 4.0); returns true
+```
+
+
+- `list?` - returns true if argument is a list, returns false otherwise.
+- `procedure?` - returns true if argument is a procedure/function, returns false otherwise.
+- `symbol?` - returns true if argument is a symbol (or a text without enclosing ""), returns false otherwise.
+- `bool?` - returns true if argument is a boolean (or `true` or `false`), returns false otherwise.
+- `number?` - returns true if argument is a number, returns false otherwise.
+- `string?` - returns true if argument is a string (or text with enclosing ""), returns false otherwise.
+- `equals?` - returns true if the two arguments are equal, returns false otherwise.
+
+
+### String Functions
+So far, there are only two functions to manipulate strings, these are:
+
+- `toCharList` - Transforms a Strings into a List of Chars. Example: `(toCharList "Hey")`, returns ["H"], ["e"], ["y"].
+
+- `toString` - Calls the `ValueToString` function of the Atom and returns the String. Example: `(toString (+ 2 2))`, returns "4.000".
+
+
+### Other Functions
+
+These functions don't fit into any particular category.
+These are:
+
+
+- `print` - Similar to Println in Go/Java. For every argument it prints a line with the result of `ValueToString` of an atom.
+
+Example:
+```lisp
+(print 4 "hey")
+; Output: 4.000
+;         hey
+```
+
+
+- `printf` - Similar to Printf in Go/C. For every argument it replaces a `%a` in the template (first argument) with the result of each consequent arguments.
+
+Example:
+```lisp
+(print "I'm %a years old, and my name is %a" 21 "Gabulhas")
+; Output: I'm 21 years old, and my name is Gabulhas         
+```
+
+
+- `inputNumber` - Gets a number from the stdin, and returns it.
+
+Example:
+```lisp
+(define my_number (inputNumber))
+(prinf "My number is %a" my_number)
+
+; input: 4
+; output: My number is 4
+```
+
+- `inputString` - Gets a string from the stdin, and returns it.
+
+Example:
+```lisp
+(define my_name (inputString))
+(prinf "My name is %a" my_name)
+
+; input: Gabulhas
+; output: My name is Gabulhas
+```
+
+- `toSymbol` - Transforms string into symbol.
+
+- `begin` - This function evaluates every argument and returns the value of the last argument executed.
+The returning value of all the arguments (except the last) are ignored.
+
+Example:
+```lisp
+(begin
+    (print "Input a number to square:")
+    (define my_number (inputNumber))
+    (* my_number my_number)
+)
+
+; input: 4
+; output: 16
+```
+
+
+
+
