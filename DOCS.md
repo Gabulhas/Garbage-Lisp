@@ -266,8 +266,4 @@ Example:
 ; returns 6, equivalent to 1 + 2 + 3
 ```
 
-
-
-
-
-
+INCOMPLETE
