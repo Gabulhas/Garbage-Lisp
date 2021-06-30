@@ -1,0 +1,61 @@
+; Proof that this language is turing complete :)
+
+
+
+
+; Just Helpers ;) I'm used to OCaml, where it's usual to use "hd" for head, and "tl" for tail
+(define head car)
+(define tail cdr)
+
+
+
+
+; ------------------
+; Cell Operations
+; ------------------
+
+; All this just to transform a triplet into a single value :(
+(define digits_to_single 
+  (lambda (a b c)
+    (+ (* 100 a) (* 10 b) c)
+  )
+)
+
+(define cell_merger_table 
+  (list 
+	(list 111 0)
+	(list 110 1)
+	(list 101 1)
+	(list 100 0)
+	(list 011 1)
+	(list 010 1)
+	(list 001 1)
+	(list 000 0)
+    )
+)
+
+
+(define cell_type_search 
+  (lambda (number current_search)
+    (begin
+	(define current_triplet (head (head current_search)))
+	    (if (= current_triplet 000)
+		0
+		(if (= current_triplet number)
+		    (head (tail (head current_search)))
+		    (cell_type_search number (tail current_search))
+		  )
+	    )
+	)
+  )
+)
+
+(define cell_merger 
+
+  (lambda (a b c)
+	(cell_type_search (digits_to_single a b c) cell_merger_table)
+    )
+  )
+
+
+

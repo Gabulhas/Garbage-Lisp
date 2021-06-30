@@ -19,14 +19,22 @@ func main() {
 
 	args := os.Args[1:]
 	if len(args) == 0 {
-		repl.Loop()
+		repl.Loop(&Evaluator.Evaluator{}, false)
 	} else {
-		if args[0] == "-" {
+
+		switch args[0] {
+
+		case "-":
 			pipeline(textFromFile(os.Stdin.Name()))
-		} else {
+			break
+		case "-load":
+			repl.Loop(pipeline(textFromFile(args[1])), true)
+			break
+
+		default:
 			pipeline(textFromFile(args[0]))
+			break
 		}
-		return
 	}
 
 }
@@ -41,11 +49,12 @@ func textFromFile(filename string) string {
 	return text
 }
 
-func pipeline(program string) {
+func pipeline(program string) *Evaluator.Evaluator {
 	parsed := Parser.Parse(program)
 	myEval := Evaluator.NewEval()
 	result := myEval.Run(parsed)
 	if finalString := OutputHandler.PrettyPrint(result); finalString != "" {
 		fmt.Println(OutputHandler.PrettyPrint(result))
 	}
+	return myEval
 }

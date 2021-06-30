@@ -14,12 +14,14 @@ var exitFlag int
 var text string
 
 //Main loop
-func Loop() {
+func Loop(myEval *Evaluator.Evaluator, loaded bool) {
 	fmt.Println("Welcome to GarbageLisp REPL.")
 	catchSigint()
 
 	reader := bufio.NewReader(os.Stdin)
-	myEval := Evaluator.NewEval()
+	if !loaded {
+		myEval = Evaluator.NewEval()
+	}
 	for {
 		exitFlag = 0
 

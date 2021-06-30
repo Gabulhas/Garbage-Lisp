@@ -100,7 +100,7 @@ func cmp(run func(a, b float64) bool, tokens ...LispTypes.LispToken) LispTypes.L
 				lastNumber = value
 			}
 		} else {
-			log.Fatalf("\n::ERROR:: %s not Boolean.", thisToken.ValueToString())
+			log.Fatalf("\n::ERROR:: %s not a Number.", thisToken.ValueToString())
 		}
 	}
 	return LispTypes.LispBoolean{Contents: true}
