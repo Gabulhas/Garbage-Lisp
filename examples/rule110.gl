@@ -1,12 +1,55 @@
 ; Proof that this language is turing complete :)
 
-
-
+; ------------------
+; Helper Stuff
+; ------------------
 
 ; Just Helpers ;) I'm used to OCaml, where it's usual to use "hd" for head, and "tl" for tail
 (define head car)
 (define tail cdr)
+(define second_ele (lambda (a) (head (tail a))))
+(define third_ele (lambda (a) (head (tail (tail a)))))
 
+(define print_state (lambda (temp_state)
+    (if (= 0 (len temp_state))
+      (printf "\n")
+    (begin
+      (define current_cell (head temp_state))
+      (if (= current_cell 0) 
+	(printf " ")
+	(printf "█")
+      )
+      (print_state (tail temp_state))
+	
+     )
+    )
+ )
+)
+
+
+(define get_last (lambda (my_list)
+		   (begin 
+			(define current_tail (tail my_list))
+			(if (= 0 (len current_tail))
+			(head my_list)
+			(get_last current_tail)
+			)
+	    )
+    )
+)
+
+(define list_reverse_aux (lambda (my_list_temp result)
+	(if (= 0 (len my_list_temp))
+	    result
+	    (list_reverse_aux (tail my_list_temp) (cons (head my_list_temp) result))
+	)
+    )
+)
+
+(define list_reverse (lambda (my_list)
+    (list_reverse_aux my_list (list))
+
+))
 
 
 
@@ -15,6 +58,7 @@
 ; ------------------
 
 ; All this just to transform a triplet into a single value :(
+; I used a single match in OCaml for all this, and without hacky stuff
 (define digits_to_single 
   (lambda (a b c)
     (+ (* 100 a) (* 10 b) c)
@@ -42,7 +86,7 @@
 	    (if (= current_triplet 000)
 		0
 		(if (= current_triplet number)
-		    (head (tail (head current_search)))
+		    (second_ele (head current_search))
 		    (cell_type_search number (tail current_search))
 		  )
 	    )
@@ -54,8 +98,109 @@
 
   (lambda (a b c)
 	(cell_type_search (digits_to_single a b c) cell_merger_table)
-    )
   )
+)
+
+; ------------------
+; State Calculations
+; ------------------
 
 
 
+(define calculate_cell 
+  (lambda (old_state old_state_temp new_state_temp)
+    (begin 
+	(define a (head old_state_temp))
+	(define b (second_ele old_state_temp))
+	(define tl (tail (tail old_state_temp)))
+	(if (= 0 (len tl))
+	  (begin 
+	    (define new_last_cell (cell_merger a b (head old_state)))
+	    (cons new_last_cell new_state_temp)
+	  )
+	  (begin
+	    (define c (head tl))
+	    (define ntl (tail tl))
+	    (calculate_cell 
+		old_state
+		(cons b (cons c ntl))
+		(cons (cell_merger a b c) new_state_temp)
+	      )
+	   )
+	)
+
+      )
+    )
+)
+
+(define calculate_state 
+    (lambda  (old_state last_cell )
+	(begin 
+	  (define first_cell 
+	    (begin 
+	      (define a (head old_state))
+	      (define b (second_ele old_state))
+	      (cell_merger last_cell a b)
+	    )
+	  )
+	  (calculate_cell old_state old_state (list first_cell))
+	 )
+    )
+)
+
+
+; ------------------
+; State Calculations
+; ------------------
+
+(define loop 
+	(lambda (current_state previous_last_cell loops_left)
+	    (if (= 0 loops_left)
+		(printf "\n")
+		(begin
+		    (define new_state_reversed (calculate_state current_state previous_last_cell))
+		    (define new_last_cell (head new_state_reversed))
+		    (define new_state (list_reverse new_state_reversed))
+		    (print_state new_state)
+		    (loop new_state new_last_cell (- loops_left 1))
+	       )
+	    )
+
+	)
+)
+
+
+(define start_loop 
+  (lambda (current_state loops)
+    (begin 
+	(print_state current_state)
+	(loop current_state (get_last current_state) loops)
+      )
+    )
+)
+
+; ------------------
+; User Input
+; ------------------
+
+
+(define string_to_value 
+  (lambda (str)
+    (if (equals? str "0")
+	0
+	1
+    )
+    )
+)
+
+(begin
+    (printf "\nWhat's the first sequence? (Example: 00101000100)")
+    (define sequence (inputString))
+    (printf "\nHow many generations do you want to generate? (Example: 20)")
+    (define generations (inputNumber))
+    (define first_state (
+			 map string_to_value (toCharList sequence)
+	)
+     )
+    (start_loop first_state generations)
+)

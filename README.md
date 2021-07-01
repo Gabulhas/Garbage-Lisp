@@ -15,14 +15,11 @@ I'm not saying that **Go** needs them, I like it's minimalism :) .
 # TODO functionality wise
 - [ ] Better Scoping
 - [ ] New Type Definition
-
-- [ ] "Debug Mode"
+- [ ] Allow functions inside functions
 - [ ] Files 
-- [ ] Import other files
-- [ ] Improve Prints 
+- [ ] Import other modules
 - [ ] Use Linked Lists instead of Go Slices
 - [ ] concurrency (jk)
-- [ ] Improve REPL
 - [ ] Print error location
 
 # TODO code wise
@@ -62,6 +59,10 @@ Fibonacci function/procedure:
 REPL Execution: 
 
 ![execution](https://i.imgur.com/9a3uPNn.png)
+
+
+If you use the `-load` flag, it will execute a file and start a REPL after it. 
+This is useful to debug files by using the REPL. Example: `./Garbage-Lisp -load my_code.gl`
 
 
 Check the [Examples](https://github.com/Gabulhas/Garbage-Lisp/tree/master/examples) folder.
