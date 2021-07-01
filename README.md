@@ -3,6 +3,12 @@
 
 # Garbage Lisp  
 Well it works but isn't good.
+At least is **TURING COMPLETE**! 
+
+Check the implementation of [Rule 110](https://github.com/Gabulhas/Garbage-Lisp/tree/master/examples/rule110.gl).
+This automaton is Turing Complete (check [Here](https://en.wikipedia.org/wiki/Rule_110)), meaning that the implementation of it proves that the system
+is also turing complete.
+
 
 **Go** is definitely not the best language to do this, so it came out kinda hacky with **Go** Interfaces.
 
@@ -69,9 +75,11 @@ Check the [Examples](https://github.com/Gabulhas/Garbage-Lisp/tree/master/exampl
 - `42.gl`       - Big program with multiple user defined functions and input.
 - `functional.gl` - Passing a function as parameter/functions as first-class citizens.
 - `listCount.gl`- User defined function (lambda) that counts the number of elements equal to an atom.
-- `metaprogramming_sortof.gl` - Sort of Metaprogramming. Using Quote and Evaluating Lists as S-expressions.
 - `strings.gl`  - Some basic string functions.
 - `test.gl`     - Simple define and print value.
+- `map.gl`      - Example implementation of the `map` keyword directly in GarbageLisp
+- `metaprogramming_sortof.gl` - Sort of Metaprogramming. Using Quote and Evaluating Lists as S-expressions.
+- `rule110.gl` - Implementation of Rule 110 in GarbageLisp, also proof that GarbageLisp is Turing Complete.
 
 
 Check the [Examples](https://github.com/Gabulhas/Garbage-Lisp/tree/master/FUNCTIONS.md) file to get more info about the interpreter.
