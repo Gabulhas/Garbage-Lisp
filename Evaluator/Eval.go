@@ -3,6 +3,7 @@ package Evaluator
 import (
 	"GarbageLisp/Env"
 	"GarbageLisp/LispTypes"
+	"GarbageLisp/Parser"
 	"log"
 	"strings"
 )
@@ -164,6 +165,20 @@ func (evaluator *Evaluator) evalS_Expression(list LispTypes.List) LispTypes.Lisp
 		}
 		env.Contents[newVariableName] = evaluator.Run(content[len(content)-1])
 		return nil
+
+	} else if strings.EqualFold(symbol, "load") {
+		if len(content) != 2 {
+			log.Fatal("::ERROR:: Cannot load another script. Usage: load \"Path To File\"")
+		}
+		if filename, ok := content[1].(LispTypes.LispString); !ok {
+			log.Fatal("::ERROR:: Cannot load another script. Usage: load \"Path To File\"")
+		} else {
+			parsed := Parser.ParseFromFile(filename.Contents)
+			evaluator.Run(parsed)
+		}
+
+		return nil
+
 	} else {
 		var arguments []LispTypes.LispToken
 		for i, args := range content {

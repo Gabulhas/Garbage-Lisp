@@ -3,6 +3,7 @@ package Parser
 import (
 	"GarbageLisp/LispTypes"
 	"fmt"
+	"io/ioutil"
 	"log"
 	"regexp"
 	"strconv"
@@ -20,6 +21,16 @@ func NewParser(program string) *Parser {
 	newParser := new(Parser)
 	newParser.preTokens = tokenize(program)
 	return newParser
+}
+
+func ParseFromFile(filename string) LispTypes.LispToken {
+	content, err := ioutil.ReadFile(filename)
+	if err != nil {
+		log.Fatalf("\n::ERROR:: Couldn't Load File: %s", err)
+	}
+
+	text := string(content)
+	return Parse(text)
 }
 
 func Parse(program string) LispTypes.LispToken {
