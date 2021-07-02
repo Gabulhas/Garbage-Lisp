@@ -19,9 +19,7 @@ typed like **Python** and would be easier to code this using some language that 
 I'm not saying that **Go** needs them, I like it's minimalism :) .
 
 # TODO functionality wise
-- [ ] Better Scoping
 - [ ] New Type Definition
-- [ ] Allow functions inside functions
 - [ ] Files 
 - [ ] Import other modules
 - [ ] Use Linked Lists instead of Go Slices
@@ -30,8 +28,6 @@ I'm not saying that **Go** needs them, I like it's minimalism :) .
 
 # TODO code wise
 - [ ] Document the code
-- [ ] Document native functions
-
 
 
 # How to Run
