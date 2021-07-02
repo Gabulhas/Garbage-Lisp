@@ -246,6 +246,11 @@ Example:
 As you can see in this example, we can change the expression, in this case we added a new atom to the expression `6`
 and we can later evaluate it.
 
+### load
+Loads a file, in other words, Parses a File and Evaluates the whole file.
+For example, this can be used to define helper functions that can be used by multiple scripts.
+Usage: `(load "PATH TO FILE")`
+
 ---
 ## Native
 These functions are defined as primitive/native functions (NativeFunctions.go). 

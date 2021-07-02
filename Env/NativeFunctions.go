@@ -45,6 +45,11 @@ func InitEnvNativeFunctions(env Env) {
 	env.AddProcedureFromFunction(le, "<=")
 	env.AddProcedureFromFunction(eq, "=")
 
+	//Boolean Logic
+	env.AddProcedureFromFunction(and, "and")
+	env.AddProcedureFromFunction(or, "or")
+	env.AddProcedureFromFunction(not, "not")
+
 	//TypeChecks
 	env.AddProcedureFromFunction(is_list, "list?")
 	env.AddProcedureFromFunction(is_procedure, "procedure?")
@@ -183,6 +188,47 @@ func aritm(run func(accumulator, newvalue float64) float64, tokens ...LispTypes.
 		}
 	}
 	return LispTypes.ValueToNumber(accumulator)
+}
+
+func and(tokens ...LispTypes.LispToken) LispTypes.LispToken {
+	run := func(accumulator, newvalue bool) bool { return accumulator && newvalue }
+	return booleanlogic(run, tokens...)
+}
+
+func or(tokens ...LispTypes.LispToken) LispTypes.LispToken {
+	run := func(accumulator, newvalue bool) bool { return accumulator || newvalue }
+	return booleanlogic(run, tokens...)
+}
+
+func booleanlogic(run func(accumulator, newvalue bool) bool, tokens ...LispTypes.LispToken) LispTypes.LispToken {
+	var accumulator bool = false
+	for i, thisToken := range tokens {
+
+		if value, ok := thisToken.(LispTypes.LispBoolean); ok {
+			if i == 0 {
+				accumulator = value.Contents
+			} else {
+				accumulator = run(accumulator, value.Contents)
+			}
+		} else {
+			log.Fatalf("\n::ERROR:: Boolean error: %s not a boolean.", thisToken.ToString())
+		}
+	}
+	return LispTypes.LispBoolean{Contents: accumulator}
+}
+
+func not(tokens ...LispTypes.LispToken) LispTypes.LispToken {
+	if len(tokens) == 1 {
+		if value, ok := tokens[0].(LispTypes.LispBoolean); ok {
+			return LispTypes.LispBoolean{Contents: !value.Contents}
+		} else {
+			log.Fatalf("\n::ERROR:: Boolean error: %s not a boolean.", tokens[0].ToString())
+		}
+
+	} else {
+		log.Fatalf("\n::ERROR:: Boolean error: ! (not) only takes a single argument")
+	}
+	return nil
 }
 
 func begin(tokens ...LispTypes.LispToken) LispTypes.LispToken {
