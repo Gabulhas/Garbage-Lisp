@@ -37,12 +37,13 @@ I'm not saying that **Go** needs them, I like it's minimalism :) .
 3. Run with `./Garbage-Lisp`
 - If you don't supply any argument, it starts a REPL.
 - If you want to read from a file, you must supply the path to the file, or - if you want to read from stdin.
+- If you use the `-load` flag, it will execute a file and start a REPL after it. This is useful to debug files by using the REPL. Example: `./Garbage-Lisp -load my_code.gl`
 
 
 # Example
 
 Fibonacci function/procedure:
-```lisp
+```scheme
 (define fib 
     ; Defining a Lambda that takes 3 arguments, "a", "b" and "endvalue"
 
@@ -58,13 +59,17 @@ Fibonacci function/procedure:
 ```
 
 
+Program Execution (rule110):
+
+![rule110](https://i.imgur.com/nFrymgx.png)
+
+
+
 REPL Execution: 
 
 ![execution](https://i.imgur.com/9a3uPNn.png)
 
 
-If you use the `-load` flag, it will execute a file and start a REPL after it. 
-This is useful to debug files by using the REPL. Example: `./Garbage-Lisp -load my_code.gl`
 
 
 Check the [Examples](https://github.com/Gabulhas/Garbage-Lisp/tree/master/examples) folder.
@@ -79,7 +84,7 @@ Check the [Examples](https://github.com/Gabulhas/Garbage-Lisp/tree/master/exampl
 - `loading_file_example.gl` and `loaded_file_example.gl` - Loading a different script.
 
 
-Check the [Examples](https://github.com/Gabulhas/Garbage-Lisp/tree/master/FUNCTIONS.md) file to get more info about the interpreter.
+Check the [Examples](https://github.com/Gabulhas/Garbage-Lisp/tree/master/DOCS.md) file to get more info about the interpreter.
 
 # Project Structure
 - Env       - Environment Logic, like variables in the scope and native functions.
