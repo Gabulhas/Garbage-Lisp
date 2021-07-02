@@ -182,10 +182,15 @@ func (evaluator *Evaluator) evalS_Expression(list LispTypes.List) LispTypes.Lisp
 				innerEnv := new(Env.Env)
 				innerEnv.Contents = make(map[string]LispTypes.LispToken)
 				innerEnv.Using = true
+
 				lambdaBody := resultFunc.Call(innerEnv.Contents, arguments...)
-				newEvaluator := Evaluator{}
-				newEvaluator.currentEnv = evaluator.currentEnv
-				newEvaluator.innerEnv = innerEnv
+				newEvaluator := new(Evaluator)
+
+				for i := 0; i < len(evaluator.envs); i++ {
+					newEvaluator.envs = append(newEvaluator.envs, evaluator.envs[i])
+				}
+				newEvaluator.envs = append(newEvaluator.envs, innerEnv)
+
 				return newEvaluator.Run(lambdaBody)
 			}
 		default:

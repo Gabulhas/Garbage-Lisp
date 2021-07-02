@@ -6,48 +6,40 @@ import (
 )
 
 type Evaluator struct {
-	currentEnv Env.Env  //Current or Outer Env
-	innerEnv   *Env.Env //Inner Env
+	//Outer -> inner envs
+	envs []*Env.Env
 }
 
 func NewEval() *Evaluator {
+	//TODO change ENVS to queue/stack
 	neweval := new(Evaluator)
-	neweval.currentEnv = Env.InitStandardEnv()
-	innerEnv := new(Env.Env)
-	innerEnv.Contents = map[string]LispTypes.LispToken{}
-	innerEnv.Using = false
-	neweval.innerEnv = innerEnv
+	outer_env := new(Env.Env)
+	outer_env.Contents = Env.InitStandardEnv().Contents
+	neweval.envs = append(neweval.envs, outer_env)
 	return neweval
 }
 
 func (evaluator Evaluator) FindValue(key string) LispTypes.LispToken {
 
-	if value, isInList := evaluator.innerEnv.Contents[key]; isInList {
-		return value
+	for i := len(evaluator.envs) - 1; i >= 0; i-- {
+		if value, isInEnv := evaluator.envs[i].Contents[key]; isInEnv {
+			return value
+		}
 	}
-	if value, isInList := evaluator.currentEnv.Contents[key]; isInList {
-		return value
-	}
-
 	//We return false which is null
 	return LispTypes.LispBoolean{Contents: false}
 }
 
 func (evaluator Evaluator) FindEnv(key string) (Env.Env, bool) {
-	if _, isInEnv := evaluator.innerEnv.Contents[key]; isInEnv {
-		return *evaluator.innerEnv, true
-	}
-	if _, isInEnv := evaluator.currentEnv.Contents[key]; isInEnv {
-		return evaluator.currentEnv, true
+	for i := len(evaluator.envs) - 1; i >= 0; i-- {
+		if _, isInEnv := evaluator.envs[i].Contents[key]; isInEnv {
+			return *(evaluator.envs[i]), true
+		}
 	}
 	return Env.Env{}, false
 }
 
 func (evaluator Evaluator) Define(key string, token LispTypes.LispToken) {
-	if evaluator.innerEnv.Using {
-		evaluator.innerEnv.Contents[key] = token
-		return
-	}
-	evaluator.currentEnv.Contents[key] = token
+	evaluator.envs[len(evaluator.envs)-1].Contents[key] = token
 
 }

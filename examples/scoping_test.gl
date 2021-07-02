@@ -1,0 +1,17 @@
+(define fib 
+    (lambda (a)
+	(begin
+	    (define aux_fib (lambda (current accum)
+		(if (> current 0)
+		    (aux_fib (- current 1) (* accum current))
+		    accum
+		)
+		)
+	      )
+	      (aux_fib a 1)
+	  )
+    )
+)
+
+(printf "Insert the number to calculate fibonacci:")
+(printf "\n%a" (fib (inputNumber)))
