@@ -1,0 +1,6 @@
+(define lista (list print 4))
+(eval lista)
+
+
+(define quota (quote (print 4)))
+(eval quota)

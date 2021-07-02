@@ -3,7 +3,7 @@
 
 # Garbage Lisp  
 Well it works but isn't good.
-At least is **TURING COMPLETE**! 
+At least is **TURING COMPLETE** and I had fun coding it.
 
 Check the implementation of [Rule 110](https://github.com/Gabulhas/Garbage-Lisp/tree/master/examples/rule110.gl).
 This automaton is Turing Complete (check [Here](https://en.wikipedia.org/wiki/Rule_110)), meaning that the implementation of it proves that the system

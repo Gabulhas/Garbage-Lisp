@@ -191,16 +191,16 @@
 	1
     )
     )
-)
+  )
 
 (begin
-    (printf "\nWhat's the first sequence? (Example: 00101000100)")
-    (define sequence (inputString))
-    (printf "\nHow many generations do you want to generate? (Example: 20)")
-    (define generations (inputNumber))
-    (define first_state (
-			 map string_to_value (toCharList sequence)
-	)
-     )
-    (start_loop first_state generations)
-)
+  (printf "\nWhat's the first sequence? (Example: 00101000100)")
+  (define sequence (inputString))
+  (printf "\nHow many generations do you want to generate? (Example: 20)")
+  (define generations (inputNumber))
+  (define first_state (
+		       map string_to_value (toCharList sequence)
+		       )
+    )
+  (start_loop first_state generations)
+  )

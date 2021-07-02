@@ -36,7 +36,6 @@ func (evaluator *Evaluator) evalS_Expression(list LispTypes.List) LispTypes.Lisp
 		log.Fatalf("\n::ERROR:: %s Expression Not Starting With Symbol", list.ToString())
 	}
 	// "Builtins"
-	//TODO: Change this to something similar to NativeFunctions
 	if strings.EqualFold(symbol, "define") {
 
 		var newVariableName string
@@ -144,15 +143,16 @@ func (evaluator *Evaluator) evalS_Expression(list LispTypes.List) LispTypes.Lisp
 		}
 
 	} else if strings.EqualFold(symbol, "eval") {
-
-		if value, ok := LispTypes.UnpackFromExp(content[1]).(LispTypes.List); ok {
-
-			eager_evaluation := evaluator.Run(value)
-			return evaluator.Run(eager_evaluation)
+		var expression LispTypes.LispToken
+		if value, ok := content[1].(LispTypes.Symbol); ok {
+			symbol_value := evaluator.Run(value)
+			expression = LispTypes.UnpackFromExp(symbol_value)
 
 		} else {
-			return evaluator.Run(content[1])
+			expression = LispTypes.UnpackFromExp(content[1])
 		}
+
+		return evaluator.Run(expression)
 
 	} else if strings.EqualFold(symbol, "set!") {
 		newVariableName, err := LispTypes.GetSymbolContent(content[1])

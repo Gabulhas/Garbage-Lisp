@@ -30,7 +30,11 @@ Example: `"Hey"`.
 
 ### List
 Contains a List, and this List can include any other LispType, and a single List can include different ListTypes.
-Example: `(list 4 5 6)` is valid, and so is `(list "hey" 4 print)`. `(quote (print 4))` will also return a list (`[print],[4.000]`).
+Example: `(list 4 5 6)` is valid, and so is `(list "hey" 4 print)`.
+
+**Note**: There's a big difference between `list` lists, and `quote` lists. 
+The elements are evaluated if you use the `list` keyword, this means that `(list (* 4 4) 4)` will be `[16.000],[4.000]`,
+but if you use the keyword `quote`, the elements won't be evaluated, this menas that `(quote (* 4 4) 4 )` will evaluate to `[[*],[4.000],[4.000]],[4.000]`.
 
 
 ### Number

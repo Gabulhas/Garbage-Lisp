@@ -58,6 +58,7 @@ func InitEnvNativeFunctions(env Env) {
 	env.AddProcedureFromFunction(is_number, "number?")
 	env.AddProcedureFromFunction(is_string, "string?")
 	env.AddProcedureFromFunction(is_equals, "equals?")
+	env.AddProcedureFromFunction(what_type, "type?")
 
 	//Strings
 	env.AddProcedureFromFunction(charList, "toCharList")
@@ -226,7 +227,7 @@ func not(tokens ...LispTypes.LispToken) LispTypes.LispToken {
 		}
 
 	} else {
-		log.Fatalf("\n::ERROR:: Boolean error: ! (not) only takes a single argument")
+		log.Fatalf("\n::ERROR:: Boolean error: not only takes a single argument: Usage: not BOOLEAN")
 	}
 	return nil
 }
@@ -452,6 +453,15 @@ func charList(tokens ...LispTypes.LispToken) LispTypes.LispToken {
 		log.Fatal("::ERROR:: Bad use of 'toCharList' function.")
 	}
 	return nil
+}
+
+func what_type(tokens ...LispTypes.LispToken) LispTypes.LispToken {
+	if len(tokens) != 1 {
+		log.Fatal("::ERROR:: Bad use of 'type?' function. Usage: type? ATOM")
+	}
+
+	//TODO: Should it return symbol or string??
+	return LispTypes.Symbol{Contents: tokens[0].GetType().ToString()}
 }
 
 func toString(tokens ...LispTypes.LispToken) LispTypes.LispToken {

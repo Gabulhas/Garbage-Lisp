@@ -11,7 +11,6 @@ type Evaluator struct {
 }
 
 func NewEval() *Evaluator {
-	//TODO change ENVS to queue/stack
 	neweval := new(Evaluator)
 	outer_env := new(Env.Env)
 	outer_env.Contents = Env.InitStandardEnv().Contents
