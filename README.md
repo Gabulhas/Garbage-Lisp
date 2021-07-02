@@ -76,6 +76,7 @@ Check the [Examples](https://github.com/Gabulhas/Garbage-Lisp/tree/master/exampl
 - `map.gl`      - Example implementation of the `map` keyword directly in GarbageLisp
 - `metaprogramming_sortof.gl` - Sort of Metaprogramming. Using Quote and Evaluating Lists as S-expressions.
 - `rule110.gl` - Implementation of Rule 110 in GarbageLisp, also proof that GarbageLisp is Turing Complete.
+- `loading_file_example.gl` and `loaded_file_example.gl` - Loading a different script.
 
 
 Check the [Examples](https://github.com/Gabulhas/Garbage-Lisp/tree/master/FUNCTIONS.md) file to get more info about the interpreter.

@@ -1,0 +1,29 @@
+; This file will be loaded by other script :)
+
+(define head car)
+(define tail cdr)
+(define get_last (lambda (my_list)
+		   (begin 
+			(define current_tail (tail my_list))
+			(if (= 0 (len current_tail))
+			(head my_list)
+			(get_last current_tail)
+			)
+	    )
+    )
+)
+
+(define list_reverse (lambda (my_list)
+    (begin
+	(define list_reverse_aux (lambda (my_list_temp result)
+		(if (= 0 (len my_list_temp))
+		    result
+		    (list_reverse_aux (tail my_list_temp) (cons (head my_list_temp) result))
+		)
+	    )
+	)
+
+	(list_reverse_aux my_list (list))
+      ) 
+
+))

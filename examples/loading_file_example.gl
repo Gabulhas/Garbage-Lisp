@@ -1,0 +1,12 @@
+; Loading a different file with some 
+(load "examples/loaded_file_example.gl")
+; It has some helper functions that won't be defined in this current file :D
+
+(define my_test_list (list 1 4 6 2 3))
+
+
+(printf "\nThe list %a" my_test_list)
+(printf "\nLast Element of the list %a" (get_last my_test_list))
+(printf "\nFirst Element of the list %a" (head my_test_list))
+(printf "\nSecond Element of the list %a" (head (tail my_test_list)))
+(printf "\nThe list but reversed %a" (list_reverse my_test_list))
