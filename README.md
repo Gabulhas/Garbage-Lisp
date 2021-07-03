@@ -25,6 +25,7 @@ I'm not saying that **Go** needs them, I like it's minimalism :) .
 - [ ] Use Linked Lists instead of Go Slices
 - [ ] concurrency (jk)
 - [ ] Print error location
+- [ ] Command-line arguments
 
 # TODO code wise
 - [ ] Document the code

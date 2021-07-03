@@ -196,7 +196,6 @@ func (evaluator *Evaluator) evalS_Expression(list LispTypes.List) LispTypes.Lisp
 
 				innerEnv := new(Env.Env)
 				innerEnv.Contents = make(map[string]LispTypes.LispToken)
-				innerEnv.Using = true
 
 				lambdaBody := resultFunc.Call(innerEnv.Contents, arguments...)
 				newEvaluator := new(Evaluator)

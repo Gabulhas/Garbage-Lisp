@@ -32,8 +32,6 @@ func Loop(myEval *Evaluator.Evaluator, loaded bool) {
 			continue
 		}
 
-		//TODO: Change to string builder
-		//TODO: Make this cleaner
 		for lparen, rparen := countParentheses(text); lparen > rparen; {
 			fmt.Print("...")
 			temp, _ := reader.ReadString('\n')
