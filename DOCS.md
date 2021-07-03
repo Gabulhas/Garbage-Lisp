@@ -12,11 +12,6 @@ Note: `ToString` returns information of the type and the content of a variable, 
 This is used to differentiate a string for debugging and other string for output/to be used as string in other functions.
 For example, we have 2 variables, a `Number` that contains the value `4.000` and a `LispString` that contains the value `"4.000"`. The method `ToString` will return "NUMBER 4.000" and "STRING 4.000", while `ValueToString` will return "4.000" for both.
 
-### Atom (Deprecated)
-Every Type in GarbageLisp is an Atom.
-Might be removed in later versions.
-
-
 ### Boolean
 Contains a Boolean type, either `true` or `false`. Go's native `nil` is also considered as `false`.
 
@@ -25,14 +20,14 @@ Encapsulates Atoms/Expressions returned by the Parser.
 Example: `(print (+ 1 1))` is an `Exp` that contains an Atom (`print`) and another `Exp` (`(+ 1 1)`).
 
 ### LispString
-Contains a Go `string`. 
+Contains a Go `string`.
 Example: `"Hey"`.
 
 ### List
 Contains a List, and this List can include any other LispType, and a single List can include different ListTypes.
 Example: `(list 4 5 6)` is valid, and so is `(list "hey" 4 print)`.
 
-**Note**: There's a big difference between `list` lists, and `quote` lists. 
+**Note**: There's a big difference between `list` lists, and `quote` lists.
 The elements are evaluated if you use the `list` keyword, this means that `(list (* 4 4) 4)` will be `[16.000],[4.000]`,
 but if you use the keyword `quote`, the elements won't be evaluated, this menas that `(quote (* 4 4) 4 )` will evaluate to `[[*],[4.000],[4.000]],[4.000]`.
 
@@ -45,16 +40,16 @@ Example: `10` or `4.0`
 
 ### Procedure
 Contains the Name of the Function, it's Body and it's possible Arguments/Parameters.
-Also, it includes it's own Environment (or Scope), which initially includes it's parameters so they can be used to evaluate the function. 
+Also, it includes it's own Environment (or Scope), which initially includes it's parameters so they can be used to evaluate the function.
 Functions can created using the `lambda` keyword/native function, which takes a list of symbols (arguments) and an expression.
 Native Functions are also stored as Procedures in the Top/Outside Scope.
 
-Example: 
+Example:
 This function takes two numbers  (`(a b)`) and returns the sum of those two numbers (`(+ a b)`)
 ```lisp
-(lambda 
+(lambda
     ;Argument/Parameter definition
-    (a b) 
+    (a b)
     ;Procedure Body
     (+ a b)
 )
@@ -66,13 +61,13 @@ This function takes another function/Procedure and uses the number 4 as that fun
 
 ```lisp
 ; Defining a new Procedure, "square", which takes a number as an argument and squares it
-(define square 
+(define square
     (lambda (a)
 	(* a a)
     )
 )
 
-; Using the Map function, which takes a Procedure and List, and applies the Procedure 
+; Using the Map function, which takes a Procedure and List, and applies the Procedure
 ; to every element of the list and returns a new list
 
 (map square (list 1 2 3 4))
@@ -109,7 +104,7 @@ Defines new value/variable in the inner most environment/scope.
 Usage: `(define SYMBOL_NAME VALUE)`
 
 
-Example: 
+Example:
 Defining a number
 ```lisp
 (define pi 3.14159265359)
@@ -117,7 +112,7 @@ Defining a number
 
 Defining a Procedure
 ```lisp
-(define square 
+(define square
     (lambda (a)
 	(* a a)
     )
@@ -130,7 +125,7 @@ Evaluates the second argument if the first argument evaluates to `true`,
 evaluates the third argument otherwise.
 Usage: `(if (THEN BRANCH) (ELSE BRANCH))`
 
-Example: 
+Example:
 ```lisp
 ; if 1 is less then 2
 (if  (< 1 2)
@@ -146,19 +141,19 @@ Example:
 
 ### lambda
 Creates a new lambda/anonymous function.
-First argument defines the names/symbols of the arguments, and the second argument defines 
+First argument defines the names/symbols of the arguments, and the second argument defines
 de function body.
 Usage: `(lambda (ARGUMENTS) (BODY))`
 
-Example: 
+Example:
 Tail-Recursive Fibonacci.
 ```lisp
 ; Defining
 (define fibonacci
     ; a, b and endvalue are he arguments
-    (lambda (a b endvalue) 
+    (lambda (a b endvalue)
 	; Procedure body
-	(if (> b endvalue) 
+	(if (> b endvalue)
 		; if True
 		a
 		; else
@@ -178,7 +173,7 @@ Usage: `(lambda (FUNCTION/CALLBACK) (LIST))`
 Example:
 Defining a new function `square` and calling the function with every element of the list.
 ```lisp
-(define square 
+(define square
     (lambda (a)
 	(* a a)
     )
@@ -231,8 +226,8 @@ Example:
 ```lisp
 ; ++ concatenates two lists
 (define my_exp
-    (++ 
-	(quote (print 4)) 
+    (++
+	(quote (print 4))
 	(list 6)
     )
 )
@@ -257,7 +252,7 @@ Usage: `(load "PATH TO FILE")`
 
 ---
 ## Native
-These functions are defined as primitive/native functions (NativeFunctions.go). 
+These functions are defined as primitive/native functions (NativeFunctions.go).
 Unlike builtins, these functions are lambdas defined in the outer most environment/scope.
 These are implemented to enable the creation of non-native functions, making it possible to define GarbageLisp functions.
 
@@ -303,7 +298,7 @@ Example:
 ```
 
 Logical Operations:
-- `>` - Greater than 
+- `>` - Greater than
 - `<` - Smaller than
 - `>=` - Greater or equal than
 - `<=` - Smaller or equal than
@@ -313,7 +308,7 @@ Logical Operations:
 ### List Functions
 These functions are used to manipulate Lists.
 In Lisp, there's a notion of List, where all Lists have an Head and a Tail.
-For example, the list [1,2,3,4] has the head `1` and the tail `2,3,4`, and this tail is also a list, 
+For example, the list [1,2,3,4] has the head `1` and the tail `2,3,4`, and this tail is also a list,
 that has `2` as it's head, and `3,4` as it's tail and so on.
 Most operations use this notion of `head` and `tail`.
 
@@ -381,7 +376,7 @@ Example:
 Example:
 ```lisp
 (print "I'm %a years old, and my name is %a" 21 "Gabulhas")
-; Output: I'm 21 years old, and my name is Gabulhas         
+; Output: I'm 21 years old, and my name is Gabulhas
 ```
 
 
