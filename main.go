@@ -1,10 +1,10 @@
 package main
 
 import (
-	"GarbageLisp/Evaluator"
-	"GarbageLisp/OutputHandler"
-	"GarbageLisp/Parser"
-	repl "GarbageLisp/Repl"
+	"github.com/Gabulhas/Garbage-Lisp/Evaluator"
+	"github.com/Gabulhas/Garbage-Lisp/OutputHandler"
+	"github.com/Gabulhas/Garbage-Lisp/Parser"
+	repl "github.com/Gabulhas/Garbage-Lisp/Repl"
 	"fmt"
 	"log"
 	"os"

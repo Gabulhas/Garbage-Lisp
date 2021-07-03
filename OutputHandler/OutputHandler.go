@@ -1,6 +1,6 @@
 package OutputHandler
 
-import "GarbageLisp/LispTypes"
+import "github.com/Gabulhas/Garbage-Lisp/LispTypes"
 
 func PrettyPrint(token LispTypes.LispToken) string {
 

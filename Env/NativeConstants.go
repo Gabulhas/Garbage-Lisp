@@ -1,7 +1,7 @@
 package Env
 
 import (
-	"GarbageLisp/LispTypes"
+	"github.com/Gabulhas/Garbage-Lisp/LispTypes"
 	"math"
 )
 

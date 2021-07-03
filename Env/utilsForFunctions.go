@@ -1,6 +1,6 @@
 package Env
 
-import "GarbageLisp/LispTypes"
+import "github.com/Gabulhas/Garbage-Lisp/LispTypes"
 
 func unpackList(token LispTypes.LispToken) []LispTypes.LispToken {
 

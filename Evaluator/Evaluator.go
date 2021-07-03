@@ -1,8 +1,8 @@
 package Evaluator
 
 import (
-	"GarbageLisp/Env"
-	"GarbageLisp/LispTypes"
+	"github.com/Gabulhas/Garbage-Lisp/Env"
+	"github.com/Gabulhas/Garbage-Lisp/LispTypes"
 )
 
 type Evaluator struct {

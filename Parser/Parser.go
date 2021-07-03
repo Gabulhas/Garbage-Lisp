@@ -1,7 +1,7 @@
 package Parser
 
 import (
-	"GarbageLisp/LispTypes"
+	"github.com/Gabulhas/Garbage-Lisp/LispTypes"
 	"fmt"
 	"io/ioutil"
 	"log"

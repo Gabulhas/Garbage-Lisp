@@ -1,9 +1,9 @@
 package Evaluator
 
 import (
-	"GarbageLisp/Env"
-	"GarbageLisp/LispTypes"
-	"GarbageLisp/Parser"
+	"github.com/Gabulhas/Garbage-Lisp/Env"
+	"github.com/Gabulhas/Garbage-Lisp/LispTypes"
+	"github.com/Gabulhas/Garbage-Lisp/Parser"
 	"log"
 	"strings"
 )

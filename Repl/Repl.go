@@ -1,9 +1,9 @@
 package repl
 
 import (
-	"GarbageLisp/Evaluator"
-	"GarbageLisp/OutputHandler"
-	"GarbageLisp/Parser"
+	"github.com/Gabulhas/Garbage-Lisp/Evaluator"
+	"github.com/Gabulhas/Garbage-Lisp/OutputHandler"
+	"github.com/Gabulhas/Garbage-Lisp/Parser"
 	"bufio"
 	"fmt"
 	"os"
