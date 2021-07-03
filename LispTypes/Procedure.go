@@ -53,10 +53,6 @@ func (Procedure) InitLambda(arguments, lambdaContent LispToken) Procedure {
 		Arguments:     argumentsAsString,
 	}
 }
-func (procedure Procedure) IsNative() bool {
-	return procedure.Native
-}
-
 func (procedure Procedure) Call(env map[string]LispToken, params ...LispToken) LispToken {
 	if procedure.Native {
 		return procedure.NativeContent(params...)

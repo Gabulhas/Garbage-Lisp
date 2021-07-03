@@ -10,6 +10,3 @@ func PrettyPrint(token LispTypes.LispToken) string {
 	return ""
 }
 
-func PrintError(message string) {
-
-}

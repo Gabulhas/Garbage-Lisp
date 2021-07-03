@@ -19,5 +19,5 @@ func (symbol Symbol) ToString() string {
 }
 
 func (symbol Symbol) ValueToString() string {
-	return fmt.Sprintf("%s", symbol.Contents)
+	return symbol.GetContent()
 }

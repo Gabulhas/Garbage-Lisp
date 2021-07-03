@@ -1,8 +1,8 @@
 package Parser
 
 import (
-	"github.com/Gabulhas/Garbage-Lisp/LispTypes"
 	"fmt"
+	"github.com/Gabulhas/Garbage-Lisp/LispTypes"
 	"io/ioutil"
 	"log"
 	"regexp"
@@ -109,12 +109,12 @@ func (parser *Parser) readFromTokens() LispTypes.LispToken {
 		}
 	}
 
-	return atom(token)
+	return SymbolOrNumber(token)
 }
 
-func atom(token string) LispTypes.Atom {
+func SymbolOrNumber(token string) LispTypes.LispToken {
 	if value, err := strconv.ParseFloat(token, 32); err == nil {
-		return LispTypes.Atom{Contents: LispTypes.Number{Contents: value}}
+		return LispTypes.Number{Contents: value}
 	}
-	return LispTypes.Atom{Contents: LispTypes.Symbol{Contents: token}}
+	return LispTypes.Symbol{Contents: token}
 }

@@ -1,11 +1,11 @@
 package repl
 
 import (
+	"bufio"
+	"fmt"
 	"github.com/Gabulhas/Garbage-Lisp/Evaluator"
 	"github.com/Gabulhas/Garbage-Lisp/OutputHandler"
 	"github.com/Gabulhas/Garbage-Lisp/Parser"
-	"bufio"
-	"fmt"
 	"os"
 	"os/signal"
 )
@@ -13,7 +13,6 @@ import (
 var exitFlag int
 var text string
 
-//Main loop
 func Loop(myEval *Evaluator.Evaluator, loaded bool) {
 	fmt.Println("Welcome to GarbageLisp REPL.")
 	catchSigint()

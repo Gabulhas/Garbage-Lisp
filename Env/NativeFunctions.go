@@ -1,8 +1,8 @@
 package Env
 
 import (
-	"github.com/Gabulhas/Garbage-Lisp/LispTypes"
 	"fmt"
+	"github.com/Gabulhas/Garbage-Lisp/LispTypes"
 	"log"
 	"strings"
 )
@@ -137,12 +137,13 @@ func sub(tokens ...LispTypes.LispToken) LispTypes.LispToken {
 func intpart(tokens ...LispTypes.LispToken) LispTypes.LispToken {
 
 	if value, ok := tokens[0].(LispTypes.Number); ok {
-		return LispTypes.ValueToNumber(float64(int(value.Contents)))
+		return LispTypes.Number{Contents: float64(int(value.Contents))}
+
 	} else {
 		log.Fatalf("\n::ERROR::  %s Not a Number.", tokens[0].ToString())
 	}
 
-	return LispTypes.ValueToNumber(float64(int(0)))
+	return LispTypes.Number{Contents: float64(0)}
 
 }
 
@@ -188,7 +189,7 @@ func aritm(run func(accumulator, newvalue float64) float64, tokens ...LispTypes.
 			log.Fatalf("\n::ERROR:: Arithmetic error: %s not a number.", thisToken.ToString())
 		}
 	}
-	return LispTypes.ValueToNumber(accumulator)
+	return LispTypes.Number{Contents: accumulator}
 }
 
 func and(tokens ...LispTypes.LispToken) LispTypes.LispToken {

@@ -1,11 +1,12 @@
 package Evaluator
 
 import (
+	"log"
+	"strings"
+
 	"github.com/Gabulhas/Garbage-Lisp/Env"
 	"github.com/Gabulhas/Garbage-Lisp/LispTypes"
 	"github.com/Gabulhas/Garbage-Lisp/Parser"
-	"log"
-	"strings"
 )
 
 func (evaluator *Evaluator) Run(parsedTokens LispTypes.LispToken) LispTypes.LispToken {
@@ -19,7 +20,7 @@ func (evaluator *Evaluator) Run(parsedTokens LispTypes.LispToken) LispTypes.Lisp
 	case LispTypes.Number:
 		return parsedTokens
 	case LispTypes.List:
-		return evaluator.evalS_Expression(value)
+		return evaluator.evalSEXPRESSION(value)
 	case LispTypes.LispBoolean:
 		return parsedTokens
 	case LispTypes.Exp:
@@ -29,7 +30,7 @@ func (evaluator *Evaluator) Run(parsedTokens LispTypes.LispToken) LispTypes.Lisp
 	return nil
 }
 
-func (evaluator *Evaluator) evalS_Expression(list LispTypes.List) LispTypes.LispToken {
+func (evaluator *Evaluator) evalSEXPRESSION(list LispTypes.List) LispTypes.LispToken {
 	content := list.Contents
 	symbol, err := LispTypes.GetSymbolContent(content[0])
 	if err != nil {
@@ -78,24 +79,11 @@ func (evaluator *Evaluator) evalS_Expression(list LispTypes.List) LispTypes.Lisp
 		alt := content[3]
 
 		var testResult bool
-		switch value := test.(type) {
-		case LispTypes.LispBoolean:
+
+		if value, ok := test.(LispTypes.LispBoolean); ok {
 			testResult = value.GetContent()
-			break
-		case LispTypes.List:
-			if len(list.GetContent()) > 0 {
-				testResult = true
-			} else {
-				testResult = false
-			}
-			break
-		case LispTypes.Number:
-			if value.GetContent() > 0 {
-				testResult = true
-			} else {
-				testResult = false
-			}
-			break
+		} else {
+			log.Fatalf("\n::ERROR:: if first argument must be a boolean: if (boolean) (then case) (else case). Got %s", test.ToString())
 		}
 
 		if testResult {
@@ -190,7 +178,7 @@ func (evaluator *Evaluator) evalS_Expression(list LispTypes.List) LispTypes.Lisp
 
 		switch resultFunc := evaluator.Run(content[0]).(type) {
 		case LispTypes.Procedure:
-			if resultFunc.IsNative() {
+			if resultFunc.Native {
 				return resultFunc.Call(nil, arguments...)
 			} else {
 

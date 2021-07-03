@@ -1,7 +1,7 @@
 ![logo](https://i.imgur.com/KGKYp3F.png)
 
 
-# Garbage Lisp  
+# Garbage Lisp
 Well it works but isn't good.
 At least is **TURING COMPLETE** and I had fun coding it.
 
@@ -15,17 +15,18 @@ is also turing complete.
 I coded this to learn about Interpreters, so this is definitely not a good example nor it works like most lisps so far.
 
 I tried following this guide http://norvig.com/lispy.html, yet I had to change a lot of stuff because **Go** isn't Dynamically
-typed like **Python** and would be easier to code this using some language that has generics. 
+typed like **Python** and would be easier to code this using some language that has generics.
 I'm not saying that **Go** needs them, I like it's minimalism :) .
 
 # TODO functionality wise
-- [ ] New Type Definition
-- [ ] Files 
-- [ ] Import other modules
+- [ ] New Type Definition/Objects (Probably Using Golang's maps)
+- [ ] Better way to create a function
+- [ ] Don't kill if in REPL
+- [ ] Separate Functions in NativeFunctions.go
+- [ ] Files
 - [ ] Use Linked Lists instead of Go Slices
 - [ ] concurrency (jk)
 - [ ] Print error location
-- [ ] Command-line arguments
 
 # TODO code wise
 - [ ] Document the code
@@ -45,11 +46,11 @@ I'm not saying that **Go** needs them, I like it's minimalism :) .
 
 Fibonacci function/procedure:
 ```scheme
-(define fib 
+(define fib
     ; Defining a Lambda that takes 3 arguments, "a", "b" and "endvalue"
 
     (lambda (a b endvalue) (
-	if (> b endvalue) 
+	if (> b endvalue)
 	    ; if True
 	    a
 	    ; else
@@ -66,7 +67,7 @@ Program Execution (rule110):
 
 
 
-REPL Execution: 
+REPL Execution:
 
 ![execution](https://i.imgur.com/9a3uPNn.png)
 
