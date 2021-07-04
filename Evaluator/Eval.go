@@ -15,19 +15,13 @@ func (evaluator *Evaluator) Run(parsedTokens LispTypes.LispToken) LispTypes.Lisp
 
 	case LispTypes.Symbol:
 		return evaluator.FindValue(value.Contents)
-	case LispTypes.LispString:
-		return parsedTokens
-	case LispTypes.Number:
-		return parsedTokens
 	case LispTypes.List:
 		return evaluator.evalSEXPRESSION(value)
-	case LispTypes.LispBoolean:
-		return parsedTokens
 	case LispTypes.Exp:
 		return evaluator.Run(value.GetContent())
+	default:
+		return parsedTokens
 	}
-	log.Printf("\n::ERROR:: Unexpected Type")
-	return nil
 }
 
 func (evaluator *Evaluator) evalSEXPRESSION(list LispTypes.List) LispTypes.LispToken {

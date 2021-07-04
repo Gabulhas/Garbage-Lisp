@@ -80,6 +80,7 @@ func (parser *Parser) readFromTokens() LispTypes.LispToken {
 			parser.preTokens = parser.preTokens[1:]
 		}
 	case "(":
+		//TODO: Change this to list
 		L := LispTypes.Exp{
 			Contents: LispTypes.List{Contents: []LispTypes.LispToken{}},
 		}

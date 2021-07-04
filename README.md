@@ -19,11 +19,13 @@ typed like **Python** and would be easier to code this using some language that 
 I'm not saying that **Go** needs them, I like it's minimalism :) .
 
 # Old Stuff to Improve
+- [ ] Have Floats and Ints inside the Number Atom
 - [ ] Use Linked Lists instead of Go Slices
 - [ ] Tail recursion optimization
 - [ ] Better way to create a function
 - [ ] Separate Functions in NativeFunctions.go
 - [ ] Print error location
+- [ ] Remove Exp type
 - [ ] Check the ammount of arguments for every function. (Old ones specially)
 
 

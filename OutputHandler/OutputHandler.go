@@ -2,9 +2,10 @@ package OutputHandler
 
 import (
 	"fmt"
+	"log"
+
 	"github.com/Gabulhas/Garbage-Lisp/Config"
 	"github.com/Gabulhas/Garbage-Lisp/LispTypes"
-	"log"
 )
 
 func PrettyPrint(token LispTypes.LispToken) string {

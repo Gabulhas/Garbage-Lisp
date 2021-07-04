@@ -94,6 +94,10 @@ func eq(tokens ...LispTypes.LispToken) LispTypes.LispToken {
 
 func cmp(run func(a, b float64) bool, tokens ...LispTypes.LispToken) LispTypes.LispToken {
 
+	if len(tokens) < 2 {
+		log.Printf("\n::ERROR:: You need at least 2 values to compare, got %d", len(tokens))
+	}
+
 	var lastNumber float64
 
 	for i, thisToken := range tokens {
@@ -177,6 +181,11 @@ func minnumber(tokens ...LispTypes.LispToken) LispTypes.LispToken {
 }
 
 func aritm(run func(accumulator, newvalue float64) float64, tokens ...LispTypes.LispToken) LispTypes.LispToken {
+
+	if len(tokens) < 2 {
+		log.Printf("\n::ERROR:: You need at least 2 values to execute an arithemtic function, got %d", len(tokens))
+	}
+
 	var accumulator float64 = 1
 	for i, thisToken := range tokens {
 
@@ -205,6 +214,11 @@ func or(tokens ...LispTypes.LispToken) LispTypes.LispToken {
 }
 
 func booleanlogic(run func(accumulator, newvalue bool) bool, tokens ...LispTypes.LispToken) LispTypes.LispToken {
+
+	if len(tokens) < 2 {
+		log.Printf("\n::ERROR:: You need at least 2 values for Boolean logic, got %d", len(tokens))
+	}
+
 	var accumulator bool = false
 	for i, thisToken := range tokens {
 
@@ -238,6 +252,9 @@ func not(tokens ...LispTypes.LispToken) LispTypes.LispToken {
 }
 
 func begin(tokens ...LispTypes.LispToken) LispTypes.LispToken {
+	if len(tokens) == 0 {
+		log.Printf("\n::ERROR:: begin function requires at least one expression.")
+	}
 	return tokens[len(tokens)-1]
 }
 
