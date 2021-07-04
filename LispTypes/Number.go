@@ -2,6 +2,7 @@ package LispTypes
 
 import "fmt"
 
+//TODO: Encapsulating Float or Int
 type Number struct {
 	Contents float64
 }

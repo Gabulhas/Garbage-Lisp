@@ -1,17 +1,19 @@
 package main
 
 import (
+	"fmt"
+	"log"
+	"os"
+
 	"github.com/Gabulhas/Garbage-Lisp/Evaluator"
 	"github.com/Gabulhas/Garbage-Lisp/OutputHandler"
 	"github.com/Gabulhas/Garbage-Lisp/Parser"
 	repl "github.com/Gabulhas/Garbage-Lisp/Repl"
-	"fmt"
-	"log"
-	"os"
 )
 
 func init() {
-	log.SetFlags(log.LstdFlags | log.Lshortfile)
+	//log.SetFlags(log.LstdFlags | log.Lshortfile)
+	log.SetFlags(0)
 }
 
 func main() {

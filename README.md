@@ -18,15 +18,20 @@ I tried following this guide http://norvig.com/lispy.html, yet I had to change a
 typed like **Python** and would be easier to code this using some language that has generics.
 I'm not saying that **Go** needs them, I like it's minimalism :) .
 
-# TODO functionality wise
-- [ ] New Type Definition/Objects (Probably Using Golang's maps)
-- [ ] Better way to create a function
-- [ ] Don't kill if in REPL
-- [ ] Separate Functions in NativeFunctions.go
-- [ ] Files
+# Old Stuff to Improve
 - [ ] Use Linked Lists instead of Go Slices
-- [ ] concurrency (jk)
+- [ ] Tail recursion optimization
+- [ ] Better way to create a function
+- [ ] Separate Functions in NativeFunctions.go
 - [ ] Print error location
+- [ ] Check the ammount of arguments for every function. (Old ones specially)
+
+
+# New Stuff to Add
+- [ ] **CHANGE PROJECT NAME FROM Garbage-Lisp to GarbageLisp**, it's super critical.
+- [ ] Files
+- [ ] New Type Definition/Objects (Probably Using Golang's maps)
+- [ ] concurrency (jk)
 
 # TODO code wise
 - [ ] Document the code

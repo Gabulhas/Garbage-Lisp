@@ -2,12 +2,13 @@ package Parser
 
 import (
 	"fmt"
-	"github.com/Gabulhas/Garbage-Lisp/LispTypes"
 	"io/ioutil"
 	"log"
 	"regexp"
 	"strconv"
 	"strings"
+
+	"github.com/Gabulhas/Garbage-Lisp/LispTypes"
 )
 
 //Not my REGEX, check MAL lisp Implementation
@@ -26,7 +27,8 @@ func NewParser(program string) *Parser {
 func ParseFromFile(filename string) LispTypes.LispToken {
 	content, err := ioutil.ReadFile(filename)
 	if err != nil {
-		log.Fatalf("\n::ERROR:: Couldn't Load File: %s", err)
+		log.Printf("\n::ERROR:: Couldn't Load File: %s", err)
+		return nil
 	}
 
 	text := string(content)

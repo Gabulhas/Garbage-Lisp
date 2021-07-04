@@ -2,9 +2,10 @@ package Env
 
 import (
 	"fmt"
-	"github.com/Gabulhas/Garbage-Lisp/LispTypes"
 	"log"
 	"strings"
+
+	"github.com/Gabulhas/Garbage-Lisp/LispTypes"
 )
 
 func InitEnvNativeFunctions(env Env) {
@@ -91,7 +92,7 @@ func eq(tokens ...LispTypes.LispToken) LispTypes.LispToken {
 	return cmp(run, tokens...)
 }
 
-func cmp(run func(a, b float64) bool, tokens ...LispTypes.LispToken) LispTypes.LispBoolean {
+func cmp(run func(a, b float64) bool, tokens ...LispTypes.LispToken) LispTypes.LispToken {
 
 	var lastNumber float64
 
@@ -106,7 +107,8 @@ func cmp(run func(a, b float64) bool, tokens ...LispTypes.LispToken) LispTypes.L
 				lastNumber = value
 			}
 		} else {
-			log.Fatalf("\n::ERROR:: %s not a Number.", thisToken.ValueToString())
+			log.Printf("\n::ERROR:: %s not a Number.", thisToken.ValueToString())
+			return nil
 		}
 	}
 	return LispTypes.LispBoolean{Contents: true}
@@ -140,10 +142,9 @@ func intpart(tokens ...LispTypes.LispToken) LispTypes.LispToken {
 		return LispTypes.Number{Contents: float64(int(value.Contents))}
 
 	} else {
-		log.Fatalf("\n::ERROR::  %s Not a Number.", tokens[0].ToString())
+		log.Printf("\n::ERROR::  %s Not a Number.", tokens[0].ToString())
+		return nil
 	}
-
-	return LispTypes.Number{Contents: float64(0)}
 
 }
 
@@ -186,7 +187,8 @@ func aritm(run func(accumulator, newvalue float64) float64, tokens ...LispTypes.
 				accumulator = run(accumulator, value)
 			}
 		} else {
-			log.Fatalf("\n::ERROR:: Arithmetic error: %s not a number.", thisToken.ToString())
+			log.Printf("\n::ERROR:: Arithmetic error: %s not a number.", thisToken.ToString())
+			return nil
 		}
 	}
 	return LispTypes.Number{Contents: accumulator}
@@ -213,7 +215,8 @@ func booleanlogic(run func(accumulator, newvalue bool) bool, tokens ...LispTypes
 				accumulator = run(accumulator, value.Contents)
 			}
 		} else {
-			log.Fatalf("\n::ERROR:: Boolean error: %s not a boolean.", thisToken.ToString())
+			log.Printf("\n::ERROR:: Boolean error: %s not a boolean.", thisToken.ToString())
+			return nil
 		}
 	}
 	return LispTypes.LispBoolean{Contents: accumulator}
@@ -224,11 +227,12 @@ func not(tokens ...LispTypes.LispToken) LispTypes.LispToken {
 		if value, ok := tokens[0].(LispTypes.LispBoolean); ok {
 			return LispTypes.LispBoolean{Contents: !value.Contents}
 		} else {
-			log.Fatalf("\n::ERROR:: Boolean error: %s not a boolean.", tokens[0].ToString())
+			log.Printf("\n::ERROR:: Boolean error: %s not a boolean.", tokens[0].ToString())
+			return nil
 		}
 
 	} else {
-		log.Fatalf("\n::ERROR:: Boolean error: not only takes a single argument: Usage: not BOOLEAN")
+		log.Printf("\n::ERROR:: Boolean error: not only takes a single argument: Usage: not BOOLEAN")
 	}
 	return nil
 }
@@ -273,7 +277,8 @@ func printfLisp(tokens ...LispTypes.LispToken) LispTypes.LispToken {
 	lastPart := parts[len(parts)-1]
 	parts = parts[:len(parts)-1]
 	if len(parts) != len(tokens) {
-		log.Fatalf("\n::ERROR:: Template Parts and Provided Elements mismatch. Length Parts %d. Length Elements %d", len(parts), (len(tokens)))
+		log.Printf("\n::ERROR:: Template Parts and Provided Elements mismatch. Length Parts %d. Length Elements %d", len(parts), (len(tokens)))
+		return nil
 	}
 	resultingString := ""
 
@@ -298,7 +303,8 @@ func inputNumber(tokens ...LispTypes.LispToken) LispTypes.LispToken {
 	_, err := fmt.Scanf("%f", &f)
 
 	if err != nil {
-		log.Fatalf("\n::ERROR:: %s Not a number input", tokens[0].ValueToString())
+		log.Printf("\n::ERROR:: %s Not a number input", tokens[0].ValueToString())
+		return nil
 	}
 
 	return LispTypes.Number{Contents: f}
@@ -311,7 +317,8 @@ func inputString(tokens ...LispTypes.LispToken) LispTypes.LispToken {
 	_, err := fmt.Scanf("%s", &s)
 
 	if err != nil {
-		log.Fatalf("\n::ERROR:: %s Not a string input", tokens[0].ValueToString())
+		log.Printf("\n::ERROR:: %s Not a string input", tokens[0].ValueToString())
+		return nil
 	}
 
 	return LispTypes.LispString{Contents: s}
@@ -329,8 +336,8 @@ func concatLists(tokens ...LispTypes.LispToken) LispTypes.LispToken {
 			result = append(result, value.Contents...)
 			break
 		default:
-			log.Fatalf("\n::ERROR:: %s Not a list.", element.ValueToString())
-			break
+			log.Printf("\n::ERROR:: %s Not a list.", element.ValueToString())
+			return nil
 
 		}
 	}
@@ -339,13 +346,12 @@ func concatLists(tokens ...LispTypes.LispToken) LispTypes.LispToken {
 
 func cons(tokens ...LispTypes.LispToken) LispTypes.LispToken {
 	if len(tokens) != 2 {
-		log.Fatal("::ERROR:: Bad use of 'cons' function.")
-	}
-	if value, ok := tokens[1].(LispTypes.List); ok {
+		log.Println("::ERROR:: Bad use of 'cons' function.")
+	} else if value, ok := tokens[1].(LispTypes.List); ok {
 		newListContent := append([]LispTypes.LispToken{tokens[0]}, value.Contents...)
 		return LispTypes.List{Contents: newListContent}
 	} else {
-		log.Fatal("::ERROR:: Bad use of 'cons' function.")
+		log.Println("::ERROR:: Bad use of 'cons' function.")
 	}
 
 	return nil
@@ -371,22 +377,9 @@ func is_empty(tokens ...LispTypes.LispToken) LispTypes.LispToken {
 
 	} else {
 
-		log.Fatalf("\n::ERROR:: %s Not a list.", tokens[0].ValueToString())
+		log.Printf("\n::ERROR:: %s Not a list.", tokens[0].ValueToString())
+		return nil
 	}
-
-	var result []LispTypes.LispToken
-	for _, element := range tokens {
-		switch value := element.(type) {
-		case LispTypes.List:
-			result = append(result, value.Contents...)
-			break
-		default:
-			log.Fatalf("\n::ERROR:: %s Not a list.", element.ValueToString())
-			break
-
-		}
-	}
-	return LispTypes.List{Contents: result}
 }
 
 func is_list(tokens ...LispTypes.LispToken) LispTypes.LispToken {
@@ -424,7 +417,8 @@ func is_equals(tokens ...LispTypes.LispToken) LispTypes.LispToken {
 
 func typeCheck(typeToCheck LispTypes.InterfaceType, tokens ...LispTypes.LispToken) LispTypes.LispToken {
 	if len(tokens) != 1 {
-		log.Fatal("::ERROR:: Bad number of arguments for type check")
+		log.Println("::ERROR:: Bad number of arguments for type check")
+		return nil
 	}
 
 	for _, token := range tokens {
@@ -437,11 +431,13 @@ func typeCheck(typeToCheck LispTypes.InterfaceType, tokens ...LispTypes.LispToke
 
 func charList(tokens ...LispTypes.LispToken) LispTypes.LispToken {
 	if len(tokens) != 1 {
-		log.Fatal("::ERROR:: Bad use of 'toCharList' function. Not enough arguments.")
+		log.Println("::ERROR:: Bad use of 'toCharList' function. Not enough arguments.")
+		return nil
 	}
 
 	if tokens[0].GetType() != LispTypes.STRING {
-		log.Fatalf("\n::ERROR:: Bad use of 'toCharList' function. %s not String.\n", tokens[0].ToString())
+		log.Printf("\n::ERROR:: Bad use of 'toCharList' function. %s not String.\n", tokens[0].ToString())
+		return nil
 	}
 	if value, ok := tokens[0].(LispTypes.LispString); ok {
 		var char_list_temp []LispTypes.LispToken
@@ -451,14 +447,15 @@ func charList(tokens ...LispTypes.LispToken) LispTypes.LispToken {
 		return toList(char_list_temp...)
 
 	} else {
-		log.Fatal("::ERROR:: Bad use of 'toCharList' function.")
+		log.Println("::ERROR:: Bad use of 'toCharList' function.")
 	}
 	return nil
 }
 
 func what_type(tokens ...LispTypes.LispToken) LispTypes.LispToken {
 	if len(tokens) != 1 {
-		log.Fatal("::ERROR:: Bad use of 'type?' function. Usage: type? ATOM")
+		log.Println("::ERROR:: Bad use of 'type?' function. Usage: type? ATOM")
+		return nil
 	}
 
 	//TODO: Should it return symbol or string??
@@ -467,7 +464,8 @@ func what_type(tokens ...LispTypes.LispToken) LispTypes.LispToken {
 
 func toString(tokens ...LispTypes.LispToken) LispTypes.LispToken {
 	if len(tokens) != 1 {
-		log.Fatal("::ERROR:: Bad use of 'toString' function.")
+		log.Println("::ERROR:: Bad use of 'toString' function.")
+		return nil
 	}
 	switch value := tokens[0].(type) {
 	case LispTypes.List:
@@ -482,14 +480,15 @@ func toString(tokens ...LispTypes.LispToken) LispTypes.LispToken {
 
 func toSymbol(tokens ...LispTypes.LispToken) LispTypes.LispToken {
 	if len(tokens) != 1 {
-		log.Fatal("::ERROR:: Bad use of 'toString' function. Can only Transform Strings to Symbol.")
+		log.Println("::ERROR:: Bad use of 'toString' function. Can only Transform Strings to Symbol.")
+		return nil
 	}
 	if value, ok := tokens[0].(LispTypes.LispString); ok {
 
 		return LispTypes.Symbol{Contents: value.GetContent()}
 
 	} else {
-		log.Fatal("::ERROR:: Bad use of 'toString' function. Can only Transform Strings to Symbol.")
+		log.Println("::ERROR:: Bad use of 'toString' function. Can only Transform Strings to Symbol.")
 	}
 	return nil
 

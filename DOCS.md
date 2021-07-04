@@ -211,8 +211,9 @@ Usage: `(all EXP1 EXP2 EXP3 EXP4 EXP5)`
 ```
 
 ### quote
-Returns the contents of a expression.
+Returns the contents of an expression.
 For example, this can be used to store an expression, manipulate the expression and evaluating it during execution.
+Like mentioned above, this returns a list of the elements, but these elements aren't evaluated, unlike `list`.
 Usage: `(quote EXP1)`
 
 Example:

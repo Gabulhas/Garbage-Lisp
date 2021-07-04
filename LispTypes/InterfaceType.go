@@ -14,5 +14,5 @@ const (
 
 func (interfaceType InterfaceType) ToString() string {
 
-	return [...]string{"SYMBOL", "NUMBER", "LIST", "EXP",  "PROCEDURE", "BOOLEAN", "STRING"}[interfaceType]
+	return [...]string{"SYMBOL", "NUMBER",  "LIST", "EXP",  "PROCEDURE", "BOOLEAN", "STRING"}[interfaceType]
 }

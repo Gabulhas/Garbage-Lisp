@@ -34,7 +34,9 @@ func (evaluator *Evaluator) evalSEXPRESSION(list LispTypes.List) LispTypes.LispT
 	content := list.Contents
 	symbol, err := LispTypes.GetSymbolContent(content[0])
 	if err != nil {
-		log.Fatalf("\n::ERROR:: %s Expression Not Starting With Symbol", list.ToString())
+		log.Printf("::ERROR:: %s Expression Not Starting With Symbol", list.ToString())
+		return nil
+
 	}
 	// "Builtins"
 	if strings.EqualFold(symbol, "define") {
@@ -49,11 +51,13 @@ func (evaluator *Evaluator) evalSEXPRESSION(list LispTypes.List) LispTypes.LispT
 			if resultingSymbol.GetType() == LispTypes.STRING || resultingSymbol.GetType() == LispTypes.SYMBOL {
 				newVariableName = resultingSymbol.ValueToString()
 			} else {
-				log.Fatalf("\n::ERROR:: %s Not A Symbol.", content[1])
+				log.Printf("\n::ERROR:: %s Not A Symbol.", content[1].ToString())
+				return nil
 			}
 
 		} else {
-			log.Fatalf("\n::ERROR:: %s Not A Symbol.", content[1].ToString())
+			log.Printf("\n::ERROR:: %s Not A Symbol.", content[1].ToString())
+			return nil
 		}
 
 		evaluatedDefine := evaluator.Run(content[len(content)-1])
@@ -83,7 +87,8 @@ func (evaluator *Evaluator) evalSEXPRESSION(list LispTypes.List) LispTypes.LispT
 		if value, ok := test.(LispTypes.LispBoolean); ok {
 			testResult = value.GetContent()
 		} else {
-			log.Fatalf("\n::ERROR:: if first argument must be a boolean: if (boolean) (then case) (else case). Got %s", test.ToString())
+			log.Printf("\n::ERROR:: if first argument must be a boolean: if (boolean) (then case) (else case). Got %s", test.ToString())
+			return nil
 		}
 
 		if testResult {
@@ -94,14 +99,16 @@ func (evaluator *Evaluator) evalSEXPRESSION(list LispTypes.List) LispTypes.LispT
 	} else if strings.EqualFold(symbol, "lambda") {
 
 		if len(content) != 3 {
-			log.Fatalf("\n::ERROR:: Lambda requires 2 expressions: lambda (arguments) (body)\n Got %d instead", len(content))
+			log.Printf("\n::ERROR:: Lambda requires 2 expressions: lambda (arguments) (body)\n Got %d instead", len(content))
+			return nil
 
 		}
 		return LispTypes.Procedure.InitLambda(LispTypes.Procedure{}, content[1], content[2])
 
 	} else if strings.EqualFold(symbol, "map") {
 		if len(content) != 3 {
-			log.Fatal("::ERROR:: map requires 2 expressions: map (procedure) (list)")
+			log.Printf("::ERROR:: map requires 2 expressions: map (procedure) (list)")
+			return nil
 		}
 		var result []LispTypes.LispToken
 
@@ -145,21 +152,22 @@ func (evaluator *Evaluator) evalSEXPRESSION(list LispTypes.List) LispTypes.LispT
 	} else if strings.EqualFold(symbol, "set!") {
 		newVariableName, err := LispTypes.GetSymbolContent(content[1])
 		if err != nil {
-			log.Fatalf("\n::ERROR:: %s Not a Symbol.", content[1])
+			log.Printf("\n::ERROR:: %s Not a Symbol.", content[1])
+			return nil
 		}
 		env, exists := evaluator.FindEnv(newVariableName)
 		if !exists {
-			log.Fatal("::ERROR:: Cannot set! a non-existing symbol")
+			log.Println("::ERROR:: Cannot set! a non-existing symbol")
+			return nil
 		}
 		env.Contents[newVariableName] = evaluator.Run(content[len(content)-1])
 		return nil
 
 	} else if strings.EqualFold(symbol, "load") {
 		if len(content) != 2 {
-			log.Fatal("::ERROR:: Cannot load another script. Usage: load \"Path To File\"")
-		}
-		if filename, ok := content[1].(LispTypes.LispString); !ok {
-			log.Fatal("::ERROR:: Cannot load another script. Usage: load \"Path To File\"")
+			log.Println("::ERROR:: Cannot load another script. Usage: load \"Path To File\"")
+		} else if filename, ok := content[1].(LispTypes.LispString); !ok {
+			log.Println("::ERROR:: Cannot load another script. Usage: load \"Path To File\"")
 		} else {
 			parsed := Parser.ParseFromFile(filename.Contents)
 			evaluator.Run(parsed)
@@ -196,7 +204,7 @@ func (evaluator *Evaluator) evalSEXPRESSION(list LispTypes.List) LispTypes.LispT
 				return newEvaluator.Run(lambdaBody)
 			}
 		default:
-			log.Fatalf("\n::ERROR:: %s: Not a procedure.", symbol)
+			log.Printf("\n::ERROR:: %s: Not a procedure.", symbol)
 
 		}
 		return nil

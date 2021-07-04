@@ -3,11 +3,14 @@ package repl
 import (
 	"bufio"
 	"fmt"
+	"os"
+	"os/signal"
+	"syscall"
+
+	"github.com/Gabulhas/Garbage-Lisp/Config"
 	"github.com/Gabulhas/Garbage-Lisp/Evaluator"
 	"github.com/Gabulhas/Garbage-Lisp/OutputHandler"
 	"github.com/Gabulhas/Garbage-Lisp/Parser"
-	"os"
-	"os/signal"
 )
 
 var exitFlag int
@@ -17,6 +20,7 @@ func Loop(myEval *Evaluator.Evaluator, loaded bool) {
 	fmt.Println("Welcome to GarbageLisp REPL.")
 	catchSigint()
 
+	Config.Repl = true
 	reader := bufio.NewReader(os.Stdin)
 	if !loaded {
 		myEval = Evaluator.NewEval()
@@ -72,7 +76,7 @@ func countParentheses(text string) (int, int) {
 
 func catchSigint() {
 	c := make(chan os.Signal, 1)
-	signal.Notify(c, os.Interrupt)
+	signal.Notify(c, os.Interrupt, syscall.SIGHUP, syscall.SIGTERM)
 	go func() {
 		for {
 			<-c

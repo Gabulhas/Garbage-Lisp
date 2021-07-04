@@ -14,7 +14,7 @@
 
 (define divisivel (lambda (valor por) (= 0 (% valor por))))
 
-(define calculate (lambda (m passos passos_minimos ramo) 
+(define calculate (lambda (m passos passos_minimos ramo)
 
                           (if (> passos passos_minimos) max_number
                             (
@@ -26,12 +26,12 @@
 
                               (begin
 
-                                (define regra_um ( if (divisivel m 2) ( calculate (intPart (/ m 2)) (+ 1 passos) max_number 1) max_number )) 
+                                (define regra_um ( if (divisivel m 2) ( calculate (intPart (/ m 2)) (+ 1 passos) max_number 1) max_number ))
 
 
                                 (define regra_tres ( if (divisivel m 5) (calculate (- m 42) (+ 1 passos) regra_um 2) max_number ))
 
-                                (define regra_dois (if (or (divisivel m 3) (divisivel m 4)) 
+                                (define regra_dois (if (or (divisivel m 3) (divisivel m 4))
                                                      (begin
                                                        (define algs (get_ultimo_algarismo m))
 
@@ -53,7 +53,8 @@
                              )
 
                             )
-                          ))
+                          )
+)
 
 (print "Input a number:")
 (define entrada (inputNumber))

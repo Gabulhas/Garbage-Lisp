@@ -1,6 +1,6 @@
 package Config
 
 var (
-	Repl  bool = false
-	Debug bool = false
+	Repl  = false
+	Debug = false
 )

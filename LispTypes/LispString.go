@@ -19,5 +19,5 @@ func (lispString LispString) ToString() string {
 }
 
 func (lispString LispString) ValueToString() string {
-	return fmt.Sprintf("%s", lispString.Contents)
+	return lispString.Contents
 }

@@ -1,6 +1,11 @@
 package OutputHandler
 
-import "github.com/Gabulhas/Garbage-Lisp/LispTypes"
+import (
+	"fmt"
+	"github.com/Gabulhas/Garbage-Lisp/Config"
+	"github.com/Gabulhas/Garbage-Lisp/LispTypes"
+	"log"
+)
 
 func PrettyPrint(token LispTypes.LispToken) string {
 
@@ -10,3 +15,14 @@ func PrettyPrint(token LispTypes.LispToken) string {
 	return ""
 }
 
+func Fatalf(format string, v ...interface{}) {
+	if Config.Repl {
+		fmt.Printf(format, v)
+	} else {
+		log.Fatalf(format, v)
+	}
+}
+
+func Fatal(v ...interface{}) {
+
+}
