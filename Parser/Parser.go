@@ -1,6 +1,7 @@
 package Parser
 
 import (
+	"errors"
 	"fmt"
 	"io/ioutil"
 	"log"
@@ -98,8 +99,8 @@ func (parser *Parser) readFromTokens() LispTypes.LispToken {
 				return LispTypes.LispString{Contents: token}
 			}
 			return LispTypes.LispString{Contents: result}
-		} else if value, err := strconv.ParseFloat(token, 32); err == nil {
-			return LispTypes.Number{Contents: value}
+		} else if value, err := ParseNumber(token); err == nil {
+			return value
 		} else if token == "true" {
 			return LispTypes.LispBoolean{Contents: true}
 		} else if token == "false" || token == "nil" {
@@ -113,8 +114,33 @@ func (parser *Parser) readFromTokens() LispTypes.LispToken {
 }
 
 func SymbolOrNumber(token string) LispTypes.LispToken {
-	if value, err := strconv.ParseFloat(token, 32); err == nil {
-		return LispTypes.Number{Contents: value}
+
+	if value, err := ParseNumber(token); err == nil {
+		return value
 	}
 	return LispTypes.Symbol{Contents: token}
+}
+
+func ParseNumber(token string) (LispTypes.LispToken, error) {
+	if containsAnyDot(token) {
+		if value, err := strconv.Atoi(token); err == nil {
+			return LispTypes.NewInt(int32(value)), nil
+		}
+		return nil, errors.New("notNumber")
+	} else {
+		if value, err := strconv.ParseFloat(token, 32); err == nil {
+			return LispTypes.NewFloat(value), nil
+		}
+		return nil, errors.New("notNumber")
+
+	}
+}
+
+func containsAnyDot(token string) bool {
+	for _, r := range token {
+		if r == '.' {
+			return true
+		}
+	}
+	return false
 }
