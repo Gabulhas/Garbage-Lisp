@@ -1,8 +1,9 @@
 package Env
 
 import (
-	"github.com/Gabulhas/Garbage-Lisp/LispTypes"
 	"math"
+
+	"github.com/Gabulhas/Garbage-Lisp/LispTypes"
 )
 
 func InitEnvNativeConstants(env Env) {
@@ -14,5 +15,5 @@ func InitEnvNativeConstants(env Env) {
 }
 
 func NumberFromConstant(number float64) LispTypes.Number {
-	return LispTypes.Number{Contents: number}
+	return LispTypes.NewFloat(number)
 }

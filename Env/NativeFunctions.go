@@ -6,6 +6,7 @@ import (
 	"strings"
 
 	"github.com/Gabulhas/Garbage-Lisp/LispTypes"
+	"github.com/Gabulhas/Garbage-Lisp/Parser"
 )
 
 func InitEnvNativeFunctions(env Env) {
@@ -25,6 +26,7 @@ func InitEnvNativeFunctions(env Env) {
 	env.AddProcedureFromFunction(begin, "begin")
 	env.AddProcedureFromFunction(printLisp, "print")
 	env.AddProcedureFromFunction(printfLisp, "printf")
+	env.AddProcedureFromFunction(printDebugLisp, "printd")
 	env.AddProcedureFromFunction(inputNumber, "inputNumber")
 	env.AddProcedureFromFunction(inputString, "inputString")
 	env.AddProcedureFromFunction(inputString, "readLine")
@@ -101,7 +103,7 @@ func cmp(run func(a, b float64) bool, tokens ...LispTypes.LispToken) LispTypes.L
 	var lastNumber float64
 
 	for i, thisToken := range tokens {
-		if value, err := LispTypes.GetNumberContent(thisToken); err == nil {
+		if value, err := LispTypes.GetNumberAsFloat(thisToken); err == nil {
 			if i == 0 {
 				lastNumber = value
 			} else {
@@ -119,31 +121,38 @@ func cmp(run func(a, b float64) bool, tokens ...LispTypes.LispToken) LispTypes.L
 }
 
 func modulo(tokens ...LispTypes.LispToken) LispTypes.LispToken {
-	run := func(accumulator, newvalue float64) float64 { return float64(int(accumulator) % int(newvalue)) }
+
+	run := func(accumulator, newvalue LispTypes.Number) LispTypes.Number {
+		return LispTypes.NewInt(accumulator.GetAsInt() % newvalue.GetAsInt())
+	}
 	return aritm(run, tokens...)
 }
 
 func multiply(tokens ...LispTypes.LispToken) LispTypes.LispToken {
-	run := func(accumulator, newvalue float64) float64 { return accumulator * newvalue }
+	run := LispTypes.Mul
 	return aritm(run, tokens...)
 }
 func divide(tokens ...LispTypes.LispToken) LispTypes.LispToken {
-	run := func(accumulator, newvalue float64) float64 { return accumulator / newvalue }
+	run := LispTypes.Div
 	return aritm(run, tokens...)
 }
 func add(tokens ...LispTypes.LispToken) LispTypes.LispToken {
-	run := func(accumulator, newvalue float64) float64 { return accumulator + newvalue }
+	run := LispTypes.Add
 	return aritm(run, tokens...)
 }
 func sub(tokens ...LispTypes.LispToken) LispTypes.LispToken {
-	run := func(accumulator, newvalue float64) float64 { return accumulator - newvalue }
+	run := LispTypes.Sub
 	return aritm(run, tokens...)
 }
 
 func intpart(tokens ...LispTypes.LispToken) LispTypes.LispToken {
 
 	if value, ok := tokens[0].(LispTypes.Number); ok {
-		return LispTypes.Number{Contents: float64(int(value.Contents))}
+		if value.IsFloat {
+			return LispTypes.NewInt(value.GetAsInt())
+		} else {
+			return value
+		}
 
 	} else {
 		log.Printf("\n::ERROR::  %s Not a Number.", tokens[0].ToString())
@@ -153,8 +162,8 @@ func intpart(tokens ...LispTypes.LispToken) LispTypes.LispToken {
 }
 
 func maxnumber(tokens ...LispTypes.LispToken) LispTypes.LispToken {
-	run := func(accumulator, newvalue float64) float64 {
-		if accumulator < newvalue {
+	run := func(accumulator, newvalue LispTypes.Number) LispTypes.Number {
+		if accumulator.GetAsFloat() < newvalue.GetAsFloat() {
 			return newvalue
 		} else {
 			return accumulator
@@ -167,8 +176,8 @@ func maxnumber(tokens ...LispTypes.LispToken) LispTypes.LispToken {
 }
 
 func minnumber(tokens ...LispTypes.LispToken) LispTypes.LispToken {
-	run := func(accumulator, newvalue float64) float64 {
-		if accumulator > newvalue {
+	run := func(accumulator, newvalue LispTypes.Number) LispTypes.Number {
+		if accumulator.GetAsFloat() > newvalue.GetAsFloat() {
 			return newvalue
 		} else {
 			return accumulator
@@ -180,16 +189,16 @@ func minnumber(tokens ...LispTypes.LispToken) LispTypes.LispToken {
 	return aritm(run, tokens...)
 }
 
-func aritm(run func(accumulator, newvalue float64) float64, tokens ...LispTypes.LispToken) LispTypes.LispToken {
+func aritm(run func(a, b LispTypes.Number) LispTypes.Number, tokens ...LispTypes.LispToken) LispTypes.LispToken {
 
 	if len(tokens) < 2 {
 		log.Printf("\n::ERROR:: You need at least 2 values to execute an arithemtic function, got %d", len(tokens))
 	}
 
-	var accumulator float64 = 1
+	accumulator := LispTypes.NewInt(1)
 	for i, thisToken := range tokens {
 
-		if value, err := LispTypes.GetNumberContent(thisToken); err == nil {
+		if value, ok := thisToken.(LispTypes.Number); ok {
 			if i == 0 {
 				accumulator = value
 			} else {
@@ -200,7 +209,7 @@ func aritm(run func(accumulator, newvalue float64) float64, tokens ...LispTypes.
 			return nil
 		}
 	}
-	return LispTypes.Number{Contents: accumulator}
+	return accumulator
 }
 
 func and(tokens ...LispTypes.LispToken) LispTypes.LispToken {
@@ -313,18 +322,34 @@ func printfLisp(tokens ...LispTypes.LispToken) LispTypes.LispToken {
 
 }
 
+func printDebugLisp(tokens ...LispTypes.LispToken) LispTypes.LispToken {
+	for _, value := range tokens {
+		if value == nil {
+			fmt.Println("nil")
+		} else {
+			fmt.Println(value.ToString())
+		}
+	}
+	return nil
+}
+
 func inputNumber(tokens ...LispTypes.LispToken) LispTypes.LispToken {
 
-	var f float64
+	var s string
 
-	_, err := fmt.Scanf("%f", &f)
+	_, err := fmt.Scanf("%s", &s)
 
 	if err != nil {
 		log.Printf("\n::ERROR:: %s Not a number input", tokens[0].ValueToString())
 		return nil
 	}
+	num, err := Parser.ParseNumber(s)
+	if err != nil {
+		log.Printf("\n::ERROR:: %s Not a number input", tokens[0].ValueToString())
+		return nil
+	}
 
-	return LispTypes.Number{Contents: f}
+	return num
 }
 
 func inputString(tokens ...LispTypes.LispToken) LispTypes.LispToken {
@@ -380,7 +405,7 @@ func lisplen(tokens ...LispTypes.LispToken) LispTypes.LispToken {
 		value, _ := tokens[0].(LispTypes.List)
 		length = len(value.Contents)
 	}
-	return LispTypes.Number{Contents: float64(length)}
+	return LispTypes.NewInt(int32(length))
 }
 
 func is_empty(tokens ...LispTypes.LispToken) LispTypes.LispToken {

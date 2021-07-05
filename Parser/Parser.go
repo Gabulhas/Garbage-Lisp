@@ -122,7 +122,7 @@ func SymbolOrNumber(token string) LispTypes.LispToken {
 }
 
 func ParseNumber(token string) (LispTypes.LispToken, error) {
-	if containsAnyDot(token) {
+	if !containsAnyDot(token) {
 		if value, err := strconv.Atoi(token); err == nil {
 			return LispTypes.NewInt(int32(value)), nil
 		}

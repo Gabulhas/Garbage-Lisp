@@ -21,3 +21,11 @@ func GetSymbolContent(token LispToken) (string, error) {
 		return "", errors.New("WrongType")
 	}
 }
+
+func GetNumberAsFloat(token LispToken) (float64, error) {
+	if result, ok := token.(Number); ok {
+		return result.GetAsFloat(), nil
+	} else {
+		return 0, errors.New("WrongType")
+	}
+}
