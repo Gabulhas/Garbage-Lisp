@@ -81,12 +81,9 @@ func (parser *Parser) readFromTokens() LispTypes.LispToken {
 		}
 	case "(":
 		//TODO: Change this to list
-		L := LispTypes.Exp{
-			Contents: LispTypes.List{Contents: []LispTypes.LispToken{}},
-		}
-
+		L := LispTypes.List{Contents: []LispTypes.LispToken{}}
 		for parser.preTokens[0] != ")" {
-			L.AppendIfList(parser.readFromTokens())
+			L.Append(parser.readFromTokens())
 		}
 		parser.preTokens = parser.preTokens[1:]
 		return L

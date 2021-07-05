@@ -25,8 +25,7 @@ I'm not saying that **Go** needs them, I like it's minimalism :) .
 - [ ] Better way to create a function
 - [ ] Separate Functions in NativeFunctions.go
 - [ ] Print error location
-- [ ] Remove Exp type
-- [ ] Check the ammount of arguments for every function. (Old ones specially)
+- [ ] Cond function
 
 
 # New Stuff to Add

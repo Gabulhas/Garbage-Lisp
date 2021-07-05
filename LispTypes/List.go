@@ -28,10 +28,8 @@ func (list List) ToString() string {
 	return b.String()
 }
 
-func (list List) Append(token LispToken) List {
-
-	newList := List{Contents: append(list.Contents, token)}
-	return newList
+func (list *List) Append(token LispToken) {
+	list.Contents = append(list.Contents, token)
 }
 
 func (list List) ValueToString() string {

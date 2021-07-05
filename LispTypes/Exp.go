@@ -25,7 +25,7 @@ func (exp *Exp) AppendIfList(token LispToken) error {
 
 	switch v := exp.Contents.(type) {
 	case List:
-		exp.Contents = v.Append(token)
+		v.Append(token)
 		return nil
 	default:
 		return errors.New("WrongType")

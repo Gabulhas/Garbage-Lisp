@@ -27,24 +27,21 @@ func (Procedure) InitLambda(arguments, lambdaContent LispToken) Procedure {
 
 	var argumentsAsString []string
 
-	expContent, isExp := arguments.(Exp)
+	expContent, isExp := arguments.(List)
 	if !isExp {
 		log.Fatal("::ERROR:: Lambda argument should be expression. (arg1, arg2, ...).")
 	}
 
-	if argumentList, isList := expContent.GetContent().(List); isList {
+	argumentList := expContent.GetContent()
 
-		for _, argument := range argumentList.GetContent() {
-			if value, ok := argument.(Symbol); ok {
-				argumentsAsString = append(argumentsAsString, value.GetContent())
-			} else {
-				log.Fatal("::ERROR:: Lambda arguments can only be symbols.")
-			}
+	for _, argument := range argumentList {
+		if value, ok := argument.(Symbol); ok {
+			argumentsAsString = append(argumentsAsString, value.GetContent())
+		} else {
+			log.Fatal("::ERROR:: Lambda arguments can only be symbols.")
 		}
-
-	} else {
-		log.Fatal("::ERROR:: Lambda arguments should be in list (arg1, arg2, ...).")
 	}
+
 	return Procedure{
 		Name:          "Anonymous",
 		Native:        false,

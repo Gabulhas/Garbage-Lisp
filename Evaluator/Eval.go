@@ -41,7 +41,7 @@ func (evaluator *Evaluator) evalSEXPRESSION(list LispTypes.List) LispTypes.LispT
 		if content[1].GetType() == LispTypes.STRING || content[1].GetType() == LispTypes.SYMBOL {
 			newVariableName = content[1].ValueToString()
 		} else if content[1].GetType() == LispTypes.LIST || content[1].GetType() == LispTypes.EXP {
-			resultingSymbol := evaluator.Run(LispTypes.UnpackFromExp(content[1]))
+			resultingSymbol := evaluator.Run(content[1])
 			if resultingSymbol.GetType() == LispTypes.STRING || resultingSymbol.GetType() == LispTypes.SYMBOL {
 				newVariableName = resultingSymbol.ValueToString()
 			} else {
@@ -134,11 +134,9 @@ func (evaluator *Evaluator) evalSEXPRESSION(list LispTypes.List) LispTypes.LispT
 	} else if strings.EqualFold(symbol, "eval") {
 		var expression LispTypes.LispToken
 		if value, ok := content[1].(LispTypes.Symbol); ok {
-			symbol_value := evaluator.Run(value)
-			expression = LispTypes.UnpackFromExp(symbol_value)
-
+			expression = evaluator.Run(value)
 		} else {
-			expression = LispTypes.UnpackFromExp(content[1])
+			expression = content[1]
 		}
 
 		return evaluator.Run(expression)
