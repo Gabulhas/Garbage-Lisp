@@ -31,7 +31,6 @@ func main() {
 		case "-load":
 			repl.Loop(pipeline(args[1]), true)
 			break
-
 		default:
 			pipeline(args[0])
 			break

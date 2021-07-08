@@ -23,7 +23,7 @@ func (num Number) GetContent() (int32, float64) {
 
 func (num Number) ToString() string {
 	if num.IsFloat {
-		return fmt.Sprintf("%s:FLOAT %.2f", num.GetType().ToString(), num.FloatContents)
+		return fmt.Sprintf("%s:FLOAT %f", num.GetType().ToString(), num.FloatContents)
 	} else {
 		return fmt.Sprintf("%s:INT %d", num.GetType().ToString(), num.IntContents)
 	}

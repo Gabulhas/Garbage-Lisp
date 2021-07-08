@@ -19,12 +19,16 @@ func (list List) GetContent() []LispToken {
 
 func (list List) ToString() string {
 	var b strings.Builder
+	fmt.Fprintf(&b, "(")
 	for i, p := range list.Contents {
-		fmt.Fprintf(&b, "[%s]", p.ToString())
-		if i != len(list.Contents)-1 {
-			fmt.Fprintf(&b, ",")
+		if i == 0 {
+			fmt.Fprintf(&b, "%s", p.ToString())
+		} else {
+			fmt.Fprintf(&b, " %s", p.ToString())
 		}
+
 	}
+	fmt.Fprintf(&b, ")")
 	return b.String()
 }
 
@@ -34,11 +38,15 @@ func (list *List) Append(token LispToken) {
 
 func (list List) ValueToString() string {
 	var b strings.Builder
+	fmt.Fprintf(&b, "(")
 	for i, p := range list.Contents {
-		fmt.Fprintf(&b, "[%s]", p.ValueToString())
-		if i != len(list.Contents)-1 {
-			fmt.Fprintf(&b, ",")
+		if i == 0 {
+			fmt.Fprintf(&b, "%s", p.ValueToString())
+		} else {
+			fmt.Fprintf(&b, " %s", p.ValueToString())
 		}
+
 	}
+	fmt.Fprintf(&b, ")")
 	return b.String()
 }

@@ -33,10 +33,16 @@ but if you use the keyword `quote`, the elements won't be evaluated, this menas 
 
 
 ### Number
-Contains a Go `float64` value. Any text that can be parsed as a float64 by Go's `strconv.ParseFloat()` will be used as a number.
-This means that `4.0` is a number, but `2A` is a symbol.
-Example: `10` or `4.0`
+Contains a Go `float64` or `int32` value. For every string that can be parsed as a number will create a Number atom.
+If the string contains a dot `.`, this number will contain a `float64`, otherwise it will contain a `int32` value.
+This means that `4.0`, `4.` and `4.0` will be parsed to Numbers that contain `float64`s, but `4` will be an `int32` Number.
+It's still possible to execute operations using both `int32` and `float64` Numbers. Like Python,
+if there's an operation that uses both types, for example `(+ 4.0 4)`, the resulting value will **always be a `float64`**.
 
+For example: 
+- `(+ 4 4.0)` -> `NUMBER:FLOAT 8.000000`
+- `(+ 4.0 4.0)` -> `NUMBER:FLOAT 8.000000`
+- `(+ 4 4)` -> `NUMBER:INT 8`
 
 ### Procedure
 Contains the Name of the Function, it's Body and it's possible Arguments/Parameters.
