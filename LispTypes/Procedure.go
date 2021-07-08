@@ -19,10 +19,6 @@ func (procedure Procedure) GetType() InterfaceType {
 	return PROCEDURE
 }
 
-func (procedure Procedure) ToString() string {
-	return fmt.Sprintf("%s %s %s", procedure.GetType().ToString(), procedure.LambdaContent.ToString(), procedure.Name)
-}
-
 func (Procedure) InitLambda(arguments, lambdaContent LispToken) Procedure {
 
 	var argumentsAsString []string
@@ -65,6 +61,18 @@ func (procedure Procedure) Call(env map[string]LispToken, params ...LispToken) L
 	}
 }
 
+func (procedure Procedure) ToString() string {
+	if procedure.Native {
+		return fmt.Sprintf("PROCEDURE:NATIVE %s", procedure.Name)
+	} else {
+		return fmt.Sprintf("PROCEDURE:USER %s %s -> %s", procedure.Name, procedure.Arguments, procedure.LambdaContent.ValueToString())
+	}
+}
+
 func (procedure Procedure) ValueToString() string {
-	return fmt.Sprintf("PROCEDURE %s", procedure.Name)
+	if procedure.Native {
+		return fmt.Sprintf("PROCEDURE %s", procedure.Name)
+	} else {
+		return fmt.Sprintf("PROCEDURE %s", procedure.Name)
+	}
 }
