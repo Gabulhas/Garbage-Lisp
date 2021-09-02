@@ -45,7 +45,6 @@ func Loop(myEval *Evaluator.Evaluator, loaded bool) {
 			lparen = lparen + templparen
 			rparen = rparen + temprparen
 			text = text + temp
-
 		}
 
 		parsed := Parser.Parse(text)
@@ -73,7 +72,6 @@ func countParentheses(text string) (int, int) {
 	}
 	return lparen, rparen
 }
-
 func catchSigint() {
 	c := make(chan os.Signal, 1)
 	signal.Notify(c, os.Interrupt, syscall.SIGHUP, syscall.SIGTERM)

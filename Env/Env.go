@@ -1,8 +1,9 @@
 package Env
 
 import (
-	"github.com/Gabulhas/Garbage-Lisp/LispTypes"
 	"os"
+
+	"github.com/Gabulhas/Garbage-Lisp/LispTypes"
 )
 
 type Env struct {

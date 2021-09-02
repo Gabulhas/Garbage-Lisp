@@ -23,6 +23,7 @@ I'm not saying that **Go** needs them, I like it's minimalism :) .
 - [ ] Tail recursion optimization
 - [ ] Better way to create a function
 - [ ] Separate Functions in NativeFunctions.go
+- [ ] IO with files
 - [ ] Print error location
 - [ ] Cond function
 

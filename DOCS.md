@@ -96,11 +96,11 @@ Defining the value of Pi.
 
 ---
 
-# Native Functions Implemented
+# Functions Implemented directly in Go (Builtin and Native)
 
 ---
 
-## Builtin
+## Builtin Functions
 These functions are defined directly in the Evaluator (check Eval.go). They are not lambdas, yet they are reserved keywords.
 Most of these are used to evaluate the code or are special and couldn't be implemented as "Native Functions".
 
@@ -129,7 +129,7 @@ Defining a Procedure
 ### if
 Evaluates the second argument if the first argument evaluates to `true`,
 evaluates the third argument otherwise.
-Usage: `(if (THEN BRANCH) (ELSE BRANCH))`
+Usage: `(if (CONDITION) (THEN BRANCH) (ELSE BRANCH))`
 
 Example:
 ```lisp
@@ -156,7 +156,7 @@ Tail-Recursive Fibonacci.
 ```lisp
 ; Defining
 (define fibonacci
-    ; a, b and endvalue are he arguments
+    ; a, b and endvalue are the arguments
     (lambda (a b endvalue)
 	; Procedure body
 	(if (> b endvalue)
@@ -164,7 +164,7 @@ Tail-Recursive Fibonacci.
 		a
 		; else
 		(fib b (+ a b) endvalue)
-	    )
+	)
     )
 )
 ; Function execution
@@ -198,7 +198,7 @@ Defining a new function `square` and calling the function with every element of 
 
 ### all
 Evaluates every argument (variadic arguments) and returns nil.
-This function encapsulates/surrounds all the inner expressions that resulted from parsing.
+This function encapsulates/surrounds all the expressions that resulted from parsing.
 Usage: `(all EXP1 EXP2 EXP3 EXP4 EXP5)`
 
 ```lisp
@@ -218,7 +218,7 @@ Usage: `(all EXP1 EXP2 EXP3 EXP4 EXP5)`
 
 ### quote
 Returns the contents of an expression.
-For example, this can be used to store an expression, manipulate the expression and evaluating it during execution.
+For example, this can be used to store an expression, manipulate the expression and later evaluate it (during runtime).
 Like mentioned above, this returns a list of the elements, but these elements aren't evaluated, unlike `list`.
 Usage: `(quote EXP1)`
 
@@ -230,6 +230,9 @@ Example:
 ```
 
 ### Eval
+Evaluates/Executes and expression at runtime.
+
+
 ```lisp
 ; ++ concatenates two lists
 (define my_exp
@@ -249,16 +252,16 @@ Example:
 
 ```
 
-As you can see in this example, we can change the expression, in this case we added a new atom to the expression `6`
+As you can see in this example, we can change the expression, in this case we appended a new atom to the expression `6`
 and we can later evaluate it.
 
 ### load
 Loads a file, in other words, Parses a File and Evaluates the whole file.
-For example, this can be used to define helper functions that can be used by multiple scripts.
+For example, this can be used to define a library that can be used by multiple scripts.
 Usage: `(load "PATH TO FILE")`
 
 ---
-## Native
+## Native functions
 These functions are defined as primitive/native functions (NativeFunctions.go).
 Unlike builtins, these functions are lambdas defined in the outer most environment/scope.
 These are implemented to enable the creation of non-native functions, making it possible to define GarbageLisp functions.
